@@ -1,0 +1,30 @@
+package com.dmj.cli.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.SysUser;
+import com.dmj.cli.domain.dto.SysUserDTO;
+import com.dmj.cli.domain.query.UserQuery;
+import com.dmj.cli.domain.vo.SysUserVO;
+import com.github.pagehelper.PageInfo;
+
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author zd
+ * @since 2021-06-28
+ */
+public interface SysUserService extends IService<SysUser> {
+
+    SysUserDTO getUserByName(String userName);
+
+    BaseResult<PageInfo<SysUserVO>> pageUserList(UserQuery userQuery);
+
+    BaseResult insertUser(SysUserDTO sysUserDTO);
+
+    BaseResult updateUser(SysUserDTO sysUserDTO);
+
+
+}

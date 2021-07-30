@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.sys.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dmj.cli.domain.SysUser">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="open_id" property="openId" />
+        <result column="locked" property="locked" />
+        <result column="create_time" property="createTime" />
+        <result column="creater" property="creater" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+        <result column="delete_flag" property="deleteFlag" />
+    </resultMap>
+
+    <resultMap id="ResultMapDTO" type="com.dmj.cli.domain.dto.SysUserDTO">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="open_id" property="openId" />
+        <result column="locked" property="locked" />
+        <result column="create_time" property="createTime" />
+        <result column="creater" property="creater" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+        <result column="delete_flag" property="deleteFlag" />
+        <collection property="roles" ofType="string" javaType="List">
+            <result column="role_code"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ResultMapVO" type="com.dmj.cli.domain.vo.SysUserVO">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="open_id" property="openId" />
+        <result column="locked" property="locked" />
+        <result column="create_time" property="createTime" />
+        <result column="creater" property="creater" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+        <result column="delete_flag" property="deleteFlag" />
+        <collection property="sysRoles" ofType="com.dmj.cli.domain.SysRole">
+            <result column="role_code" property="roleCode" />
+            <result column="role_name" property="roleName" />
+            <result column="role_desc" property="roleDesc" />
+            <result column="sys_default" property="sysDefault" />
+            <result column="create_time" property="createTime" />
+            <result column="creater" property="creater" />
+            <result column="update_time" property="updateTime" />
+            <result column="updater" property="updater" />
+            <result column="delete_flag" property="deleteFlag" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        u.id, u.user_name, u.password, u.nick_name, u.mobile, u.email, u.phone, u.avatar_url,
+        u.open_id, u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
+        r.role_code
+    </sql>
+    <select id="getUserByName" resultMap="ResultMapDTO">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_user u
+        left join sys_user_role ur on u.id=ur.user_id
+        left join sys_role r on ur.role_id=r.id
+        where u.delete_flag=false
+        <if test="userName != null and userName != ''">
+            and u.user_name=#{userName}
+        </if>
+    </select>
+    <select id="listSysUser" resultMap="ResultMapVO">
+        select
+        u.id, u.user_name, u.password, u.nick_name, u.mobile, u.email, u.phone, u.avatar_url,
+        u.open_id, u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
+        r.role_code,r.role_name,r.role_desc,r.sys_default,r.create_time,r.creater,r.update_time,
+        r.updater,r.delete_flag
+        from sys_user u
+        left join sys_user_role ur on u.id=ur.user_id
+        left join sys_role r on ur.role_id=r.id
+        where u.delete_flag=false
+        <if test="startTime !=null and endTime != null">
+           and u.create_time between #{startTime} and #{endTime}
+        </if>
+        <if test="userName !=null and userName !=''">
+            and u.user_name like CONCAT('%',#{userName})
+        </if>
+        <if test="sort != null and sort != '' and  sortField != null and sortField != ''">
+            order by u.#{sortField} #{sort}
+        </if>
+    </select>
+
+</mapper>

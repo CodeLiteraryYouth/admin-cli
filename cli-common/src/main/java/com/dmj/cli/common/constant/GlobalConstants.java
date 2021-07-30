@@ -1,0 +1,23 @@
+package com.dmj.cli.common.constant;
+
+/**
+ * @author zd
+ */
+public interface GlobalConstants {
+
+    Integer STATUS_YES = 1;
+    Integer STATUS_NO = 0;
+
+    String DEFAULT_USER_PASSWORD = "123456";
+
+    String ROOT_ROLE_CODE = "ROOT";
+
+    String URL_PERM_ROLES_KEY = "system:perm_roles_rule:url:";
+    String BTN_PERM_ROLES_KEY = "system:perm_roles_rule:btn:";
+
+    String APP_API_PATTERN="/*/app-api/**";
+
+    String FAIL="fail";
+
+    String SUCCESS="success";
+}

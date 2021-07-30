@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.sys.SysOauthClientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dmj.cli.domain.SysOauthClient">
+        <id column="client_id" property="clientId" />
+        <result column="client_secret" property="clientSecret" />
+        <result column="resources_ids" property="resourcesIds" />
+        <result column="scope" property="scope" />
+        <result column="authorized_grant_type" property="authorizedGrantType" />
+        <result column="webserver_redirect_url" property="webserverRedirectUrl" />
+        <result column="authorities" property="authorities" />
+        <result column="access_token_validity" property="accessTokenValidity" />
+        <result column="refresh_token_validity" property="refreshTokenValidity" />
+        <result column="additional_information" property="additionalInformation" />
+        <result column="autoapprove" property="autoapprove" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        client_id, client_secret, resources_ids, scope, authorized_grant_type, webserver_redirect_url, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove
+    </sql>
+    <select id="listOauthClients" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_oauth_client
+        <if test="startTime !=null and endTime != null">
+            and create_time between #{startTime} and #{endTime}
+        </if>
+        <if test="clientName !=null and clientName !=''">
+            and client_id like CONCAT('%',#{clientName})
+        </if>
+        <if test="sort != null and sort != '' and  sortField != null and sortField != ''">
+            order by #{sortField} #{sort}
+        </if>
+    </select>
+
+</mapper>
