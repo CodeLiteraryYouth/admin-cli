@@ -1,7 +1,7 @@
 package com.dmj.cli.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.dmj.cloud.model.SysRole;
+import com.dmj.cli.domain.SysRole;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

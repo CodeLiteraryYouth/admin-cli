@@ -1,4 +1,4 @@
-package com.dmj.cli.job;
+package com.dmj.cli.util;
 
 import org.quartz.CronExpression;
 

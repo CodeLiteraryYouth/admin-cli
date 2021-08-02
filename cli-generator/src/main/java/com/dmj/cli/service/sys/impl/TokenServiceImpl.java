@@ -1,8 +1,8 @@
-package com.dmj.cli.service.impl;
+package com.dmj.cli.service.sys.impl;
 
 import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.domain.JWTPayload;
-import com.dmj.cli.service.ITokenService;
+import com.dmj.cli.service.sys.ITokenService;
 import com.dmj.cli.util.JWTUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

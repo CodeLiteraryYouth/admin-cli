@@ -2,6 +2,7 @@ package com.dmj.cli.job;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.dmj.cli.domain.SysJob;
 import com.dmj.cli.util.spring.SpringUtils;
 import com.dmj.cli.util.str.StringUtils;
 

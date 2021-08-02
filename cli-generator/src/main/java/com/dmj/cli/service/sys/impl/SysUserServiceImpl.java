@@ -1,4 +1,4 @@
-package com.dmj.cli.service.impl;
+package com.dmj.cli.service.sys.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,7 +9,10 @@ import com.dmj.cli.domain.SysUserRole;
 import com.dmj.cli.domain.dto.SysUserDTO;
 import com.dmj.cli.domain.query.UserQuery;
 import com.dmj.cli.domain.vo.SysUserVO;
-import com.dmj.cli.service.SysUserService;
+import com.dmj.cli.mapper.sys.SysRoleMapper;
+import com.dmj.cli.mapper.sys.SysUserMapper;
+import com.dmj.cli.mapper.sys.SysUserRoleMapper;
+import com.dmj.cli.service.sys.SysUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;

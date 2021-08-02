@@ -5,7 +5,7 @@ import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.dto.SysRoleDTO;
 import com.dmj.cli.domain.query.RoleQuery;
 import com.dmj.cli.domain.vo.SysRoleVO;
-import com.dmj.cli.service.SysRoleService;
+import com.dmj.cli.service.sys.SysRoleService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

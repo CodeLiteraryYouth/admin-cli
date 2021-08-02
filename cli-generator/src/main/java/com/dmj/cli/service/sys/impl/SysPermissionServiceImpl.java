@@ -1,4 +1,4 @@
-package com.dmj.cli.service.impl;
+package com.dmj.cli.service.sys.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
@@ -6,7 +6,8 @@ import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.dto.SysPermissionDTO;
 import com.dmj.cli.domain.query.PermissionQuery;
 import com.dmj.cli.domain.vo.SysPermissionVO;
-import com.dmj.cli.service.SysPermissionService;
+import com.dmj.cli.mapper.sys.SysPermissionMapper;
+import com.dmj.cli.service.sys.SysPermissionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

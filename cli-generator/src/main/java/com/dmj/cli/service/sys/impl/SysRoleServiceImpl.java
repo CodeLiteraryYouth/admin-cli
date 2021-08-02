@@ -1,4 +1,4 @@
-package com.dmj.cli.service.impl;
+package com.dmj.cli.service.sys.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
@@ -12,7 +12,10 @@ import com.dmj.cli.domain.dto.SysPermissionDTO;
 import com.dmj.cli.domain.dto.SysRoleDTO;
 import com.dmj.cli.domain.query.RoleQuery;
 import com.dmj.cli.domain.vo.SysRoleVO;
-import com.dmj.cli.service.SysRoleService;
+import com.dmj.cli.mapper.sys.SysPermissionMapper;
+import com.dmj.cli.mapper.sys.SysRoleMapper;
+import com.dmj.cli.mapper.sys.SysRolePermissionMapper;
+import com.dmj.cli.service.sys.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;

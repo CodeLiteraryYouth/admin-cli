@@ -5,7 +5,7 @@ import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.SysUserDTO;
 import com.dmj.cli.domain.query.UserQuery;
 import com.dmj.cli.domain.vo.SysUserVO;
-import com.dmj.cli.service.SysUserService;
+import com.dmj.cli.service.sys.SysUserService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

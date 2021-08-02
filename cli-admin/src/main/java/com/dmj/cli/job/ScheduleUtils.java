@@ -2,6 +2,7 @@ package com.dmj.cli.job;
 
 import com.dmj.cli.common.constant.ScheduleConstants;
 import com.dmj.cli.common.exception.TaskException;
+import com.dmj.cli.domain.SysJob;
 import org.quartz.*;
 
 /**

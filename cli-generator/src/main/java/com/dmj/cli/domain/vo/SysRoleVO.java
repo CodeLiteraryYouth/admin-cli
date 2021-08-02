@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.dmj.cloud.model.SysPermission;
+import com.dmj.cli.domain.SysPermission;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

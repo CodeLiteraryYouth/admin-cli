@@ -1,4 +1,4 @@
-package com.dmj.cli.service;
+package com.dmj.cli.service.sys;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;

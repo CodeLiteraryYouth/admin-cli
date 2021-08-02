@@ -1,5 +1,6 @@
 package com.dmj.cli.job;
 
+import com.dmj.cli.domain.SysJob;
 import org.quartz.JobExecutionContext;
 
 /**

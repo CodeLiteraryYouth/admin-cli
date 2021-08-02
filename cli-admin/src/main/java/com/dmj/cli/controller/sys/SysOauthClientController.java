@@ -3,7 +3,7 @@ package com.dmj.cli.controller.sys;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysOauthClient;
 import com.dmj.cli.domain.query.OauthClientQuery;
-import com.dmj.cli.service.SysOauthClientService;
+import com.dmj.cli.service.sys.SysOauthClientService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

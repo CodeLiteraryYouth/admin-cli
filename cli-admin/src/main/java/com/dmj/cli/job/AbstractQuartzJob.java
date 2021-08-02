@@ -2,6 +2,9 @@ package com.dmj.cli.job;
 
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.constant.ScheduleConstants;
+import com.dmj.cli.domain.SysJob;
+import com.dmj.cli.domain.SysJobLog;
+import com.dmj.cli.service.ISysJobLogService;
 import com.dmj.cli.util.bean.BeanUtils;
 import com.dmj.cli.util.spring.SpringUtils;
 import org.apache.commons.lang.StringUtils;
