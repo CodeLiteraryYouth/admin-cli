@@ -1,8 +1,6 @@
 package com.dmj.cli.config;
 
-import com.dmj.cli.security.JwtAuthorizationTokenFilter;
-import com.dmj.cli.security.JwtUserDetailsService;
-import com.dmj.cli.security.ResponseAuthenticationEntryPoint;
+import com.dmj.cli.security.*;
 import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +26,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    private static final String[] URL_WHITES={};
+    private static final String[] URL_WHITES={
+            "/admin/login",
+            "/admin/captcha/captchaImage"
+    };
+
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    private CaptchaFilter captchaFilter;
 
     @Autowired
     ResponseAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -61,8 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 //登录配置
                 .formLogin()
-//                .successHandler()
-//                .failureHandler()
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
                 //禁用session
                  .and()
                 .sessionManagement()
@@ -75,6 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //异常处理器
 
                 //配置自定义过滤器
+                .and()
+                .addFilterBefore(captchaFilter,UsernamePasswordAuthenticationFilter.class)
                 ;
     }
 
