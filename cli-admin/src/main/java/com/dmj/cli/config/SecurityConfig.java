@@ -19,12 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * 保证post之前的注解可以使用
  * @author zd
  */
 @Configuration
-@EnableWebSecurity// 这个注解必须加，开启Security
-@EnableGlobalMethodSecurity(prePostEnabled = true)//保证post之前的注解可以使用
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    private static final String[] URL_WHITES={};
 
     @Autowired
     ResponseAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -54,19 +58,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .csrf().disable()
+                //登录配置
+                .formLogin()
+//                .successHandler()
+//                .failureHandler()
+                //禁用session
+                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //配置拦截规则
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers(String.valueOf(HttpMethod.OPTIONS), "/**").anonymous()
-                .anyRequest().authenticated()       // 剩下所有的验证都需要验证
-                .and()
-                .csrf().disable()                      // 禁用 Spring Security 自带的跨域处理
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
+                .antMatchers(URL_WHITES).permitAll()
+                .anyRequest().authenticated()
+                //异常处理器
 
-        http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
+                //配置自定义过滤器
+                ;
     }
 
     @Bean
