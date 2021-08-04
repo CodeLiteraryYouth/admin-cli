@@ -42,6 +42,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #JWT
 jwt:
-  secret: secret
+  secret: dsjjnsjndywbdjdndjddkdndjdidnjyj
   expiration: 7200000
-  token: Authorization
+  header: Authorization

@@ -57,14 +57,5 @@
             order by #{sortField} #{sort}
         </if>
     </select>
-    <select id="listPermissionRole" resultMap="ResultMapDTO">
-        select
-        p.id, p.permission_name, p.permission_type, p.permission_url, p.permission_str, p.parent_id,
-        p.permission_order, p.is_view, p.creater, p.create_time, p.updater, p.update_time, p.delete_flag,r.role_code
-        from sys_permission p
-        left join sys_role_permission rp on p.id=rp.permissionId
-        left join sys_role r on rp.role_id=r.id
-        where p.delete_flag=false
-    </select>
 
 </mapper>

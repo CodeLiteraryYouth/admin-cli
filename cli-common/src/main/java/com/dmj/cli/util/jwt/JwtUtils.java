@@ -19,7 +19,7 @@ public class JwtUtils {
 
     private String secret;
 
-    private long expire;
+    private long expiration;
 
     private String header;
 
@@ -30,7 +30,7 @@ public class JwtUtils {
      */
     public String generateToken(String userName) {
         Date now=new Date();
-        Date expireDate=new Date(now.getTime()+ 1000*expire);
+        Date expireDate=new Date(now.getTime()+ expiration);
         return Jwts.builder()
                 //样式
                 .setHeaderParam("typ","JWT")

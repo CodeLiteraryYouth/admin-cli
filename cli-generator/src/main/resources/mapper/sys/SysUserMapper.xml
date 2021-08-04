@@ -108,5 +108,10 @@
             order by u.#{sortField} #{sort}
         </if>
     </select>
+    <select id="listMenuIdsByUserName" resultType="java.lang.Long">
+        select distinct rm.permission_id from sys_user_role ur left join
+        sys_role_permission rm on ur.role_id=rm.role_id
+        where ur.user_id=#{userId}
+    </select>
 
 </mapper>

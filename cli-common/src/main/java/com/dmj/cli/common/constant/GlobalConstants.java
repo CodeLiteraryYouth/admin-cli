@@ -53,4 +53,15 @@ public interface GlobalConstants {
      */
     String HTTPS = "https://";
 
+    /**
+     * 验证码缓存key值
+     */
+    String CAPTCHA="captcha_key";
+
+    /**
+     * POST请求
+     */
+    String POST_METHOD="POST";
+
+
 }

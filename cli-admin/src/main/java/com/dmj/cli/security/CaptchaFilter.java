@@ -1,5 +1,7 @@
 package com.dmj.cli.security;
 
+import com.dmj.cli.common.constant.AuthConstants;
+import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.exception.CaptchaException;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.util.str.StringUtils;
@@ -31,8 +33,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
 
         String url=httpServletRequest.getRequestURI();
 
-        if ("/admin/login".equals(url) && httpServletRequest.getMethod().equals("POST")) {
-
+        if (AuthConstants.LOGIN_URL.equals(url) && GlobalConstants.POST_METHOD.equals(httpServletRequest.getMethod())) {
             try {
                 validate(httpServletRequest);
             } catch (CaptchaException e) {
@@ -48,9 +49,9 @@ public class CaptchaFilter extends OncePerRequestFilter {
         if (StringUtils.isBlank(code) || StringUtils.isBlank(token)) {
             throw new CaptchaException("验证码异常");
         }
-        if (!code.equals(redisUtils.hget("capatcha",token))) {
+        if (!code.equals(redisUtils.hget(GlobalConstants.CAPTCHA,token))) {
             throw new CaptchaException("验证码异常");
         }
-        redisUtils.hdel("capatcha",token);
+        redisUtils.hdel(GlobalConstants.CAPTCHA,token);
     }
 }

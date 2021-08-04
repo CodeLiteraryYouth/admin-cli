@@ -2,13 +2,17 @@ package com.dmj.cli.service.sys.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.redis.RedisUtils;
+import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.SysUserRole;
 import com.dmj.cli.domain.dto.SysUserDTO;
 import com.dmj.cli.domain.query.UserQuery;
 import com.dmj.cli.domain.vo.SysUserVO;
+import com.dmj.cli.mapper.sys.SysPermissionMapper;
 import com.dmj.cli.mapper.sys.SysRoleMapper;
 import com.dmj.cli.mapper.sys.SysUserMapper;
 import com.dmj.cli.mapper.sys.SysUserRoleMapper;
@@ -25,6 +29,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -46,9 +51,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysRoleMapper sysRoleMapper;
 
+    @Autowired
+    private SysPermissionMapper sysPermissionMapper;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Override
     public SysUserDTO getUserByName(String userName) {
-        return sysUserMapper.getUserByName(userName);
+        SysUserDTO sysUserDTO=null;
+        Object value=redisUtils.get(AuthConstants.CACHE_AUTHORITIES+":"+userName);
+        if (null== value) {
+            sysUserDTO = sysUserMapper.getUserByName(userName);
+            if (null == sysUserDTO) {
+                List<Long> permissionIds = sysUserMapper.listMenuIdsByUserName(sysUserDTO.getId());
+                List<SysPermission> sysPermissions = sysPermissionMapper.selectBatchIds(permissionIds);
+                List<String> permissionStrs = sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
+                sysUserDTO.setAuthorities(permissionStrs);
+            }
+            redisUtils.set(AuthConstants.CACHE_AUTHORITIES+":"+userName,sysUserDTO);
+        } else {
+            sysUserDTO= (SysUserDTO) redisUtils.get(AuthConstants.CACHE_AUTHORITIES+":"+userName);
+        }
+       return sysUserDTO;
     }
 
     @Override

@@ -20,5 +20,4 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     List<SysPermissionVO> listPermission(PermissionQuery query);
 
-    List<SysPermissionDTO> listPermissionRole();
 }

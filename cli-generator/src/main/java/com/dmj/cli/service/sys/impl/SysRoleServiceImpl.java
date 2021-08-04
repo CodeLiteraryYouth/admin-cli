@@ -63,15 +63,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return BaseResult.success(pageInfo);
     }
 
-    @Override
-    public List<SysPermissionDTO> listPermRoles() {
-        return sysPermissionMapper.listPermissionRole();
-    }
 
     @Override
     public boolean refreshPermRolesRules() {
         redisTemplate.delete(Arrays.asList(GlobalConstants.URL_PERM_ROLES_KEY,GlobalConstants.BTN_PERM_ROLES_KEY));
-        List<SysPermissionDTO> permissions = this.listPermRoles();
+        List<SysPermissionDTO> permissions = null;
         if (CollectionUtil.isNotEmpty(permissions)) {
             // 初始化URL【权限->角色(集合)】规则
             List<SysPermissionDTO> urlPermList = permissions.stream()
