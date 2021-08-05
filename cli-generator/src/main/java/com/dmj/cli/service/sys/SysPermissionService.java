@@ -22,5 +22,8 @@ public interface SysPermissionService extends IService<SysPermission> {
 
     BaseResult<PageInfo<SysPermissionVO>> pagePermission(PermissionQuery query);
 
-    List<SysPermissionDTO> listPermissionRole();
+    BaseResult updatePermission(SysPermission sysPermission);
+
+    BaseResult deletePermission(Long permissionId);
+
 }

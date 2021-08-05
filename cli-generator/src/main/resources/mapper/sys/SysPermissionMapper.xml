@@ -7,7 +7,6 @@
         <id column="id" property="id" />
         <result column="permission_name" property="permissionName" />
         <result column="permission_type" property="permissionType" />
-        <result column="permission_url" property="permissionUrl" />
         <result column="permission_str" property="permissionStr" />
         <result column="parent_id" property="parentId" />
         <result column="permission_order" property="permissionOrder" />
@@ -23,7 +22,6 @@
         <id column="id" property="id" />
         <result column="permission_name" property="permissionName" />
         <result column="permission_type" property="permissionType" />
-        <result column="permission_url" property="permissionUrl" />
         <result column="permission_str" property="permissionStr" />
         <result column="parent_id" property="parentId" />
         <result column="permission_order" property="permissionOrder" />
@@ -40,7 +38,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, permission_name, permission_type, permission_url, permission_str, parent_id, permission_order, is_view, creater, create_time, updater, update_time, delete_flag
+        id, permission_name, permission_type,permission_str, parent_id, permission_order, is_view, creater, create_time, updater, update_time, delete_flag
     </sql>
     <select id="listPermission" resultMap="BaseResultMap">
         select
@@ -56,6 +54,11 @@
         <if test="sort != null and sort != '' and  sortField != null and sortField != ''">
             order by #{sortField} #{sort}
         </if>
+    </select>
+    <select id="listUsersByPermissionId" resultType="java.lang.Long">
+        select distinct ur.user_id from sys_user_role ur left join
+        sys_role_permission rm on ur.role_id=rm.role_id where rm.delete_flag=false
+        and rm.permission_id=#{permissionId}
     </select>
 
 </mapper>

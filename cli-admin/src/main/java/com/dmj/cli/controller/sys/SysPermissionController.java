@@ -40,32 +40,21 @@ public class SysPermissionController {
     @PostMapping("/save")
     @ApiOperation("新增权限")
     public BaseResult<SysPermission> save(@RequestBody SysPermission entity) {
-        boolean result=service.saveOrUpdate(entity);
-        if (result) {
-            roleService.refreshPermRolesRules();
-        }
+        service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
     @PutMapping("/update")
     @ApiOperation("更新权限")
     public BaseResult<SysPermission> update(@RequestBody SysPermission entity) {
-        boolean result=service.saveOrUpdate(entity);
-        if (result) {
-            roleService.refreshPermRolesRules();
-        }
-        return BaseResult.success(entity);
+        return service.updatePermission(entity);
     }
 
 
     @DeleteMapping("/delete/{id}")
     @ApiOperation("删除权限")
-    public BaseResult delete(@PathVariable String id) {
-        boolean result=service.removeById(id);
-        if (result) {
-            roleService.refreshPermRolesRules();
-        }
-        return BaseResult.success();
+    public BaseResult delete(@PathVariable Long id) {
+       return service.deletePermission(id);
     }
 
 }

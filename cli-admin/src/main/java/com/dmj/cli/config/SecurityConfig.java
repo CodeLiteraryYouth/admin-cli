@@ -29,8 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 白名单过滤
      */
     private static final String[] URL_WHITES={
-            "/admin/login",
-            "/admin/captcha/captchaImage"
+            "/login",
+            "/captcha/captchaImage",
+            "/doc.html/**",
+            "/v2/**",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**"
     };
 
     @Autowired
@@ -55,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
 
     @Bean
-    private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
         JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(authenticationManager());
         return jwtAuthenticationFilter;
     };
@@ -99,7 +104,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(URL_WHITES).permitAll()
                 .anyRequest().authenticated()
                 //异常处理器
-
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(jwtAccessDeniedHandler)

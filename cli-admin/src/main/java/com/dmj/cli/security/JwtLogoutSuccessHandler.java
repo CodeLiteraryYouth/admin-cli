@@ -5,7 +5,6 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.util.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 退出拦截器
+ * 退出处理器
  * @author zd
  */
 @Component

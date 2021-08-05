@@ -11,8 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -23,7 +21,6 @@ import java.util.Date;
  */
 public abstract class AbstractQuartzJob implements Job {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractQuartzJob.class);
 
     /**
      * 线程本地变量
@@ -41,7 +38,6 @@ public abstract class AbstractQuartzJob implements Job {
             }
             after(context, sysJob, null);
         } catch (Exception e) {
-            log.error("任务执行异常  - ：", e);
             after(context, sysJob, e);
         }
     }

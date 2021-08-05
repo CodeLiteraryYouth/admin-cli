@@ -20,6 +20,12 @@ public interface SysUserService extends IService<SysUser> {
 
     SysUserDTO getUserByName(String userName);
 
+    /**
+     * 刷信用户权限
+     * @param users
+     */
+    void refreshUserAuthorities(String... users);
+
     BaseResult<PageInfo<SysUserVO>> pageUserList(UserQuery userQuery);
 
     BaseResult insertUser(SysUserDTO sysUserDTO);

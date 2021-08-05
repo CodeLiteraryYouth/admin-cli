@@ -47,12 +47,8 @@ public class SysRoleController {
 
 
     @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
-        boolean result=service.removeById(id);
-        if (result) {
-            service.refreshPermRolesRules();
-        }
-        return BaseResult.success();
+    public BaseResult delete(@PathVariable Long id) {
+       return service.deleteRole(id);
     }
 
 }

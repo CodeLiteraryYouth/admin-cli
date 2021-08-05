@@ -57,10 +57,6 @@ public class SysUserVO implements Serializable {
     @TableField("avatar_url")
     private String avatarUrl;
 
-    @ApiModelProperty(value = "微信登录唯一标识")
-    @TableField("open_id")
-    private String openId;
-
     @ApiModelProperty(value = "用户是否已锁定")
     @TableField("locked")
     private Boolean locked;

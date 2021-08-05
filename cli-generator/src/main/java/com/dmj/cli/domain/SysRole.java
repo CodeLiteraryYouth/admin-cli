@@ -46,10 +46,6 @@ public class SysRole implements Serializable {
     @TableField("role_desc")
     private String roleDesc;
 
-    @ApiModelProperty(value = "系统默认值")
-    @TableField("sys_default")
-    private String sysDefault;
-
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
     private LocalDateTime createTime;

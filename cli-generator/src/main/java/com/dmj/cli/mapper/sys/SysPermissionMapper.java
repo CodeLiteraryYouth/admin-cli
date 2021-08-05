@@ -5,6 +5,7 @@ import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.dto.SysPermissionDTO;
 import com.dmj.cli.domain.query.PermissionQuery;
 import com.dmj.cli.domain.vo.SysPermissionVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     List<SysPermissionVO> listPermission(PermissionQuery query);
 
+    List<Long> listUsersByPermissionId(@Param("permissionId") Long permissionId);
 }

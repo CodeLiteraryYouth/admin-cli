@@ -17,6 +17,7 @@ import com.dmj.cli.mapper.sys.SysRoleMapper;
 import com.dmj.cli.mapper.sys.SysUserMapper;
 import com.dmj.cli.mapper.sys.SysUserRoleMapper;
 import com.dmj.cli.service.sys.SysUserService;
+import com.dmj.cli.util.str.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -64,7 +65,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (null== value) {
             sysUserDTO = sysUserMapper.getUserByName(userName);
             if (null == sysUserDTO) {
-                List<Long> permissionIds = sysUserMapper.listMenuIdsByUserName(sysUserDTO.getId());
+                List<Long> permissionIds = sysUserMapper.listMenuIdsByUserId(sysUserDTO.getId());
                 List<SysPermission> sysPermissions = sysPermissionMapper.selectBatchIds(permissionIds);
                 List<String> permissionStrs = sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
                 sysUserDTO.setAuthorities(permissionStrs);
@@ -74,6 +75,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUserDTO= (SysUserDTO) redisUtils.get(AuthConstants.CACHE_AUTHORITIES+":"+userName);
         }
        return sysUserDTO;
+    }
+
+    @Override
+    public void refreshUserAuthorities(String... users) {
+        if (StringUtils.isNotEmpty(users)) {
+            for (String userName : users) {
+                SysUserDTO sysUserDTO = sysUserMapper.getUserByName(userName);
+                if (null == sysUserDTO) {
+                    List<Long> permissionIds = sysUserMapper.listMenuIdsByUserId(sysUserDTO.getId());
+                    List<SysPermission> sysPermissions = sysPermissionMapper.selectBatchIds(permissionIds);
+                    List<String> permissionStrs = sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
+                    sysUserDTO.setAuthorities(permissionStrs);
+                }
+                redisUtils.set(AuthConstants.CACHE_AUTHORITIES+":"+userName,sysUserDTO);
+            }
+        }
     }
 
     @Override
@@ -131,6 +148,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 }
                 sysUserRoleMapper.insert(sysUserRole);
             }
+            //更新权限缓存
+            refreshUserAuthorities(sysUserDTO.getUserName());
         }
         return BaseResult.success();
     }

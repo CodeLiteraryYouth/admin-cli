@@ -12,7 +12,6 @@
         <result column="email" property="email" />
         <result column="phone" property="phone" />
         <result column="avatar_url" property="avatarUrl" />
-        <result column="open_id" property="openId" />
         <result column="locked" property="locked" />
         <result column="create_time" property="createTime" />
         <result column="creater" property="creater" />
@@ -51,7 +50,6 @@
         <result column="email" property="email" />
         <result column="phone" property="phone" />
         <result column="avatar_url" property="avatarUrl" />
-        <result column="open_id" property="openId" />
         <result column="locked" property="locked" />
         <result column="create_time" property="createTime" />
         <result column="creater" property="creater" />
@@ -74,7 +72,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         u.id, u.user_name, u.password, u.nick_name, u.mobile, u.email, u.phone, u.avatar_url,
-        u.open_id, u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
+        u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
         r.role_code
     </sql>
     <select id="getUserByName" resultMap="ResultMapDTO">
@@ -91,7 +89,7 @@
     <select id="listSysUser" resultMap="ResultMapVO">
         select
         u.id, u.user_name, u.password, u.nick_name, u.mobile, u.email, u.phone, u.avatar_url,
-        u.open_id, u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
+        u.locked, u.create_time, u.creater, u.update_time, u.updater, u.delete_flag,
         r.role_code,r.role_name,r.role_desc,r.sys_default,r.create_time,r.creater,r.update_time,
         r.updater,r.delete_flag
         from sys_user u
@@ -108,7 +106,7 @@
             order by u.#{sortField} #{sort}
         </if>
     </select>
-    <select id="listMenuIdsByUserName" resultType="java.lang.Long">
+    <select id="listMenuIdsByUserId" resultType="java.lang.Long">
         select distinct rm.permission_id from sys_user_role ur left join
         sys_role_permission rm on ur.role_id=rm.role_id
         where ur.user_id=#{userId}

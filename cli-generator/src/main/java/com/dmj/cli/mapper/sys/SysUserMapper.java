@@ -21,7 +21,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     SysUserDTO getUserByName(@Param("userName") String userName);
 
-    List<Long> listMenuIdsByUserName(@Param("userId") Integer userId);
+    List<Long> listMenuIdsByUserId(@Param("userId") Integer userId);
 
     List<SysUserVO> listSysUser(UserQuery userQuery);
 }

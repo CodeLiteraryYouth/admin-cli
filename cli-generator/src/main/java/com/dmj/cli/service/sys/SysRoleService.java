@@ -23,9 +23,9 @@ public interface SysRoleService extends IService<SysRole> {
 
     BaseResult<PageInfo<SysRoleVO>> pageRole(RoleQuery roleQuery);
 
-    boolean refreshPermRolesRules();
-
     BaseResult insertRole(SysRoleDTO sysRoleDTO);
 
     BaseResult updateRole(SysRoleDTO sysRoleDTO);
+
+    BaseResult deleteRole(Long roleId);
 }

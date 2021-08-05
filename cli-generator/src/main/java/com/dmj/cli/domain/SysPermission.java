@@ -42,10 +42,6 @@ public class SysPermission implements Serializable {
     @TableField("permission_type")
     private String permissionType;
 
-    @ApiModelProperty(value = "权限路径")
-    @TableField("permission_url")
-    private String permissionUrl;
-
     @ApiModelProperty(value = "权限标识")
     @TableField("permission_str")
     private String permissionStr;

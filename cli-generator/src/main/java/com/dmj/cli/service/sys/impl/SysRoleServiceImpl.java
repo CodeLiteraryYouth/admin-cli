@@ -1,14 +1,12 @@
 package com.dmj.cli.service.sys.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysRolePermission;
-import com.dmj.cli.domain.dto.SysPermissionDTO;
+import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.SysRoleDTO;
 import com.dmj.cli.domain.query.RoleQuery;
 import com.dmj.cli.domain.vo.SysRoleVO;
@@ -16,6 +14,7 @@ import com.dmj.cli.mapper.sys.SysPermissionMapper;
 import com.dmj.cli.mapper.sys.SysRoleMapper;
 import com.dmj.cli.mapper.sys.SysRolePermissionMapper;
 import com.dmj.cli.service.sys.SysRoleService;
+import com.dmj.cli.service.sys.SysUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +50,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private SysPermissionMapper sysPermissionMapper;
 
     @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
@@ -63,41 +65,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return BaseResult.success(pageInfo);
     }
 
-
-    @Override
-    public boolean refreshPermRolesRules() {
-        redisTemplate.delete(Arrays.asList(GlobalConstants.URL_PERM_ROLES_KEY,GlobalConstants.BTN_PERM_ROLES_KEY));
-        List<SysPermissionDTO> permissions = null;
-        if (CollectionUtil.isNotEmpty(permissions)) {
-            // 初始化URL【权限->角色(集合)】规则
-            List<SysPermissionDTO> urlPermList = permissions.stream()
-                    .filter(item -> StrUtil.isNotBlank(item.getPermissionUrl()))
-                    .collect(Collectors.toList());
-            if (CollectionUtil.isNotEmpty(urlPermList)) {
-                Map<String, List<String>> urlPermRoles = new HashMap<>();
-                urlPermList.stream().forEach(item -> {
-                    String perm = item.getPermissionUrl();
-                    List<String> roles = item.getRoles();
-                    urlPermRoles.put(perm, roles);
-                });
-                redisTemplate.opsForHash().putAll(GlobalConstants.URL_PERM_ROLES_KEY, urlPermRoles);
-            }
-            // 初始化URL【按钮->角色(集合)】规则
-            List<SysPermissionDTO> btnPermList = permissions.stream()
-                    .filter(item -> StrUtil.isNotBlank(item.getPermissionStr()))
-                    .collect(Collectors.toList());
-            if (CollectionUtil.isNotEmpty(btnPermList)) {
-                Map<String, List<String>> btnPermRoles = CollectionUtil.newHashMap();
-                btnPermList.stream().forEach(item -> {
-                    String perm = item.getPermissionStr();
-                    List<String> roles = item.getRoles();
-                    btnPermRoles.put(perm, roles);
-                });
-                redisTemplate.opsForHash().putAll(GlobalConstants.BTN_PERM_ROLES_KEY, btnPermRoles);
-            }
+    private void refreshUserAuthorities(Long roleId) {
+        Assert.notNull(roleId,"roleId is null");
+        List<Long> userIds=sysRoleMapper.listUsersByRoleId(roleId);
+        if (CollectionUtil.isNotEmpty(userIds)) {
+            List<SysUser> sysUsers = sysUserService.listByIds(userIds);
+            List<String> userNames = sysUsers.stream().map(SysUser::getUserName).collect(Collectors.toList());
+            sysUserService.refreshUserAuthorities(userNames.stream().toArray(String[]::new));
         }
-        return true;
     }
+
+
 
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
@@ -114,7 +92,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 sysRolePermission.setPermissionId(permissionId);
                 sysRolePermissionMapper.insert(sysRolePermission);
             }
-            refreshPermRolesRules();
         }
         return BaseResult.success();
     }
@@ -136,7 +113,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 sysRolePermission.setPermissionId(permissionId);
                 sysRolePermissionMapper.insert(sysRolePermission);
             }
-            refreshPermRolesRules();
+            refreshUserAuthorities(Long.valueOf(sysRoleDTO.getId()));
+        }
+        return BaseResult.success();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    public BaseResult deleteRole(Long roleId) {
+        Assert.notNull(roleId,"roleId is null");
+        int res=sysRoleMapper.deleteById(roleId);
+        if (res > 0) {
+            refreshUserAuthorities(roleId);
         }
         return BaseResult.success();
     }

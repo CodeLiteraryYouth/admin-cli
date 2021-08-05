@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.query.RoleQuery;
 import com.dmj.cli.domain.vo.SysRoleVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ import java.util.List;
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     List<SysRoleVO> listRole(RoleQuery roleQuery);
+
+    List<Long> listUsersByRoleId(@Param("roleId") Long roleId);
 }

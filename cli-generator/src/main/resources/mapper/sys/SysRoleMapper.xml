@@ -70,5 +70,8 @@
             order by r.#{sortField} #{sort}
         </if>
     </select>
+    <select id="listUsersByRoleId" resultType="java.lang.Long">
+        select ur.user_id from sys_user_role ur where ur.role_id=#{roleId}
+    </select>
 
 </mapper>
