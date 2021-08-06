@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysRolePermission;
 import com.dmj.cli.domain.SysUser;
@@ -83,6 +84,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Assert.notNull(sysRoleDTO,"bad request");
         SysRole sysRole=new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
+        sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
         sysRole.setCreateTime(LocalDateTime.now());
         sysRoleMapper.insert(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
@@ -103,6 +105,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Assert.notNull(sysRoleDTO.getId(),"id is null");
         SysRole sysRole=new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
+        sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
         sysRole.setUpdateTime(LocalDateTime.now());
         sysRoleMapper.updateById(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {

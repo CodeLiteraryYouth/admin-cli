@@ -6,6 +6,7 @@ import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.controller.BaseController;
 import com.dmj.cli.domain.vo.CaptchaVO;
 import com.google.code.kaptcha.Producer;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/captcha")
+@Api(tags = "获取后台登录验证码")
 public class SysCaptchaController extends BaseController {
 
     @Resource(name = "captchaProducer")

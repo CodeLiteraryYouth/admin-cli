@@ -8,6 +8,8 @@ import com.dmj.cli.domain.SysJob;
 import com.dmj.cli.service.ISysJobService;
 import com.dmj.cli.util.CronUtils;
 import com.dmj.cli.util.str.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/monitor/job")
+@Api(tags = "系统管理-定时任务")
 public class SysJobController extends BaseController {
 
     @Autowired
@@ -31,6 +34,7 @@ public class SysJobController extends BaseController {
 
     @PostMapping("/list")
     @ResponseBody
+    @ApiOperation("获取任务列表")
     public BaseResult list(SysJob job) {
         startPage();
         List<SysJob> list = jobService.selectJobList(job);
@@ -39,6 +43,7 @@ public class SysJobController extends BaseController {
 
     @PostMapping("/remove")
     @ResponseBody
+    @ApiOperation("移除任务")
     public BaseResult remove(String ids) throws SchedulerException {
         jobService.deleteJobByIds(ids);
         return success();
@@ -52,6 +57,7 @@ public class SysJobController extends BaseController {
 
     @PostMapping("/changeStatus")
     @ResponseBody
+    @ApiOperation("改变任务状态")
     public BaseResult changeStatus(SysJob job) throws SchedulerException {
         SysJob newJob = jobService.selectJobById(job.getJobId());
         newJob.setStatus(job.getStatus());
@@ -63,6 +69,7 @@ public class SysJobController extends BaseController {
      */
     @PostMapping("/run")
     @ResponseBody
+    @ApiOperation("立即执行任务")
     public BaseResult run(SysJob job) throws SchedulerException {
         jobService.run(job);
         return success();
@@ -71,6 +78,7 @@ public class SysJobController extends BaseController {
 
     @PostMapping("/add")
     @ResponseBody
+    @ApiOperation("增加任务")
     public BaseResult addSave(@Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
             return fail("新增任务'" + job.getJobName() + "'失败，Cron表达式不正确");
@@ -88,6 +96,7 @@ public class SysJobController extends BaseController {
 
     @PostMapping("/edit")
     @ResponseBody
+    @ApiOperation("编辑任务")
     public BaseResult editSave(@Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
             return fail("修改任务'" + job.getJobName() + "'失败，Cron表达式不正确");
@@ -104,6 +113,7 @@ public class SysJobController extends BaseController {
      */
     @PostMapping("/checkCronExpressionIsValid")
     @ResponseBody
+    @ApiOperation("校验Cron表达式")
     public boolean checkCronExpressionIsValid(SysJob job) {
         return jobService.checkCronExpressionIsValid(job.getCronExpression());
     }
