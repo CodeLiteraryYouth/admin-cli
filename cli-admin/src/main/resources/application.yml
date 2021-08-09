@@ -45,3 +45,12 @@ jwt:
   secret: dsjjnsjndywbdjdndjddkdndjdidnjyj
   expiration: 7200000
   header: Authorization
+#文件上传配置
+file:
+  #OSS:OSS文件存储 QNIUYUN:七牛云存储配置 LOCAL:本地存储
+  type: OSS
+  oss:
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    accessKeyId: LTAI5tBkyucFH63HgwGkuTNY
+    accessKeySecret: ulzEX8id6dVxXuPv0wSUn3bNIyRB5O
+    bucketName: admincli

@@ -29,6 +29,7 @@ public class SysRoleController {
     private SysRoleService service;
 
     @ApiOperation("查询角色列表")
+    @GetMapping("/page")
     public BaseResult<PageInfo<SysRoleVO>> page(@ModelAttribute RoleQuery query) {
         return service.pageRole(query);
     }
