@@ -1,6 +1,7 @@
 package com.dmj.cli.storage.oss;
 
 import lombok.Data;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "file.oss")
-public class OssProperties {
+public class OssProperties implements InitializingBean {
 
     private String endpoint;
 
@@ -20,4 +21,20 @@ public class OssProperties {
     private String accessKeySecret;
 
     private String bucketName;
+
+    public static String OSS_ENDPOINT;
+
+    public static String OSS_ACCESS_KEY_ID;
+
+    public static String OSS_ACCESS_KEY_SECRET;
+
+    public static String OSS_BUCKET_NAME;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        OSS_ENDPOINT=endpoint;
+        OSS_ACCESS_KEY_ID=accessKeyId;
+        OSS_ACCESS_KEY_SECRET=accessKeySecret;
+        OSS_BUCKET_NAME=bucketName;
+    }
 }
