@@ -53,32 +53,32 @@ public class ${table.controllerName} {
     @PostMapping("/save")
     public BaseResult<${entity}> save(@RequestBody ${entity} entity) {
         service.saveOrUpdate(entity);
-        return BaseResult.createBySuccess(entity);
+        return BaseResult.success(entity);
     }
 
     @PutMapping("/update")
     public BaseResult<${entity}> update(@RequestBody ${entity} entity) {
         service.saveOrUpdate(entity);
-        return BaseResult.createBySuccess(entity);
+        return BaseResult.success(entity);
     }
 
 
     @DeleteMapping("/delete/{id}")
     public BaseResult delete(@PathVariable String id) {
         service.removeById(id);
-        return BaseResult.createBySuccess();
+        return BaseResult.success();
     }
 
     @GetMapping("/get/{id}")
     public BaseResult<${entity}> select(@PathVariable String id) {
         ${entity} data = service.getById(id);
-        return BaseResult.createBySuccess(data);
+        return BaseResult.success(data);
     }
 
     @PostMapping("/page")
     public BaseResult<Page<${entity}>> page(@RequestBody Page<${entity}> page) {
         page = service.page(page);
-        return BaseResult.createBySuccess(page);
+        return BaseResult.success(page);
     }
 }
 

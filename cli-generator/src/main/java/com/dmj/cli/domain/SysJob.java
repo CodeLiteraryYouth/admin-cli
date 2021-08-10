@@ -147,11 +147,10 @@ public class SysJob extends BaseEntity implements Serializable {
             .append("misfirePolicy", getMisfirePolicy())
             .append("concurrent", getConcurrent())
             .append("status", getStatus())
-            .append("createBy", getCreateBy())
+            .append("creator", getCreator())
             .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
+            .append("updater", getUpdater())
             .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
             .toString();
     }
 }

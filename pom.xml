@@ -46,6 +46,7 @@
 		<pagehelper.version>5.1.4</pagehelper.version>
 		<hutool.version>5.5.8</hutool.version>
 		<oss.version>3.12.0</oss.version>
+		<velocity.version>2.1</velocity.version>
 	</properties>
 
 	<dependencies>
@@ -168,6 +169,17 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-generator</artifactId>
 			<version>${mybatisplus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-engine-core</artifactId>
+			<version>${velocity.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

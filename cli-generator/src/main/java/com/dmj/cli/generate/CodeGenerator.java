@@ -21,13 +21,14 @@ public class CodeGenerator {
     private static final String MODULE = "cli-generator";
     private static final String AUTHOR = "zd";
 
-    private static final String URL                = "jdbc:mysql://localhost:3306/admin?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC";
+    private static final String URL                = "jdbc:mysql://106.14.224.151:3307/admin_cli?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC";
     private static final String DRIVER             = "com.mysql.cj.jdbc.Driver";
     private static final String USERNAME           = "root";
     private static final String PASSWORD           = "123456";
     private static final String MODULE_PACKAGE     = "com.dmj.cli";
     private static final String MAPPER_XML         = "/src/main/resources/mapper";
     private static final String TEMPLATE_PATH      = "/templates/mapper.xml.vm";
+    private static final String SUPER_ENTITY_CLASS = "com.dmj.cli.domain.BaseEntity";
     private static final String LOGIC_DELETE_FIELD = "delete_flag";
 
     public static void main(String[] args) {
@@ -73,7 +74,7 @@ public class CodeGenerator {
         //字段前缀
         config.setFieldPrefix();
         // 自定义继承的Entity类全称，带包名
-//        config.setSuperEntityClass(SUPER_ENTITY_CLASS);
+        config.setSuperEntityClass(SUPER_ENTITY_CLASS);
         // 自定义基础的Entity类的公共字段
         // config.setSuperEntityColumns();
         // 自定义继承的Mapper类全称，带包名
@@ -86,7 +87,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("sys_permission","sys_role","sys_role_permission","sys_user","sys_user_role");
+        config.setInclude("sys_dict");
         // 设置不需要generator的表名
         // config.setExclude();
 
@@ -123,7 +124,7 @@ public class CodeGenerator {
     private static PackageConfig packageConfig() {
         return new PackageConfig()
                 .setParent(MODULE_PACKAGE)
-                .setEntity("model")
+                .setEntity("domain")
                 .setMapper("mapper");
     }
 

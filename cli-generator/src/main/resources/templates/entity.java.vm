@@ -64,21 +64,21 @@ public class ${entity} implements Serializable {
     #end
     #if(${field.keyFlag})
     ## 主键
-        #if(${field.keyIdentityFlag})
-        @TableId(value = "${field.name}", type = IdType.AUTO)
-        #elseif(!$null.isNull(${idType}) && "$!idType" != "")
-        @TableId(value = "${field.name}", type = IdType.${idType})
-        #elseif(${field.convert})
-        @TableId("${field.name}")
-        #end
+    #if(${field.keyIdentityFlag})
+    @TableId(value = "${field.name}", type = IdType.AUTO)
+    #elseif(!$null.isNull(${idType}) && "$!idType" != "")
+    @TableId(value = "${field.name}", type = IdType.${idType})
+    #elseif(${field.convert})
+    @TableId("${field.name}")
+    #end
     ## 普通字段
     #elseif(${field.fill})
     ## -----   存在字段填充设置   -----
-        #if(${field.convert})
-        @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
-        #else
-        @TableField(fill = FieldFill.${field.fill})
-        #end
+    #if(${field.convert})
+    @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
+    #else
+    @TableField(fill = FieldFill.${field.fill})
+    #end
     #elseif(${field.convert})
     @TableField("${field.name}")
     #end
@@ -103,19 +103,19 @@ public class ${entity} implements Serializable {
         #end
 
     public ${field.propertyType} ${getprefix}${field.capitalName}() {
-            return ${field.propertyName};
-            }
+        return ${field.propertyName};
+    }
 
-        #if(${entityBuilderModel})
-        public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-        #else
-        public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    #if(${entityBuilderModel})
+    public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    #else
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
         #end
             this.${field.propertyName} = ${field.propertyName};
         #if(${entityBuilderModel})
-                return this;
+            return this;
         #end
-            }
+    }
     #end
     ## --foreach end---
     #end
@@ -131,11 +131,11 @@ public class ${entity} implements Serializable {
     @Override
     protected Serializable pkVal() {
     #if(${keyPropertyName})
-            return this.${keyPropertyName};
+        return this.${keyPropertyName};
     #else
-            return null;
+        return null;
     #end
-        }
+    }
 
     #end
     #if(!${entityLombokModel})
@@ -144,12 +144,12 @@ public class ${entity} implements Serializable {
         return "${entity}{" +
     #foreach($field in ${table.fields})
         #if($!{foreach.index}==0)
-                "${field.propertyName}=" + ${field.propertyName} +
+            "${field.propertyName}=" + ${field.propertyName} +
         #else
-                ", ${field.propertyName}=" + ${field.propertyName} +
+            ", ${field.propertyName}=" + ${field.propertyName} +
         #end
     #end
         "}";
-        }
+    }
     #end
 }
