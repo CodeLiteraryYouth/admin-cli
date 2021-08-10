@@ -66,6 +66,10 @@ public class BaseResult<T> {
         return new BaseResult(ResultStatusCode.SYSTEM_ERR);
     }
 
+    public static BaseResult fail(int code,String msg) {
+        return new BaseResult(code, msg);
+    }
+
     public static BaseResult fail(Object data) {
         return new BaseResult(ResultStatusCode.SYSTEM_ERR,data);
     }
