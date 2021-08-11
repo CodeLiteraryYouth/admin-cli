@@ -1,4 +1,4 @@
-package com.dmj.cli.domain.dto;
+package com.dmj.cli.domain.vo.sys;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,13 +9,12 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author zd
  */
 @Data
-public class SysPermissionDTO implements Serializable {
+public class SysPermissionVO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -30,6 +29,10 @@ public class SysPermissionDTO implements Serializable {
     @ApiModelProperty(value = "权限类型(directory|menu|button)")
     @TableField("permission_type")
     private String permissionType;
+
+    @ApiModelProperty(value = "权限路径")
+    @TableField("permission_url")
+    private String permissionUrl;
 
     @ApiModelProperty(value = "权限标识")
     @TableField("permission_str")
@@ -67,6 +70,4 @@ public class SysPermissionDTO implements Serializable {
     @TableField("delete_flag")
     @TableLogic
     private Boolean deleteFlag;
-
-    private List<String> roles;
 }

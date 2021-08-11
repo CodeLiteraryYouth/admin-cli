@@ -10,13 +10,8 @@
         <version>1.1.1</version>
     </parent>
 
-    <groupId>com.dmj</groupId>
     <artifactId>cli-common</artifactId>
     <version>1.1.1</version>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
     
 </project>

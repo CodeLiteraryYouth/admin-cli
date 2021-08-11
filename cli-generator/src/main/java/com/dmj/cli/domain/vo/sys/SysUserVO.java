@@ -1,4 +1,4 @@
-package com.dmj.cli.domain.vo;
+package com.dmj.cli.domain.vo.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.dmj.cli.domain.SysRole;

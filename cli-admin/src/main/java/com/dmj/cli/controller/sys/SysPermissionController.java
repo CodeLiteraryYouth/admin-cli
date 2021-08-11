@@ -3,7 +3,7 @@ package com.dmj.cli.controller.sys;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.query.PermissionQuery;
-import com.dmj.cli.domain.vo.SysPermissionVO;
+import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.dmj.cli.service.sys.SysPermissionService;
 import com.dmj.cli.service.sys.SysRoleService;
 import com.github.pagehelper.PageInfo;

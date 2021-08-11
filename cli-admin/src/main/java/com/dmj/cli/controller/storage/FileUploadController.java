@@ -1,7 +1,7 @@
 package com.dmj.cli.controller.storage;
 
 import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.storage.FileUpload;
+import com.dmj.cli.common.storage.FileUpload;
 import com.dmj.cli.util.str.StringUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.dmj.cli.storage.oss;
+package com.dmj.cli.common.storage.oss;
 
 import cn.hutool.core.date.DateUtil;
 import com.aliyun.oss.*;
@@ -7,7 +7,7 @@ import com.aliyun.oss.model.CreateBucketRequest;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.dmj.cli.common.constant.GlobalConstants;
-import com.dmj.cli.storage.FileUploadHandler;
+import com.dmj.cli.common.storage.FileUploadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

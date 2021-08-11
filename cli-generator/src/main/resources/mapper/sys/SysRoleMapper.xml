@@ -16,7 +16,7 @@
         <result column="delete_flag" property="deleteFlag" />
     </resultMap>
 
-    <resultMap id="ResultMapVO" type="com.dmj.cli.domain.vo.SysRoleVO">
+    <resultMap id="ResultMapVO" type="com.dmj.cli.domain.vo.sys.SysRoleVO">
         <id column="id" property="id" />
         <result column="role_code" property="roleCode" />
         <result column="role_name" property="roleName" />
@@ -50,7 +50,7 @@
         p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creater,p.create_time,p.updater,
         p.update_time,p.delete_flag
     </sql>
-    <select id="listRole" resultType="com.dmj.cli.domain.vo.SysRoleVO">
+    <select id="listRole" resultType="com.dmj.cli.domain.vo.sys.SysRoleVO">
         select
         <include refid="Base_Column_List"></include>
         from sys_role r

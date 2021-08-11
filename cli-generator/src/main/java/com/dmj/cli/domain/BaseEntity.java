@@ -26,6 +26,7 @@ public class BaseEntity implements Serializable {
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("create_time")
     private Date createTime;
 
     /** 更新者 */
@@ -33,6 +34,7 @@ public class BaseEntity implements Serializable {
 
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("update_time")
     private Date updateTime;
 
     @ApiModelProperty(value = "删除标记")

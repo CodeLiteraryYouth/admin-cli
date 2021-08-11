@@ -3,13 +3,10 @@ package com.dmj.cli.service.sys;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysRole;
-import com.dmj.cli.domain.dto.SysPermissionDTO;
-import com.dmj.cli.domain.dto.SysRoleDTO;
+import com.dmj.cli.domain.dto.sys.SysRoleDTO;
 import com.dmj.cli.domain.query.RoleQuery;
-import com.dmj.cli.domain.vo.SysRoleVO;
+import com.dmj.cli.domain.vo.sys.SysRoleVO;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * <p>

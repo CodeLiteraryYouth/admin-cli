@@ -18,7 +18,7 @@
         <result column="delete_flag" property="deleteFlag" />
     </resultMap>
 
-    <resultMap id="ResultMapDTO" type="com.dmj.cli.domain.dto.SysPermissionDTO">
+    <resultMap id="ResultMapDTO" type="com.dmj.cli.domain.dto.sys.SysPermissionDTO">
         <id column="id" property="id" />
         <result column="permission_name" property="permissionName" />
         <result column="permission_type" property="permissionType" />

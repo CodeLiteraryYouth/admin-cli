@@ -1,6 +1,6 @@
 package com.dmj.cli.security;
 
-import com.dmj.cli.domain.dto.SysUserDTO;
+import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.service.sys.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

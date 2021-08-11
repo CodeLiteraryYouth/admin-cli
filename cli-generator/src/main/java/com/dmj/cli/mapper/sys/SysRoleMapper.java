@@ -3,7 +3,7 @@ package com.dmj.cli.mapper.sys;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.query.RoleQuery;
-import com.dmj.cli.domain.vo.SysRoleVO;
+import com.dmj.cli.domain.vo.sys.SysRoleVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

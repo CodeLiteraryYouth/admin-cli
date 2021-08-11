@@ -20,7 +20,7 @@
         <result column="delete_flag" property="deleteFlag" />
     </resultMap>
 
-    <resultMap id="ResultMapDTO" type="com.dmj.cli.domain.dto.SysUserDTO">
+    <resultMap id="ResultMapDTO" type="com.dmj.cli.domain.dto.sys.SysUserDTO">
         <id column="id" property="id" />
         <result column="user_name" property="userName" />
         <result column="password" property="password" />
@@ -41,7 +41,7 @@
         </collection>
     </resultMap>
 
-    <resultMap id="ResultMapVO" type="com.dmj.cli.domain.vo.SysUserVO">
+    <resultMap id="ResultMapVO" type="com.dmj.cli.domain.vo.sys.SysUserVO">
         <id column="id" property="id" />
         <result column="user_name" property="userName" />
         <result column="password" property="password" />

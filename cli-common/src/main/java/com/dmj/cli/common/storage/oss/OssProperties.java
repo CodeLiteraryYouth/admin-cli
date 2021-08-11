@@ -1,4 +1,4 @@
-package com.dmj.cli.storage.oss;
+package com.dmj.cli.common.storage.oss;
 
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;

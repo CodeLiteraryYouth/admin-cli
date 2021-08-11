@@ -1,4 +1,4 @@
-package com.dmj.cli.domain.vo;
+package com.dmj.cli.domain.vo.sys;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

@@ -1,7 +1,7 @@
-package com.dmj.cli.storage;
+package com.dmj.cli.common.storage;
 
 import com.dmj.cli.common.enums.FileTypeEnum;
-import com.dmj.cli.storage.oss.OssUtils;
+import com.dmj.cli.common.storage.oss.OssUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class FileUpload {
     private String type;
 
 
-    private static final Map<String,FileUploadHandler> FILE_UPLOAD_MAP=new HashMap<>();
+    private static final Map<String, FileUploadHandler> FILE_UPLOAD_MAP=new HashMap<>();
 
     static {
         FILE_UPLOAD_MAP.put(FileTypeEnum.OSS.name(),new OssUtils());

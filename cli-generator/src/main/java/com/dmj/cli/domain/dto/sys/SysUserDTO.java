@@ -1,4 +1,4 @@
-package com.dmj.cli.domain.dto;
+package com.dmj.cli.domain.dto.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;

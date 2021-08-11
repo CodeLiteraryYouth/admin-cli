@@ -1,7 +1,7 @@
 package com.dmj.cli.security;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.dmj.cli.domain.dto.SysUserDTO;
+import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

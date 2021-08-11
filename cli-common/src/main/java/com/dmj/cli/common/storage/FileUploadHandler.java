@@ -1,4 +1,4 @@
-package com.dmj.cli.storage;
+package com.dmj.cli.common.storage;
 
 import java.io.File;
 

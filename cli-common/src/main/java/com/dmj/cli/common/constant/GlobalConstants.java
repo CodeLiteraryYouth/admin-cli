@@ -56,4 +56,20 @@ public interface GlobalConstants {
      * SpringSecurity权限前缀
      */
     String ROLE_PREFIX="ROLE_";
+
+    /**
+     * 简体
+     */
+    String ZH_CN="zh_CN";
+
+    enum LOGIN_TYPE {
+        /**
+         * 微信登录
+         */
+        WX,
+        /**
+         * 邮箱登录
+         */
+        EMAIL;
+    }
 }
