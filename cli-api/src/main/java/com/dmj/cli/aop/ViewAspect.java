@@ -52,6 +52,11 @@ public class ViewAspect {
 
         Download download=method.getAnnotation(Download.class);
 
+        Object param=point.getArgs()[1];
+        if (param != null) {
+            Long userId=(Long)param;
+        }
+
         Double data=1.0;
 
         if (view != null) {

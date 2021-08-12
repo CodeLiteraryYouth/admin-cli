@@ -24,7 +24,7 @@ public class JwtUtils {
     private String header;
 
     /**
-     * 生成token
+     * 生成tokenw
      * @param userName
      * @return
      */

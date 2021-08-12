@@ -86,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("resources_type_middle");
+        config.setInclude("user_download_log");
         // 设置不需要generator的表名
         // config.setExclude();
 
