@@ -1,5 +1,6 @@
-package com.dmj.cli.domain.query;
+package com.dmj.cli.domain.query.sys;
 
+import com.dmj.cli.domain.query.BaseQuery;
 import lombok.Data;
 
 import java.io.Serializable;

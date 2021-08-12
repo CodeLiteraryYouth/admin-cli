@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
-import com.dmj.cli.domain.query.UserQuery;
+import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
 import com.github.pagehelper.PageInfo;
 

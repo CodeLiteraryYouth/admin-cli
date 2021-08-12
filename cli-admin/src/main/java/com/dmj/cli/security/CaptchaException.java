@@ -1,4 +1,4 @@
-package com.dmj.cli.common.exception;
+package com.dmj.cli.security;
 
 import org.springframework.security.core.AuthenticationException;
 

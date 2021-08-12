@@ -9,7 +9,7 @@ import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysRolePermission;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.sys.SysRoleDTO;
-import com.dmj.cli.domain.query.RoleQuery;
+import com.dmj.cli.domain.query.sys.RoleQuery;
 import com.dmj.cli.domain.vo.sys.SysRoleVO;
 import com.dmj.cli.mapper.sys.SysPermissionMapper;
 import com.dmj.cli.mapper.sys.SysRoleMapper;
@@ -85,7 +85,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         SysRole sysRole=new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
         sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
-        sysRole.setCreateTime(LocalDateTime.now());
         sysRoleMapper.insert(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
             for (Integer permissionId: sysRoleDTO.getPermissionIds()) {
@@ -106,7 +105,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         SysRole sysRole=new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
         sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
-        sysRole.setUpdateTime(LocalDateTime.now());
         sysRoleMapper.updateById(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
             sysRolePermissionMapper.delete(new LambdaQueryWrapper<SysRolePermission>().eq(SysRolePermission::getRoleId,sysRole.getId()));

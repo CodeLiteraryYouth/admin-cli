@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("sys_user")
 @ApiModel(value="SysUser对象", description="")
-public class SysUser implements Serializable {
+public class SysUser extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -66,26 +66,6 @@ public class SysUser implements Serializable {
     @TableField("locked")
     private Boolean locked;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "创建者")
-    @TableField("creater")
-    private String creater;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("updater")
-    private String updater;
-
-    @ApiModelProperty(value = "删除标记")
-    @TableField("delete_flag")
-    @TableLogic
-    private Boolean deleteFlag;
 
 
 }

@@ -3,7 +3,7 @@ package com.dmj.cli.controller.sys;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
-import com.dmj.cli.domain.query.UserQuery;
+import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
 import com.dmj.cli.service.sys.SysUserService;
 import com.github.pagehelper.PageInfo;

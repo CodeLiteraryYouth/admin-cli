@@ -22,6 +22,7 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 创建者 */
+    @TableField("creator")
     private String creator;
 
     /** 创建时间 */
@@ -30,6 +31,7 @@ public class BaseEntity implements Serializable {
     private Date createTime;
 
     /** 更新者 */
+    @TableField("updater")
     private String updater;
 
     /** 更新时间 */

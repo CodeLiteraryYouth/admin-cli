@@ -3,7 +3,7 @@ package com.dmj.cli.service.sys;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysPermission;
-import com.dmj.cli.domain.query.PermissionQuery;
+import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.github.pagehelper.PageInfo;
 

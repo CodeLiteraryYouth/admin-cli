@@ -2,7 +2,9 @@ package com.dmj.cli.common.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -422,7 +424,7 @@ public class RedisUtils {
      * @param index 索引  index>=0时， 0 表头，1 第二个元素，依次类推；index<0时，-1，表尾，-2倒数第二个元素，依次类推
      * @return
      */
-    public Object lGetIndex(String key,long index){
+    public Object lGetIndex(String key,long index) {
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
@@ -582,6 +584,65 @@ public class RedisUtils {
     }
 
     //=========BoundListOperations 用法 End============
+
+
+
+    //==========ZSet的用法结构==============
+
+    /**
+     * ZSet数据结构分数值的累加
+     * @param key
+     * @param value
+     * @param data
+     * @return
+     */
+    public Boolean zsAdd(String key,String value,Double data) {
+        try {
+            redisTemplate.opsForZSet().add(key,value,data);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * zset做自增操作
+     * @param key
+     * @param value
+     * @param data
+     * @return
+     */
+    public Boolean zsIncr(String key,String value,Double data) {
+        try {
+            redisTemplate.opsForZSet().incrementScore(key,value,data);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 获取某个value的score
+     * @param key
+     * @param value
+     * @return
+     */
+    public Double score(String key,String value) {
+        Double score=redisTemplate.opsForZSet().score(key,value);
+        return score;
+    }
+
+    /**
+     * 逆序并获取所有分值
+     * @param key
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> reverseRangeByScoreWithScores(String key) {
+        Set<ZSetOperations.TypedTuple<Object>> sets=redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key,0,-1);
+        return sets;
+    }
 
 }
 

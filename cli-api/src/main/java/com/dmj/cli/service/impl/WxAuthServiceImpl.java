@@ -60,18 +60,19 @@ public class WxAuthServiceImpl implements WxAuthService {
     @Override
     public BaseResult<WxQrcodeVO> getQrcode() {
         String codeUrl=WxConstant.QRCODE_URL.replace("TOKEN",WxConstant.SERVER_TOKEN);
-        String scene_id = (System.currentTimeMillis()+"").substring(0,10);
+        String sceneId = (System.currentTimeMillis()+"").substring(0,10);
         Map<String,Object> param=new HashMap<>();
         param.put("expire_seconds",3600);
         param.put("action_name",WxConstant.ACTION.QR_SCENE.name());
         JSONObject info = new JSONObject();
         JSONObject scen = new JSONObject();
-        scen.put("scene_id", scene_id);
+        scen.put("scene_id", sceneId);
         info.put("scene", scen);
         param.put("action_info", info);
         try {
             String result=HttpUtil.post(codeUrl,param);
             WxQrcodeVO wxQrcodeVO= JSONUtil.toBean(result,WxQrcodeVO.class);
+            wxQrcodeVO.setSceneId(sceneId);
             return BaseResult.success(wxQrcodeVO);
         } catch (Exception e) {
             log.error("获取二维码异常",e.getCause());

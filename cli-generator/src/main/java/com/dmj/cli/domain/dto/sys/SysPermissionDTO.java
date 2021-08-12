@@ -48,8 +48,8 @@ public class SysPermissionDTO implements Serializable {
     private Boolean isView;
 
     @ApiModelProperty(value = "创建者")
-    @TableField("creater")
-    private String creater;
+    @TableField("creator")
+    private String creator;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")

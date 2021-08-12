@@ -21,5 +21,5 @@ public class WxQrcodeVO implements Serializable {
     private String url;
 
     @ApiModelProperty(value = "场景值ID")
-    private String scene_id;
+    private String sceneId;
 }

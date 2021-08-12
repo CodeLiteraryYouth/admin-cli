@@ -43,8 +43,8 @@ public class SysRoleVO implements Serializable {
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "角色创建者")
-    @TableField("creater")
-    private String creater;
+    @TableField("creator")
+    private String creator;
 
     @ApiModelProperty(value = "更新时间")
     @TableField("update_time")

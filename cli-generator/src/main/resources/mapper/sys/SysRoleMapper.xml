@@ -8,9 +8,8 @@
         <result column="role_code" property="roleCode" />
         <result column="role_name" property="roleName" />
         <result column="role_desc" property="roleDesc" />
-        <result column="sys_default" property="sysDefault" />
         <result column="create_time" property="createTime" />
-        <result column="creater" property="creater" />
+        <result column="creator" property="creator" />
         <result column="update_time" property="updateTime" />
         <result column="updater" property="updater" />
         <result column="delete_flag" property="deleteFlag" />
@@ -23,19 +22,18 @@
         <result column="role_desc" property="roleDesc" />
         <result column="sys_default" property="sysDefault" />
         <result column="create_time" property="createTime" />
-        <result column="creater" property="creater" />
+        <result column="creator" property="creator" />
         <result column="update_time" property="updateTime" />
         <result column="updater" property="updater" />
         <result column="delete_flag" property="deleteFlag" />
         <collection property="sysPermissions" ofType="com.dmj.cli.domain.SysPermission">
             <result column="permission_name" property="permissionName" />
             <result column="permission_type" property="permissionType" />
-            <result column="permission_url" property="permissionUrl" />
             <result column="permission_str" property="permissionStr" />
             <result column="parent_id" property="parentId" />
             <result column="permission_order" property="permissionOrder" />
             <result column="is_view" property="isView" />
-            <result column="creater" property="creater" />
+            <result column="creator" property="creator" />
             <result column="create_time" property="createTime" />
             <result column="updater" property="updater" />
             <result column="update_time" property="updateTime" />
@@ -45,9 +43,9 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        r.id, r.role_code,r.role_name, r.role_desc, r.sys_default, r.create_time, r.creater,
+        r.id, r.role_code,r.role_name, r.role_desc, r.sys_default, r.create_time, r.creator,
         r.update_time, r.updater, r.delete_flag,p.permission_name,p.permission_type,p.permission_url,
-        p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creater,p.create_time,p.updater,
+        p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creator,p.create_time,p.updater,
         p.update_time,p.delete_flag
     </sql>
     <select id="listRole" resultType="com.dmj.cli.domain.vo.sys.SysRoleVO">

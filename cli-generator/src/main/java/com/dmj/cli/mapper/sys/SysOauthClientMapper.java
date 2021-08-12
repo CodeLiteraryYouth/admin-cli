@@ -2,7 +2,7 @@ package com.dmj.cli.mapper.sys;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.SysOauthClient;
-import com.dmj.cli.domain.query.OauthClientQuery;
+import com.dmj.cli.domain.query.sys.OauthClientQuery;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.SysUserRole;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
-import com.dmj.cli.domain.query.UserQuery;
+import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
 import com.dmj.cli.mapper.sys.SysPermissionMapper;
 import com.dmj.cli.mapper.sys.SysRoleMapper;
@@ -110,7 +110,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Assert.notNull(sysUserDTO,"bad request");
         SysUser sysUser=new SysUser();
         BeanUtils.copyProperties(sysUserDTO,sysUser);
-        sysUser.setCreateTime(LocalDateTime.now());
         sysUserMapper.insert(sysUser);
         if (Objects.nonNull(sysUserDTO.getRoles()) && !sysUserDTO.getRoles().isEmpty()) {
             for (String roleCode: sysUserDTO.getRoles()) {
@@ -134,7 +133,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Assert.notNull(sysUserDTO.getId(),"id is null");
         SysUser sysUser=new SysUser();
         BeanUtils.copyProperties(sysUserDTO,sysUser);
-        sysUser.setUpdateTime(LocalDateTime.now());
         sysUserMapper.updateById(sysUser);
         if (Objects.nonNull(sysUserDTO.getRoles()) && !sysUserDTO.getRoles().isEmpty()) {
             sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,sysUser.getId()));

@@ -11,7 +11,7 @@
         <result column="parent_id" property="parentId" />
         <result column="permission_order" property="permissionOrder" />
         <result column="is_view" property="isView" />
-        <result column="creater" property="creater" />
+        <result column="creator" property="creator" />
         <result column="create_time" property="createTime" />
         <result column="updater" property="updater" />
         <result column="update_time" property="updateTime" />
@@ -26,7 +26,7 @@
         <result column="parent_id" property="parentId" />
         <result column="permission_order" property="permissionOrder" />
         <result column="is_view" property="isView" />
-        <result column="creater" property="creater" />
+        <result column="creator" property="creator" />
         <result column="create_time" property="createTime" />
         <result column="updater" property="updater" />
         <result column="update_time" property="updateTime" />
@@ -38,7 +38,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, permission_name, permission_type,permission_str, parent_id, permission_order, is_view, creater, create_time, updater, update_time, delete_flag
+        id, permission_name, permission_type,permission_str, parent_id, permission_order, is_view, creator, create_time, updater, update_time, delete_flag
     </sql>
     <select id="listPermission" resultMap="BaseResultMap">
         select

@@ -2,7 +2,6 @@ package com.dmj.cli.security;
 
 import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.GlobalConstants;
-import com.dmj.cli.common.exception.CaptchaException;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.util.str.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

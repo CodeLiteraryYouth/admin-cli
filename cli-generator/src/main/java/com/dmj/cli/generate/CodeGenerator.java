@@ -28,7 +28,6 @@ public class CodeGenerator {
     private static final String MODULE_PACKAGE     = "com.dmj.cli";
     private static final String MAPPER_XML         = "/src/main/resources/mapper";
     private static final String TEMPLATE_PATH      = "/templates/mapper.xml.vm";
-    private static final String SUPER_ENTITY_CLASS = "com.dmj.cli.domain.BaseEntity";
     private static final String LOGIC_DELETE_FIELD = "delete_flag";
 
     public static void main(String[] args) {
@@ -74,9 +73,9 @@ public class CodeGenerator {
         //字段前缀
         config.setFieldPrefix();
         // 自定义继承的Entity类全称，带包名
-        config.setSuperEntityClass(SUPER_ENTITY_CLASS);
+//        config.setSuperEntityClass(SUPER_ENTITY_CLASS);
         // 自定义基础的Entity类的公共字段
-        // config.setSuperEntityColumns();
+//         config.setSuperEntityColumns();
         // 自定义继承的Mapper类全称，带包名
         // config.setSuperMapperClass();
         // 自定义继承的Service类全称，带包名
@@ -87,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("user_login_log");
+        config.setInclude("resources_type_middle");
         // 设置不需要generator的表名
         // config.setExclude();
 

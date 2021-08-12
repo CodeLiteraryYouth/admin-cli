@@ -62,6 +62,21 @@ public interface GlobalConstants {
      */
     String ZH_CN="zh_CN";
 
+    /**
+     * 浏览量key值
+     */
+    String VIEW_NUM="view_num";
+
+    /**
+     * 收藏量
+     */
+    String COLLECT_NUM="collect_num";
+
+    /**
+     * 下载量
+     */
+    String DOWNLOAD_NUM="download_num";
+
     enum LOGIN_TYPE {
         /**
          * 微信登录

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysUser;
-import com.dmj.cli.domain.query.PermissionQuery;
+import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.dmj.cli.mapper.sys.SysPermissionMapper;
 import com.dmj.cli.service.sys.SysPermissionService;

@@ -3,6 +3,7 @@ package com.dmj.cli.controller;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.vo.wx.WxQrcodeVO;
 import com.dmj.cli.service.WxAuthService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("/auth")
+@Api(tags = "获取登录二维码")
 public class WxAuthController {
 
     @Autowired

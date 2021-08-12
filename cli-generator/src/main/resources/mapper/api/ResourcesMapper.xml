@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.api.ResourcesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dmj.cli.domain.vo.api.ResourcesVO">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="resources_no" property="resourcesNo" />
+        <result column="resources_size" property="resourcesSize" />
+        <result column="resources_format" property="resourcesFormat" />
+        <result column="resources_use" property="resourcesUse" />
+        <result column="resources_url" property="resourcesUrl" />
+        <result column="create_time" property="createTime" />
+        <result column="text" property="text" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+        <result column="delete_flag" property="deleteFlag" />
+        <collection property="resourcesTypes" ofType="com.dmj.cli.domain.ResourcesType">
+            <result column="type_name" property="typeName" />
+            <result column="type_code" property="typeCode" />
+            <result column="create_time" property="createTime" />
+            <result column="creator" property="creator" />
+            <result column="update_time" property="updateTime" />
+            <result column="updater" property="updater" />
+            <result column="delete_flag" property="deleteFlag" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        r.id, r.title, r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,
+        r.create_time, r.creator, r.update_time, r.updater, r.delete_flag,rt.type_name,rt.type_code,rt.create_time,
+        rt.creator,rt.update_time,rt.updater,rt.delete_flag
+    </sql>
+    <select id="listResources" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from resources r
+        left join resources_type_middle t on r.id=t.resources_id
+        left join resources_type rt on t.type_id=rt.id
+        where r.delete_flag=false
+        <if test="typeId != null">
+            and t.type_id=#{typeId}
+        </if>
+        <if test="free != null">
+            and r.free=#{free}
+        </if>
+        <if test="searchVal != null and searchVal !=''">
+            and r.title like CONCAT('%',#{searchVal},'%')
+        </if>
+    </select>
+    <select id="getResourcesById" resultMap="BaseResultMap">
+        select
+        r.id, r.title,r.text,r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,
+        r.create_time, r.creator, r.update_time, r.updater, r.delete_flag,rt.type_name,rt.type_code,rt.create_time,
+        rt.creator,rt.update_time,rt.updater,rt.delete_flag
+        from resources r
+        left join resources_type_middle t on r.id=t.resources_id
+        left join resources_type rt on t.type_id=rt.id
+        where r.delete_flag=false and r.id=#{id}
+    </select>
+
+</mapper>

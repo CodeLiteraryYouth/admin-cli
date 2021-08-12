@@ -3,7 +3,7 @@ package com.dmj.cli.controller.sys;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.dto.sys.SysRoleDTO;
-import com.dmj.cli.domain.query.RoleQuery;
+import com.dmj.cli.domain.query.sys.RoleQuery;
 import com.dmj.cli.domain.vo.sys.SysRoleVO;
 import com.dmj.cli.service.sys.SysRoleService;
 import com.github.pagehelper.PageInfo;

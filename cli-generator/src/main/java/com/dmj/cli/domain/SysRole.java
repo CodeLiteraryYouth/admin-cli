@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("sys_role")
 @ApiModel(value="SysRole对象", description="")
-public class SysRole implements Serializable {
+public class SysRole extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -46,25 +46,5 @@ public class SysRole implements Serializable {
     @TableField("role_desc")
     private String roleDesc;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "角色创建者")
-    @TableField("creater")
-    private String creater;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "更新者")
-    @TableField("updater")
-    private String updater;
-
-    @ApiModelProperty(value = "删除标记")
-    @TableField("delete_flag")
-    @TableLogic
-    private Boolean deleteFlag;
 
 }

@@ -3,7 +3,7 @@ package com.dmj.cli.service.sys.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysOauthClient;
-import com.dmj.cli.domain.query.OauthClientQuery;
+import com.dmj.cli.domain.query.sys.OauthClientQuery;
 import com.dmj.cli.mapper.sys.SysOauthClientMapper;
 import com.dmj.cli.service.sys.SysOauthClientService;
 import com.github.pagehelper.PageHelper;

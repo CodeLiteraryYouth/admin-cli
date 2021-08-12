@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysOauthClient;
-import com.dmj.cli.domain.query.OauthClientQuery;
+import com.dmj.cli.domain.query.sys.OauthClientQuery;
 import com.github.pagehelper.PageInfo;
 
 /**

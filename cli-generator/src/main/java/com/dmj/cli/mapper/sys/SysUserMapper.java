@@ -3,7 +3,7 @@ package com.dmj.cli.mapper.sys;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
-import com.dmj.cli.domain.query.UserQuery;
+import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
 import org.apache.ibatis.annotations.Param;
 

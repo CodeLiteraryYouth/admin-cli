@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("sys_permission")
 @ApiModel(value="SysPermission对象", description="")
-public class SysPermission implements Serializable {
+public class SysPermission extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -58,25 +58,5 @@ public class SysPermission implements Serializable {
     @TableField("is_view")
     private Boolean isView;
 
-    @ApiModelProperty(value = "创建者")
-    @TableField("creater")
-    private String creater;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新者")
-    @TableField("updater")
-    private String updater;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "删除标记")
-    @TableField("delete_flag")
-    @TableLogic
-    private Boolean deleteFlag;
 
 }
