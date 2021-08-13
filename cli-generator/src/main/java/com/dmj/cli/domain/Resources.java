@@ -65,4 +65,21 @@ public class Resources extends BaseEntity implements Serializable {
     @TableField("free")
     private Boolean free;
 
+    @ApiModelProperty(value = "浏览次数")
+    @TableField("view_num")
+    private Long viewNum;
+
+    @ApiModelProperty(value = "收藏次数")
+    @TableField("collect_num")
+    private Long collectNum;
+
+    @ApiModelProperty(value = "下载次数")
+    @TableField("download_num")
+    private Long downloadNum;
+
+    @ApiModelProperty(value = "封面地址")
+    @TableField("cover_url")
+    private String coverUrl;
+
+
 }

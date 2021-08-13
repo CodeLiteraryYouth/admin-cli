@@ -77,6 +77,17 @@ public interface GlobalConstants {
      */
     String DOWNLOAD_NUM="download_num";
 
+    /**
+     * 资源
+     */
+    String RESOURCES="resources";
+
+    /**
+     * 视频
+     */
+    String VIDEO="video";
+
+
     enum LOGIN_TYPE {
         /**
          * 微信登录

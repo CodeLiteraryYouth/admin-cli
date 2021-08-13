@@ -3,6 +3,7 @@ package com.dmj.cli.handler;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.exception.AdminException;
+import com.dmj.cli.common.exception.LoginException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -73,5 +74,16 @@ public class ExceptionAdviceHandler {
     @ExceptionHandler(AdminException.class)
     public BaseResult adminHandleException(AdminException e) {
         return BaseResult.fail(e.getMessage());
+    }
+
+    /**
+     * 登录异常处理
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(LoginException.class)
+    public BaseResult loginException(LoginException e) {
+        return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
     }
 }

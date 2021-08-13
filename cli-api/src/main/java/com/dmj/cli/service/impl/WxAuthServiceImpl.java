@@ -81,6 +81,12 @@ public class WxAuthServiceImpl implements WxAuthService {
     }
 
     @Override
+    public BaseResult<UserInfo> getUserBySceneId(Long sceneId) {
+        UserInfo userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getSceneId,sceneId));
+        return BaseResult.success(userInfo);
+    }
+
+    @Override
     public void checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         ServletOutputStream outputStream=response.getOutputStream();
@@ -143,13 +149,15 @@ public class WxAuthServiceImpl implements WxAuthService {
         if(wxEventDTO.getEventKey().contains(MagicCore.UNDER_LINE)) {
             wxEventDTO.setEventKey(wxEventDTO.getEventKey().split(MagicCore.UNDER_LINE)[1]);
         }
-
-        getUserInfo(wxEventDTO);
+        saveUserIno(wxEventDTO);
+        outputStream.write(GlobalConstants.SUCCESS.getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+        outputStream.close();
 
     }
 
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-    private void getUserInfo(WxEventDTO wxEventDTO) {
+    private void saveUserIno(WxEventDTO wxEventDTO) {
         UserInfo userInfo=null;
         //第一次关注公众号
         if (WxConstant.EVENT_TYPE.subscribe.name().equals(wxEventDTO.getEvent())) {
@@ -180,6 +188,8 @@ public class WxAuthServiceImpl implements WxAuthService {
         }
 
         if (WxConstant.EVENT_TYPE.SCAN.name().equals(wxEventDTO.getEvent())) {
+            //清楚上次的登录缓存信息s
+            redisUtils.del(userInfo.getSceneId());
             userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getOpenId,wxEventDTO.getFromUserName()));
             userInfo.setSceneId(wxEventDTO.getEventKey());
             userInfo.setLoginStatus(true);
@@ -196,6 +206,8 @@ public class WxAuthServiceImpl implements WxAuthService {
             userLoginLog.setMsgType(wxEventDTO.getMsgType());
             userLoginLog.setTicket(wxEventDTO.getTicket());
             userLoginLogService.save(userLoginLog);
+            //存储当前登录信息
+            redisUtils.set(wxEventDTO.getEventKey(),JSONUtil.toJsonStr(userInfo),3600);
         }
     }
 

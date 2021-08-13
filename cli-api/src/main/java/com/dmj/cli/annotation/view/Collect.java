@@ -12,14 +12,8 @@ import java.lang.annotation.*;
 public @interface Collect {
 
     /**
-     * 统计收藏次数的id
+     * 收藏类别(resources:资源 video:视频)
      * @return
      */
-    String id() default "";
-
-    /**
-     * 收藏的用户ID
-     * @return
-     */
-    long userId() default 0L;
+    String type() default "resources";
 }

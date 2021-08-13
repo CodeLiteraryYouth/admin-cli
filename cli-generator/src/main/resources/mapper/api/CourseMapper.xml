@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.api.CourseMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.Course">
+            <id column="id" property="id" />
+            <result column="type_id" property="typeId" />
+            <result column="course_title" property="courseTitle" />
+            <result column="cover_url" property="coverUrl" />
+            <result column="text" property="text" />
+            <result column="course_url" property="courseUrl" />
+            <result column="course_type" property="courseType" />
+            <result column="creator" property="creator" />
+            <result column="create_time" property="createTime" />
+            <result column="updater" property="updater" />
+            <result column="update_time" property="updateTime" />
+            <result column="delete_flag" property="deleteFlag" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+            id, type_id, course_title, cover_url, text, course_url, course_type, creator, create_time, updater, update_time, delete_flag
+        </sql>
+    <select id="listCourse" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from course where delete_flag=false
+        <if test="typeId != null">
+            and type_id=#{typeId}
+        </if>
+        <if test="searchVal != null and searchVal != ''">
+            and course_title like CONCAT('%',#{searchVal},'%')
+        </if>
+    </select>
+
+</mapper>

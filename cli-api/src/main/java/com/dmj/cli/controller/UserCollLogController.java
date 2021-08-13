@@ -4,7 +4,7 @@ package com.dmj.cli.controller;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.service.api.UserCollLogService;
-    import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

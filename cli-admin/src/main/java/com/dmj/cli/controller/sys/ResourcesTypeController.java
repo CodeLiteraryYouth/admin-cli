@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/resources-type")
-@Api(tags = "资源管理")
+@Api(tags = "资源类型管理")
 public class ResourcesTypeController {
 
     @Resource

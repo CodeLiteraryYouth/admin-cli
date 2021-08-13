@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.constant.GlobalConstants;
+import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.Resources;
 import com.dmj.cli.domain.ResourcesTypeMiddle;
 import com.dmj.cli.domain.dto.sys.ResourcesDTO;
@@ -13,6 +15,7 @@ import com.dmj.cli.mapper.api.ResourcesMapper;
 import com.dmj.cli.mapper.api.ResourcesTypeMiddleMapper;
 import com.dmj.cli.service.api.ResourcesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -37,6 +41,9 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private ResourcesTypeMiddleMapper resourcesTypeMiddleMapper;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
 
     @Override
@@ -89,6 +96,13 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
     @Override
     public BaseResult<List<ResourcesVO>> listResources(ResourcesQuery query) {
         List<ResourcesVO> resourcesVOS=resourcesMapper.listResources(query);
+        resourcesVOS.stream().map(resourcesVO -> {
+            ResourcesVO resources=new ResourcesVO();
+            BeanUtils.copyProperties(resources,resourcesVO);
+            resources.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM,resources.getId().toString()).longValue());
+            resources.setCollectNum(redisUtils.score(GlobalConstants.COLLECT_NUM,resources.getId().toString()).longValue());
+            return resources;
+        }).collect(Collectors.toList());
         return BaseResult.success(resourcesVOS);
     }
 

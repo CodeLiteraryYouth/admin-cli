@@ -29,24 +29,24 @@ public class UserCollLog implements Serializable {
 
     private static final long serialVersionUID=1L;
     
-        @TableId(value = "id", type = IdType.AUTO)
-                private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-        @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "用户ID")
     @TableField("user_id")
-            private Integer userId;
+    private Long userId;
 
-        @ApiModelProperty(value = "资源、课程等ID")
+    @ApiModelProperty(value = "资源、课程等ID")
     @TableField("collect_id")
-            private Integer collectId;
+    private Long collectId;
 
-        @ApiModelProperty(value = "收藏类型(resources:资源 course:课程)")
+    @ApiModelProperty(value = "收藏类型(resources:资源 course:课程)")
     @TableField("collect_type")
-            private String collectType;
+    private String collectType;
 
-        @ApiModelProperty(value = "收藏时间")
+    @ApiModelProperty(value = "收藏时间")
     @TableField("collect_time")
-            private LocalDateTime collectTime;
+    private LocalDateTime collectTime;
     
     
 }

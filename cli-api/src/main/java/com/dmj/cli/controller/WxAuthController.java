@@ -1,15 +1,14 @@
 package com.dmj.cli.controller;
 
+import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.vo.wx.WxQrcodeVO;
 import com.dmj.cli.service.WxAuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +28,13 @@ public class WxAuthController {
     @GetMapping("qrcode")
     public BaseResult<WxQrcodeVO> qrcode() {
         return wxAuthService.getQrcode();
+    }
+
+    @Login
+    @ApiOperation("根据sceneId获取用户信息")
+    @GetMapping("user-by-sceneId/{sceneId}")
+    public BaseResult<UserInfo> getUserBySceneId(@PathVariable Long sceneId) {
+        return wxAuthService.getUserBySceneId(sceneId);
     }
 
     @GetMapping("checkToken")

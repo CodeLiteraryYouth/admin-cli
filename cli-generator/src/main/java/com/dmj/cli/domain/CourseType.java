@@ -3,7 +3,6 @@ package com.dmj.cli.domain;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -14,35 +13,31 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 课程类型
  * </p>
  *
  * @author zd
- * @since 2021-08-12
+ * @since 2021-08-13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("user_download_log")
-@ApiModel(value="UserDownloadLog对象", description="")
-public class UserDownloadLog implements Serializable {
+@TableName("course_type")
+@ApiModel(value="CourseType对象", description="课程类型")
+public class CourseType extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
     
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    @ApiModelProperty(value = "下载ID")
-    @TableField("download_id")
-    private Long downloadId;
+    @ApiModelProperty(value = "分类编码")
+    @TableField("type_code")
+    private String typeCode;
 
-    @ApiModelProperty(value = "用户ID")
-    @TableField("user_id")
-    private Long userId;
+    @ApiModelProperty(value = "分类名称")
+    @TableField("type_name")
+    private String typeName;
 
-    @ApiModelProperty(value = "下载时间")
-    @TableField("download_time")
-    private LocalDateTime downloadTime;
-    
     
 }

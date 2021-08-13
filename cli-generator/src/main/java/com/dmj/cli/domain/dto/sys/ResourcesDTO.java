@@ -58,6 +58,10 @@ public class ResourcesDTO extends BaseEntity implements Serializable {
     @TableField("free")
     private Boolean free;
 
+    @ApiModelProperty(value = "封面地址")
+    @TableField("cover_url")
+    private String coverUrl;
+
     private List<Long> typeIds;
 
 }
