@@ -39,6 +39,14 @@ public class Course extends BaseEntity implements Serializable {
     @TableField("course_title")
     private String courseTitle;
 
+    @ApiModelProperty(value = "课程描述")
+    @TableField("course_desc")
+    private String courseDesc;
+
+    @ApiModelProperty(value = "课程标签")
+    @TableField("course_tag")
+    private String courseTag;
+
     @ApiModelProperty(value = "封面地址")
     @TableField("cover_url")
     private String coverUrl;
