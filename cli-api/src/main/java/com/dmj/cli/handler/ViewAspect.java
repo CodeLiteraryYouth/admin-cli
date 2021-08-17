@@ -2,6 +2,7 @@ package com.dmj.cli.handler;
 
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.Download;
+import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
@@ -40,7 +41,10 @@ public class ViewAspect {
     @Autowired
     private UserDownloadLogService userDownloadLogService;
 
-    @Pointcut("@annotation(com.dmj.cli.annotation.view.Collect) || @annotation(com.dmj.cli.annotation.view.Download) || @annotation(com.dmj.cli.annotation.view.View)")
+    @Pointcut("@annotation(com.dmj.cli.annotation.view.Collect) " +
+            "|| @annotation(com.dmj.cli.annotation.view.Download) " +
+            "|| @annotation(com.dmj.cli.annotation.view.View)" +
+            "|| @annotation(com.dmj.cli.annotation.view.Favour)")
     public void point() {
     }
 
@@ -75,7 +79,12 @@ public class ViewAspect {
 
         Download download=method.getAnnotation(Download.class);
 
+        Favour favour=method.getAnnotation(Favour.class);
 
+        if (favour != null) {
+            Double viewData=redisUtils.score(GlobalConstants.FAVOUR_NUM,id.toString());
+            redisUtils.zsIncr(GlobalConstants.FAVOUR_NUM,id.toString(),viewData);
+        }
 
         if (view != null) {
             Double viewData=redisUtils.score(GlobalConstants.VIEW_NUM,id.toString());

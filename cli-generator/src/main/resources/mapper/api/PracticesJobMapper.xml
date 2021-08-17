@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.api.PracticesJobMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.PracticesJob">
+                    <id column="id" property="id" />
+                    <result column="job_title" property="jobTitle" />
+                    <result column="job_desc" property="jobDesc" />
+                    <result column="job_tag" property="jobTag" />
+                    <result column="job_content" property="jobContent" />
+                    <result column="job_num" property="jobNum" />
+                    <result column="job_status" property="jobStatus" />
+                    <result column="cover_url" property="coverUrl" />
+                    <result column="creator" property="creator" />
+                    <result column="create_time" property="createTime" />
+                    <result column="updater" property="updater" />
+                    <result column="update_time" property="updateTime" />
+                    <result column="delete_flag" property="deleteFlag" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+            id, job_title, job_desc, job_tag, job_content, job_num, job_status, cover_url, creator, create_time, updater, update_time, delete_flag
+        </sql>
+
+</mapper>

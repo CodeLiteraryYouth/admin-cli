@@ -39,7 +39,7 @@ public class ResourcesApiController {
         return BaseResult.success(resourcesTypes);
     }
 
-    @View
+    @View(type = "Resources")
     @ApiOperation("获取资源详情")
     @GetMapping("/get/{id}")
     public BaseResult<ResourcesVO> select(@PathVariable Long id) {

@@ -12,8 +12,8 @@ import java.lang.annotation.*;
 public @interface View {
 
     /**
-     * 统计浏览量的id
+     * 统计浏览量的类型
      * @return
      */
-    String id() default "";
+    String type() default "";
 }

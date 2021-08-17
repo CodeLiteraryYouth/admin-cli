@@ -51,6 +51,14 @@ public class Course extends BaseEntity implements Serializable {
     @TableField("cover_url")
     private String coverUrl;
 
+    @ApiModelProperty(value = "课程原价")
+    @TableField("original_price")
+    private Integer originalPrice;
+
+    @ApiModelProperty(value = "VIP价格")
+    @TableField("vip_price")
+    private Integer vipPrice;
+
     @ApiModelProperty(value = "课程文案")
     @TableField("text")
     private String text;

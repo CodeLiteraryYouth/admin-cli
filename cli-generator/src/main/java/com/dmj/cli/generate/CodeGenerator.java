@@ -86,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("course");
+        config.setInclude("business_cooperation");
         // 设置不需要generator的表名
         // config.setExclude();
 

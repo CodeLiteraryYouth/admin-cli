@@ -1,7 +1,7 @@
 package com.dmj.cli.controller.job;
 
 import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.controller.BaseController;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.SysJobLog;
 import com.dmj.cli.service.ISysJobLogService;
 import com.dmj.cli.service.ISysJobService;

@@ -3,7 +3,7 @@ package com.dmj.cli.controller.sys;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
-import com.dmj.cli.controller.BaseController;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.vo.CaptchaVO;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;

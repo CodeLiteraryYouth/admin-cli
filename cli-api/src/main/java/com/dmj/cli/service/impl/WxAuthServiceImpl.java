@@ -12,6 +12,7 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.constant.WxConstant;
 import com.dmj.cli.common.core.MagicCore;
+import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.UserLoginLog;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -81,9 +83,20 @@ public class WxAuthServiceImpl implements WxAuthService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public BaseResult<UserInfo> getUserBySceneId(Long sceneId) {
-        UserInfo userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getSceneId,sceneId));
-        return BaseResult.success(userInfo);
+        Assert.notNull(sceneId,"sceneId is null");
+        String result=redisUtils.get(sceneId.toString()).toString();
+        UserInfo userInfo=null;
+        if (StringUtils.isBlank(result)) {
+            userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getSceneId,sceneId));
+            userInfo.setLoginStatus(false);
+            userInfoService.updateById(userInfo);
+            return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
+        } else {
+            userInfo=JSONUtil.toBean(result,UserInfo.class);
+            return BaseResult.success(userInfo);
+        }
     }
 
     @Override

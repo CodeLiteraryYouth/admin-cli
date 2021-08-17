@@ -1,4 +1,4 @@
-package com.dmj.cli.controller;
+package com.dmj.cli.domain;
 
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.core.PageDomain;

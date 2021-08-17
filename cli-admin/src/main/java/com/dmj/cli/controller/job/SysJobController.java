@@ -3,7 +3,7 @@ package com.dmj.cli.controller.job;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.exception.TaskException;
-import com.dmj.cli.controller.BaseController;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.SysJob;
 import com.dmj.cli.service.ISysJobService;
 import com.dmj.cli.util.CronUtils;

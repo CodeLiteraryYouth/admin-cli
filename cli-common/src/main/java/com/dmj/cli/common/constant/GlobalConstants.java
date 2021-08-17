@@ -78,14 +78,9 @@ public interface GlobalConstants {
     String DOWNLOAD_NUM="download_num";
 
     /**
-     * 资源
+     * 点赞数
      */
-    String RESOURCES="resources";
-
-    /**
-     * 视频
-     */
-    String VIDEO="video";
+    String FAVOUR_NUM="favour_num";
 
 
     enum LOGIN_TYPE {

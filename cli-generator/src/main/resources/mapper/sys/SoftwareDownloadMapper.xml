@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.sys.SoftwareDownloadMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.SoftwareDownload">
+            <id column="id" property="id" />
+            <result column="type_id" property="typeId" />
+            <result column="name" property="name" />
+            <result column="desc" property="desc" />
+            <result column="version" property="version" />
+            <result column="publish_time" property="publishTime" />
+            <result column="size" property="size" />
+            <result column="content" property="content" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+            id, type_id, name, desc, version, publish_time, size, content
+        </sql>
+
+</mapper>

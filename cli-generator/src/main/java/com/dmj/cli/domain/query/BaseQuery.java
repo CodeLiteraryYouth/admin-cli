@@ -31,4 +31,7 @@ public class BaseQuery implements Serializable {
     @ApiModelProperty(value = "排序字段")
     private String sortField;
 
+    @ApiModelProperty(value = "搜索字段")
+    private String searchVal;
+
 }

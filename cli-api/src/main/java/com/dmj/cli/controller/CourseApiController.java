@@ -37,7 +37,7 @@ public class CourseApiController {
         return BaseResult.success(courseTypeService.list());
     }
 
-    @View
+    @View(type = "Course")
     @ApiOperation("获取课程详情")
     @GetMapping("/get/{id}")
     public BaseResult<Course> select(@PathVariable Long id) {

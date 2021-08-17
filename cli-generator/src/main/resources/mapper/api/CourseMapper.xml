@@ -10,6 +10,8 @@
             <result column="course_desc" property="courseDesc" />
             <result column="course_tag" property="courseTag" />
             <result column="cover_url" property="coverUrl" />
+            <result column="original_price" property="originalPrice" />
+            <result column="vip_price" property="vipPrice" />
             <result column="text" property="text" />
             <result column="course_url" property="courseUrl" />
             <result column="course_type" property="courseType" />
@@ -22,7 +24,8 @@
 
         <!-- 通用查询结果列 -->
         <sql id="Base_Column_List">
-            id, type_id, course_title,course_desc, course_tag, cover_url, text, course_url, course_type,
+            id, type_id, course_title,course_desc, course_tag, cover_url, original_price,vip_price,text,
+            course_url, course_type,
             creator, create_time, updater, update_time, delete_flag
         </sql>
     <select id="listCourse" resultMap="BaseResultMap">

@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 public @interface Collect {
 
     /**
-     * 收藏类别(resources:资源 video:视频)
+     * 收藏类别(resources:资源 video:视频 business:企业合作)
      * @return
      */
     String type() default "resources";

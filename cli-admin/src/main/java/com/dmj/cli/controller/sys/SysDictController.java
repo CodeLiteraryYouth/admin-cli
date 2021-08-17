@@ -1,7 +1,7 @@
 package com.dmj.cli.controller.sys;
 
 
-import com.dmj.cli.controller.BaseController;
+import com.dmj.cli.domain.BaseController;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;

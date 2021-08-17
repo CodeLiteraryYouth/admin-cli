@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.UserLoginLog;
 import com.dmj.cli.service.api.UserLoginLogService;
-    import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,6 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 @RequestMapping("/user-login-log")
 @Api(tags = "用户登录记录表")
 public class UserLoginLogController {
+
     @Resource
     private UserLoginLogService service;
 

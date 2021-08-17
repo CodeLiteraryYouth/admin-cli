@@ -1,6 +1,9 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.query.BaseQuery;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,8 @@ import com.dmj.cli.service.api.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +28,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 @RestController
 @RequestMapping("/course")
 @Api(tags = "课程")
-public class CourseController {
+public class CourseController extends BaseController {
 
     @Autowired
     private CourseService service;
@@ -57,10 +62,11 @@ public class CourseController {
     }
 
     @ApiOperation("查询课程分页信息")
-    @PostMapping("/page")
-    public BaseResult<Page<Course>> page(@RequestBody Page<Course> page) {
-        page = service.page(page);
-        return BaseResult.success(page);
+    @GetMapping("/page")
+    public BaseResult<PageInfo<List<Course>>> page(@ModelAttribute BaseQuery query) {
+        startPage();
+        List<Course> courses=service.list();
+        return pageInfoBaseResult(courses);
     }
 }
 

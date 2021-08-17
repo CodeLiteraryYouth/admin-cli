@@ -1,6 +1,9 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.query.BaseQuery;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +13,8 @@ import com.dmj.cli.service.api.CourseTypeService;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +27,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 @RestController
 @RequestMapping("/course-type")
 @Api(tags = "课程类型")
-public class CourseTypeController {
+public class CourseTypeController extends BaseController {
 
     @Autowired
     private CourseTypeService service;
@@ -58,10 +62,11 @@ public class CourseTypeController {
     }
 
     @ApiOperation("查询课程分类详情")
-    @PostMapping("/page")
-    public BaseResult<Page<CourseType>> page(@RequestBody Page<CourseType> page) {
-        page = service.page(page);
-        return BaseResult.success(page);
+    @GetMapping("/page")
+    public BaseResult<PageInfo<List<CourseType>>> page(@ModelAttribute BaseQuery query) {
+        startPage();
+        List<CourseType> courseTypes=service.list();
+        return pageInfoBaseResult(courseTypes);
     }
 }
 

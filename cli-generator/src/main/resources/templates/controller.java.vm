@@ -19,7 +19,10 @@ import ${package.Service}.${table.serviceName};
     #end
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageInfo;
+import java.util.List;
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.query.BaseQuery;
 
 /**
  * <p>
@@ -45,7 +48,7 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
 #if(${superControllerClass})
 public class ${table.controllerName} extends ${superControllerClass} {
 #else
-public class ${table.controllerName} {
+public class ${table.controllerName} extends BaseController {
 #end
     @Autowired
     private ${table.serviceName} service;
@@ -64,21 +67,22 @@ public class ${table.controllerName} {
 
 
     @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
+    public BaseResult delete(@PathVariable Long id) {
         service.removeById(id);
         return BaseResult.success();
     }
 
     @GetMapping("/get/{id}")
-    public BaseResult<${entity}> select(@PathVariable String id) {
+    public BaseResult<${entity}> select(@PathVariable Long id) {
         ${entity} data = service.getById(id);
         return BaseResult.success(data);
     }
 
-    @PostMapping("/page")
-    public BaseResult<Page<${entity}>> page(@RequestBody Page<${entity}> page) {
-        page = service.page(page);
-        return BaseResult.success(page);
+    @GetMapping("/page")
+    public BaseResult<PageInfo<List<${entity}>>> page(@ModelAttribute BaseQuery query) {
+        startPage();
+        List<${entity}> list= service.list();
+        return pageInfoBaseResult(list);
     }
 }
 
