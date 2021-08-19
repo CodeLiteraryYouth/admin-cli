@@ -1,4 +1,4 @@
-package com.dmj.cli.service;
+package com.dmj.cli.service.sys;
 
 import com.dmj.cli.domain.BusinessCooperation;
 import com.baomidou.mybatisplus.extension.service.IService;

@@ -1,16 +1,20 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.query.api.UserInfoQuery;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.service.api.UserInfoService;
-    import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,39 +27,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 @RestController
 @RequestMapping("/user-info")
 @Api(tags = "用户信息表")
-public class UserInfoController {
-    @Resource
+public class UserInfoController extends BaseController {
+
+    @Autowired
     private UserInfoService service;
 
-    @PostMapping("/save")
-    public BaseResult<UserInfo> save(@RequestBody UserInfo entity) {
-        service.saveOrUpdate(entity);
-        return BaseResult.success(entity);
-    }
 
-    @PutMapping("/update")
-    public BaseResult<UserInfo> update(@RequestBody UserInfo entity) {
-        service.saveOrUpdate(entity);
-        return BaseResult.success(entity);
-    }
-
-
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
-        service.removeById(id);
-        return BaseResult.success();
-    }
-
-    @GetMapping("/get/{id}")
-    public BaseResult<UserInfo> select(@PathVariable String id) {
-        UserInfo data = service.getById(id);
-        return BaseResult.success(data);
-    }
-
-    @PostMapping("/page")
-    public BaseResult<Page<UserInfo>> page(@RequestBody Page<UserInfo> page) {
-        page = service.page(page);
-        return BaseResult.success(page);
+    @ApiOperation("查询会员信息列表")
+    @GetMapping("/page")
+    public BaseResult<PageInfo<List<UserInfo>>> page(@ModelAttribute UserInfoQuery query) {
+        startPage();
+        List<UserInfo> userInfos= service.list();
+        return pageInfoBaseResult(userInfos);
     }
 }
 

@@ -45,10 +45,19 @@ public class CourseApiController {
         return BaseResult.success(data);
     }
 
+
+
     @ApiOperation("获取课程分组列表")
     @GetMapping("/list")
     public BaseResult<Map<String, List<Course>>> list(@ModelAttribute CourseQuery query) {
         return courseService.listCourse(query);
+    }
+
+    @Login
+    @ApiOperation("观看视频")
+    @GetMapping("/watch")
+    public BaseResult watch(@RequestParam Long id,@RequestParam Long userId) {
+        return courseService.watchVideo(id, userId);
     }
 
     @Login

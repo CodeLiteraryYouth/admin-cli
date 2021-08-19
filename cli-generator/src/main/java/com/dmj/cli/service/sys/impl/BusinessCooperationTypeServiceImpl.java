@@ -1,8 +1,8 @@
-package com.dmj.cli.service.impl;
+package com.dmj.cli.service.sys.impl;
 
 import com.dmj.cli.domain.BusinessCooperationType;
 import com.dmj.cli.mapper.sys.BusinessCooperationTypeMapper;
-import com.dmj.cli.service.BusinessCooperationTypeService;
+import com.dmj.cli.service.sys.BusinessCooperationTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

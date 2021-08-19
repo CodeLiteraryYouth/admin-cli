@@ -2,6 +2,9 @@ package com.dmj.cli.common.constant;
 
 import com.dmj.cli.common.enums.ResultStatusCode;
 
+/**
+ * @author zd
+ */
 public class BaseResult<T> {
 
     /**

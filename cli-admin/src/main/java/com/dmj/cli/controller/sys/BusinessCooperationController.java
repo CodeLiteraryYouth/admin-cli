@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BusinessCooperation;
-import com.dmj.cli.service.BusinessCooperationService;
+import com.dmj.cli.service.sys.BusinessCooperationService;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

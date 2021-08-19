@@ -1,35 +1,24 @@
-package com.dmj.cli.domain;
+package com.dmj.cli.domain.vo.api;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.dmj.cli.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.annotations.ApiModel;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.dmj.cli.domain.BaseEntity;
+import com.dmj.cli.domain.UserInfoAccount;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * <p>
- * 用户信息表
- * </p>
- *
  * @author zd
- * @since 2021-08-11
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@TableName("user_info")
-@ApiModel(value="UserInfo对象", description="用户信息表")
-public class UserInfo extends BaseEntity {
+public class UserInfoVO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
-    
+
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -84,6 +73,6 @@ public class UserInfo extends BaseEntity {
     @ApiModelProperty(value = "场景ID")
     @TableField("scene_id")
     private String sceneId;
-    
-    
+
+    private List<UserInfoAccount> userInfoAccounts;
 }

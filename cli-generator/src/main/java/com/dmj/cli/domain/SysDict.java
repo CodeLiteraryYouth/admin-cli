@@ -3,7 +3,6 @@ package com.dmj.cli.domain;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.dmj.cli.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,6 +45,10 @@ public class SysDict extends BaseEntity {
     @ApiModelProperty(value = "字典值")
     @TableField("value")
     private String value;
+
+    @ApiModelProperty(value = "扩展字段值")
+    @TableField("ext_value")
+    private String extValue;
 
     @ApiModelProperty(value = "排序")
     @TableField("order_num")

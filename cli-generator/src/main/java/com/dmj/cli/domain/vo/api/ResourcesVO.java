@@ -35,6 +35,10 @@ public class ResourcesVO extends BaseEntity implements Serializable {
     @TableField("resources_no")
     private String resourcesNo;
 
+    @ApiModelProperty(value = "资源描述")
+    @TableField("resources_desc")
+    private String resourcesDesc;
+
     @ApiModelProperty(value = "资源大小")
     @TableField("resources_size")
     private Integer resourcesSize;

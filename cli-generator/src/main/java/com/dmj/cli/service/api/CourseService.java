@@ -19,4 +19,12 @@ import java.util.Map;
 public interface CourseService extends IService<Course> {
 
     BaseResult<Map<String, List<Course>>> listCourse(CourseQuery courseQuery);
+
+    /**
+     * 观看视频
+     * @param id
+     * @param userId
+     * @return
+     */
+    BaseResult watchVideo(Long id,Long userId);
 }
