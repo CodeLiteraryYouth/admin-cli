@@ -10,7 +10,6 @@
         <version>1.1.1</version>
     </parent>
 
-    <groupId>com.dmj</groupId>
     <artifactId>cli-generator</artifactId>
     <version>1.1.1</version>
 
