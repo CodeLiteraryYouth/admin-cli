@@ -1,36 +1,21 @@
-package com.dmj.cli.domain;
+package com.dmj.cli.domain.vo.api;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.dmj.cli.domain.Course;
+import com.dmj.cli.domain.Resources;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-/**
- * <p>
- * 用户支付记录表
- * </p>
- *
- * @author zd
- * @since 2021-08-19
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("user_pay_log")
-@ApiModel(value="UserPayLog对象", description="用户支付记录表")
-public class UserPayLog implements Serializable {
+public class UserPayLogVO implements Serializable {
 
     private static final long serialVersionUID=1L;
-    
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -65,6 +50,8 @@ public class UserPayLog implements Serializable {
     @ApiModelProperty(value = "交易时间")
     @TableField("trade_time")
     private LocalDateTime tradeTime;
-    
-    
+
+    private Resources resources;
+
+    private Course course;
 }

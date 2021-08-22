@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,11 +39,11 @@ public class UserInfoAccount extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "账户余额(单位:分)")
     @TableField("account_amount")
-    private Integer accountAmount;
+    private BigDecimal accountAmount;
 
     @ApiModelProperty(value = "会员次数")
     @TableField("account_num")
-    private Integer accountNum;
+    private Long accountNum;
     
     
 }
