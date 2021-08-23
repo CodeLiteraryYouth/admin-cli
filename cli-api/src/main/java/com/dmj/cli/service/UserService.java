@@ -1,8 +1,10 @@
 package com.dmj.cli.service;
 
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.query.api.UserPayLogQuery;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
+import com.dmj.cli.domain.vo.api.UserPayLogVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 
 import java.util.List;
@@ -34,4 +36,11 @@ public interface UserService {
      * @return
      */
      BaseResult<List<VidelLogVO>> listVideoLog(Long userId);
+
+    /**
+     * 查询用户支付记录
+     * @param query
+     * @return
+     */
+     BaseResult<List<UserPayLogVO>> listPayLogs(UserPayLogQuery query);
 }

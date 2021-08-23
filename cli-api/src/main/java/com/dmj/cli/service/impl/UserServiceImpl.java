@@ -9,18 +9,23 @@ import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.UserInfoAccount;
+import com.dmj.cli.domain.UserPayLog;
+import com.dmj.cli.domain.query.api.UserPayLogQuery;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
+import com.dmj.cli.domain.vo.api.UserPayLogVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 import com.dmj.cli.mapper.api.UserCollLogMapper;
 import com.dmj.cli.mapper.api.UserVideoLogMapper;
 import com.dmj.cli.service.UserService;
 import com.dmj.cli.service.api.UserInfoAccountService;
+import com.dmj.cli.service.api.UserPayLogService;
 import com.dmj.cli.util.str.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserVideoLogMapper userVideoLogMapper;
+
+    @Autowired
+    private UserPayLogService userPayLogService;
 
     @Override
     public BaseResult<UserInfoVO> getUserBySceneId(String sceneId) {
@@ -77,5 +85,12 @@ public class UserServiceImpl implements UserService {
     public BaseResult<List<VidelLogVO>> listVideoLog(Long userId) {
         Assert.notNull(userId,"userId is null");
         return BaseResult.success(userVideoLogMapper.listVideoLog(userId));
+    }
+
+    @Override
+    public BaseResult<List<UserPayLogVO>> listPayLogs(UserPayLogQuery query) {
+        List<UserPayLogVO> userPayLogVOS=new ArrayList<>();
+        List<UserPayLog> userPayLogs=userPayLogService.list(Wrappers.<UserPayLog>lambdaQuery().a);
+        return null;
     }
 }
