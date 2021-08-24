@@ -106,6 +106,29 @@ public interface WxConstant {
         SCAN;
     }
 
+    enum TRADE_TYPE {
+        /**
+         * 现金支付
+         */
+        RECHARGE,
+        /**
+         * 资源支付
+         */
+        RESOURCES_PAY,
+        /**
+         * 课程支付
+         */
+        COURSE_PAY,
+        /**
+         * 资源退费
+         */
+        RESOURCES_REFUND,
+        /**
+         * 课程退费
+         */
+        COURSE_REFUND;
+    }
+
 
 
 }
