@@ -110,6 +110,10 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
     public BaseResult<ResourcesVO> getResourcesById(Long id) {
         Assert.notNull(id,"id is null");
         ResourcesVO resourcesVO=resourcesMapper.getResourcesById(id);
+        if (resourcesVO != null) {
+            resourcesVO.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM, resourcesVO.getId().toString()).longValue());
+            resourcesVO.setCollectNum(redisUtils.score(GlobalConstants.COLLECT_NUM, resourcesVO.getId().toString()).longValue());
+        }
         return BaseResult.success(resourcesVO);
     }
 }
