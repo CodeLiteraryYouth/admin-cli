@@ -38,7 +38,7 @@ public class LoginAspect {
     public void loginFilter(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request= ServletUtils.getRequest();
         String token = request.getHeader(LOGIN_TOKEN_KEY);
-        if (token == null || token.isEmpty()) {
+        if (StringUtils.isBlank(token)) {
             throw new LoginException("当前用户未登录，请前去登录");
         }
         Long sceneId=Long.valueOf(token);
