@@ -27,7 +27,7 @@ public class ConfigController {
     private ConfigService configService;
 
 
-    @ApiOperation("查询会员充值信息")
+    @ApiOperation("查询配置充值类型")
     @GetMapping("members")
     public BaseResult<Map<String, List<SysDict>>> listMembers(@ModelAttribute SysConfigQuery query) {
         return configService.listMembers(query);
