@@ -86,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("tool");
+        config.setInclude("product");
         // 设置不需要generator的表名
         // config.setExclude();
 
