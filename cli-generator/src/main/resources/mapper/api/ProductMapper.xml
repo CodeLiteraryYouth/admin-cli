@@ -47,6 +47,15 @@
         <if test="searchVal != null and searchVal != ''">
             and CONCAT(IFNUULL(title,''),IFNULL(desc,'')) like CONCAT(#{searchVal},'%')
         </if>
+        <if test="isBlock != null">
+            and is_block=#{isBlock}
+        </if>
+        <if test="isHot != null">
+            and is_hot=#{isHot}
+        </if>
+        <if test="isPass != null">
+            and is_pass=#{isPass}
+        </if>
     </select>
 
 </mapper>
