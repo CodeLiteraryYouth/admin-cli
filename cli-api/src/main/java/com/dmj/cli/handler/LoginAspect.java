@@ -1,6 +1,7 @@
 package com.dmj.cli.handler;
 
 import cn.hutool.json.JSONUtil;
+import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.exception.LoginException;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UserInfo;
@@ -23,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LoginAspect {
 
-    private final static String LOGIN_TOKEN_KEY="Login-Token";
 
     @Autowired
     private RedisUtils redisUtils;
@@ -37,7 +37,7 @@ public class LoginAspect {
     @Before("point()")
     public void loginFilter(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request= ServletUtils.getRequest();
-        String token = request.getHeader(LOGIN_TOKEN_KEY);
+        String token = request.getHeader(AuthConstants.LOGIN_TOKEN_KEY);
         if (StringUtils.isBlank(token)) {
             throw new LoginException("当前用户未登录，请前去登录");
         }

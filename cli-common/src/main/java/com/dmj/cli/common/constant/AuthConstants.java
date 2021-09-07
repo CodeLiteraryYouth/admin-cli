@@ -14,4 +14,9 @@ public interface AuthConstants {
      * 登录地址
      */
     String LOGIN_URL="/admin/login";
+
+    /**
+     * 登录请求标识
+     */
+    String LOGIN_TOKEN_KEY="Login-Token";
 }

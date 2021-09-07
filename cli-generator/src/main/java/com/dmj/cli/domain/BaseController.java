@@ -1,5 +1,6 @@
 package com.dmj.cli.domain;
 
+import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.core.PageDomain;
 import com.dmj.cli.core.TableSupport;
@@ -27,10 +28,13 @@ public class BaseController {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize))
-        {
+        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
             String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.startPage(pageNum, pageSize, orderBy);
+            if (StringUtils.isEmpty(orderBy)) {
+                PageHelper.startPage(pageNum, pageSize);
+            } else {
+                PageHelper.startPage(pageNum,pageSize,orderBy);
+            }
         }
     }
 
@@ -64,6 +68,10 @@ public class BaseController {
      */
     public HttpSession getSession() {
         return getRequest().getSession();
+    }
+
+    protected String getToken() {
+        return getRequest().getHeader(AuthConstants.LOGIN_TOKEN_KEY);
     }
 
     protected <T> BaseResult<PageInfo<List<T>>> pageInfoBaseResult(List<T> list) {

@@ -99,8 +99,10 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         resourcesVOS.stream().map(resourcesVO -> {
             ResourcesVO resources=new ResourcesVO();
             BeanUtils.copyProperties(resources,resourcesVO);
-            resources.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM,resources.getId().toString()).longValue());
-            resources.setCollectNum(redisUtils.score(GlobalConstants.COLLECT_NUM,resources.getId().toString()).longValue());
+            Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, resourcesVO.getId().toString());
+            Double collectNum = redisUtils.score(GlobalConstants.COLLECT_NUM, resourcesVO.getId().toString());
+            resources.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+            resources.setCollectNum(collectNum == null ? 0L : collectNum.longValue());
             return resources;
         }).collect(Collectors.toList());
         return BaseResult.success(resourcesVOS);
@@ -111,8 +113,10 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         Assert.notNull(id,"id is null");
         ResourcesVO resourcesVO=resourcesMapper.getResourcesById(id);
         if (resourcesVO != null) {
-            resourcesVO.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM, resourcesVO.getId().toString()).longValue());
-            resourcesVO.setCollectNum(redisUtils.score(GlobalConstants.COLLECT_NUM, resourcesVO.getId().toString()).longValue());
+            Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, resourcesVO.getId().toString());
+            Double collectNum = redisUtils.score(GlobalConstants.COLLECT_NUM, resourcesVO.getId().toString());
+            resourcesVO.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+            resourcesVO.setCollectNum(collectNum == null ? 0L : collectNum.longValue());
         }
         return BaseResult.success(resourcesVO);
     }

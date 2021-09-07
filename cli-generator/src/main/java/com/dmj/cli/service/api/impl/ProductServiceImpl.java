@@ -1,10 +1,14 @@
 package com.dmj.cli.service.api.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.domain.Product;
+import com.dmj.cli.domain.query.api.ProductQuery;
 import com.dmj.cli.mapper.api.ProductMapper;
 import com.dmj.cli.service.api.ProductService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Override
+    public List<Product> page(ProductQuery query) {
+        return productMapper.listProducts(query);
+    }
 }

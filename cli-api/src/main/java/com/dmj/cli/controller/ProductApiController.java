@@ -1,6 +1,7 @@
 package com.dmj.cli.controller;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
@@ -8,7 +9,7 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Product;
 import com.dmj.cli.domain.ProductType;
-import com.dmj.cli.domain.query.BaseQuery;
+import com.dmj.cli.domain.query.api.ProductQuery;
 import com.dmj.cli.service.api.ProductService;
 import com.dmj.cli.service.api.ProductTypeService;
 import com.github.pagehelper.PageInfo;
@@ -57,15 +58,25 @@ public class ProductApiController extends BaseController {
     @Favour
     @ApiOperation("点赞")
     @GetMapping("favour")
-    public BaseResult favour(@RequestParam Long userId,@RequestParam Long id) {
+    public BaseResult favour(@RequestParam Long id,@RequestParam Long userId) {
         return BaseResult.success();
+    }
+
+    @Login
+    @ApiOperation("上传作品、文章")
+    @PostMapping("/save")
+    public BaseResult save(@RequestBody Product entity) {
+        entity.setCreateTime(DateUtil.date());
+        entity.setCreator(getToken());
+        service.save(entity);
+        return BaseResult.success(entity);
     }
 
     @ApiOperation("分页查询作品列表")
     @GetMapping("/page")
-    public BaseResult<PageInfo<List<Product>>> page(@ModelAttribute BaseQuery query) {
+    public BaseResult<PageInfo<List<Product>>> page(@ModelAttribute ProductQuery query) {
         startPage();
-        List<Product> list= service.list();
+        List<Product> list= service.page(query);
         return pageInfoBaseResult(list);
     }
 }
