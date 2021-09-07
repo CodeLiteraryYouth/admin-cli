@@ -2,7 +2,6 @@ package com.dmj.cli.common.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
-import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
@@ -642,6 +641,38 @@ public class RedisUtils {
     public Set<ZSetOperations.TypedTuple<Object>> reverseRangeByScoreWithScores(String key) {
         Set<ZSetOperations.TypedTuple<Object>> sets=redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key,0,-1);
         return sets;
+    }
+
+
+    //===========HyperLogLog=============
+
+    /**
+     * 添加
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long pfAdd(String key,Object... value) {
+        return redisTemplate.opsForHyperLogLog().add(key,value);
+    }
+
+    /**
+     * 得到key的count计算
+     * @param key
+     * @return
+     */
+    public Long pfCount(String... key) {
+        return redisTemplate.opsForHyperLogLog().size(key);
+    }
+
+    /**
+     * 多个key之间合并count
+     * @param key
+     * @param keys
+     * @return
+     */
+    public Long pfMerge(String key,String... keys) {
+        return redisTemplate.opsForHyperLogLog().union(key,keys);
     }
 
 }
