@@ -1,24 +1,29 @@
 package com.dmj.cli.service.sys.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysUser;
+import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.dmj.cli.mapper.sys.SysPermissionMapper;
+import com.dmj.cli.mapper.sys.SysUserMapper;
 import com.dmj.cli.service.sys.SysPermissionService;
 import com.dmj.cli.service.sys.SysUserService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.dmj.cli.util.DataTransferUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,16 +42,39 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private SysPermissionMapper sysPermissionMapper;
 
     @Autowired
+    private SysUserMapper sysUserMapper;
+
+    @Autowired
     private SysUserService sysUserService;
 
     @Override
-    public BaseResult<PageInfo<SysPermissionVO>> pagePermission(PermissionQuery query) {
-        Assert.notNull(query,"bad request");
-        Assert.notNull(query.getPageNo(),"pageNo is null");
-        PageHelper.startPage(query.getPageNo(),query.getPageSize());
+    public BaseResult<List<SysPermissionVO>> pagePermission(PermissionQuery query) {
         List<SysPermissionVO> sysPermissionVOS=sysPermissionMapper.listPermission(query);
-        PageInfo<SysPermissionVO> pageInfo=new PageInfo<>(sysPermissionVOS);
-        return BaseResult.success(pageInfo);
+        List<SysPermissionVO> result=DataTransferUtils.list2Tree(sysPermissionVOS,"id","parentId","children");
+        return BaseResult.success(result);
+    }
+
+    @Override
+    public BaseResult<Map<String, Object>> listUserPermissions(String userName) {
+        Assert.notNull(userName,"userName is null");
+        SysUserDTO sysUserDTO=sysUserService.getUserByName(userName);
+        List<Long> ids=sysPermissionMapper.listPermissionIdsByUserId(sysUserDTO.getId());
+        List<SysPermission> sysPermissions=sysPermissionMapper.selectBatchIds(ids);
+        List<SysPermissionVO> sysPermissionVOS = new ArrayList<>(sysPermissions.size());
+        List<String> perms=null;
+        if (CollectionUtil.isNotEmpty(sysPermissions)) {
+            sysPermissions.forEach(sysPermission -> {
+                SysPermissionVO sysPermissionVO=new SysPermissionVO();
+                BeanUtil.copyProperties(sysPermission,sysPermissionVO);
+                sysPermissionVOS.add(sysPermissionVO);
+            });
+            perms=sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
+
+        }
+        Map<String,Object> result=new HashMap<>(2);
+        result.put("menuList",DataTransferUtils.list2Tree(sysPermissions,"id","parentId","children"));
+        result.put("permissions",perms);
+        return BaseResult.success(result);
     }
 
     @Override

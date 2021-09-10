@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2021-06-28
  */
 @RestController
-@RequestMapping("/sys-oauth-client")
+@RequestMapping("/sys/client")
 @Api(tags = "系统管理-客户端管理")
 public class SysOauthClientController {
 
@@ -49,7 +49,7 @@ public class SysOauthClientController {
     }
 
     @ApiOperation("查询客户端列表")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<SysOauthClient>> pageInfoBaseResult(@ModelAttribute OauthClientQuery query) {
         return service.pageOauthClient(query);
     }

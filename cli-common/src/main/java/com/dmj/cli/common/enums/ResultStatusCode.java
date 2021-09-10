@@ -16,6 +16,7 @@ public enum ResultStatusCode {
     LOGIN_ERROR(10002,"用户未登录，请前去登录"),
     SHIRO_ERROR(10003, "登录异常"),
     UNAUTHO_ERROR(10004, "您没有该权限"),
+    USER_LOCKED(10005,"用户已锁定，请联系管理员"),
     BIND_PHONE(10010, "请绑定手机号");
 
 

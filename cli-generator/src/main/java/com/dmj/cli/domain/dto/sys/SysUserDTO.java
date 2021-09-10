@@ -1,12 +1,15 @@
 package com.dmj.cli.domain.dto.sys;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.dmj.cli.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,13 +23,13 @@ import java.util.List;
 @Data
 @TableName("sys_user")
 @ApiModel(value="SysUser对象", description="")
-public class SysUserDTO implements Serializable {
+public class SysUserDTO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "用户名")
     @TableField("user_name")
@@ -63,27 +66,6 @@ public class SysUserDTO implements Serializable {
     @ApiModelProperty(value = "用户是否已锁定")
     @TableField("locked")
     private Boolean locked;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "创建者")
-    @TableField("creator")
-    private String creator;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("updater")
-    private String updater;
-
-    @ApiModelProperty(value = "删除标记")
-    @TableField("delete_flag")
-    @TableLogic
-    private Boolean deleteFlag;
 
     private List<String> roles;
 

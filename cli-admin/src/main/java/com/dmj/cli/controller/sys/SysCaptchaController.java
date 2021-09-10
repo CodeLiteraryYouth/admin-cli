@@ -1,10 +1,10 @@
 package com.dmj.cli.controller.sys;
 
-import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.BaseController;
-import com.dmj.cli.domain.vo.CaptchaVO;
+import com.dmj.cli.security.CaptchaException;
+import com.dmj.cli.util.str.StringUtils;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * 图片验证码（支持算术形式）
@@ -44,9 +43,12 @@ public class SysCaptchaController extends BaseController {
      * 验证码生成
      */
     @GetMapping(value = "/captchaImage")
-    public BaseResult getKaptchaImage(HttpServletRequest request, HttpServletResponse response) {
+    public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) {
+        String uuid=request.getParameter("uuid");
+        if (StringUtils.isBlank(uuid)) {
+            throw new CaptchaException("验证码的uuid为空");
+        }
         ServletOutputStream out = null;
-        CaptchaVO captchaVO=null;
         try {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -54,24 +56,9 @@ public class SysCaptchaController extends BaseController {
             response.setHeader("Pragma", "no-cache");
             response.setContentType("image/jpeg");
 
-            String type = request.getParameter("type");
-            String capStr = null;
-            String code = null;
-            BufferedImage bi = null;
-            if ("math".equals(type)) {
-                String capText = captchaProducerMath.createText();
-                capStr = capText.substring(0, capText.lastIndexOf("@"));
-                code = capText.substring(capText.lastIndexOf("@") + 1);
-                bi = captchaProducerMath.createImage(capStr);
-            } else if ("char".equals(type)) {
-                capStr = code = captchaProducer.createText();
-                bi = captchaProducer.createImage(capStr);
-            }
-            String token= UUID.randomUUID().toString();
-            redisUtils.hset(GlobalConstants.CAPTCHA,token,capStr);
-            captchaVO=new CaptchaVO();
-            captchaVO.setToken(token);
-            captchaVO.setCode(capStr);
+            String capStr = captchaProducer.createText();
+            BufferedImage bi = captchaProducer.createImage(capStr);
+            redisUtils.hset(GlobalConstants.CAPTCHA,uuid,capStr);
             out = response.getOutputStream();
             ImageIO.write(bi, "jpg", out);
             out.flush();
@@ -87,6 +74,5 @@ public class SysCaptchaController extends BaseController {
                 e.printStackTrace();
             }
         }
-        return BaseResult.success(captchaVO);
     }
 }

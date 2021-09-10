@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -87,7 +87,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
         sysRoleMapper.insert(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
-            for (Integer permissionId: sysRoleDTO.getPermissionIds()) {
+            for (Long permissionId: sysRoleDTO.getPermissionIds()) {
                 SysRolePermission sysRolePermission=new SysRolePermission();
                 sysRolePermission.setRoleId(sysRole.getId());
                 sysRolePermission.setPermissionId(permissionId);
@@ -108,7 +108,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRoleMapper.updateById(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
             sysRolePermissionMapper.delete(new LambdaQueryWrapper<SysRolePermission>().eq(SysRolePermission::getRoleId,sysRole.getId()));
-            for (Integer permissionId:sysRoleDTO.getPermissionIds()) {
+            for (Long permissionId:sysRoleDTO.getPermissionIds()) {
                 SysRolePermission sysRolePermission=new SysRolePermission();
                 sysRolePermission.setRoleId(sysRole.getId());
                 sysRolePermission.setPermissionId(permissionId);

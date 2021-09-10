@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2021-06-28
  */
 @RestController
-@RequestMapping("/sys-role")
+@RequestMapping("/sys/role")
 @Api(tags = "系统管理-角色管理")
 public class SysRoleController {
 
@@ -29,7 +29,7 @@ public class SysRoleController {
     private SysRoleService service;
 
     @ApiOperation("查询角色列表")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<SysRoleVO>> page(@ModelAttribute RoleQuery query) {
         return service.pageRole(query);
     }

@@ -5,7 +5,9 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
-import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,7 +19,9 @@ import com.github.pagehelper.PageInfo;
  */
 public interface SysPermissionService extends IService<SysPermission> {
 
-    BaseResult<PageInfo<SysPermissionVO>> pagePermission(PermissionQuery query);
+    BaseResult<List<SysPermissionVO>> pagePermission(PermissionQuery query);
+
+    BaseResult<Map<String,Object>> listUserPermissions(String userName);
 
     BaseResult updatePermission(SysPermission sysPermission);
 

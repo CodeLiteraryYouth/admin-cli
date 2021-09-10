@@ -34,10 +34,10 @@ public class OAuthUserDetails implements UserDetails {
     private Collection<SimpleGrantedAuthority> authorities;
 
     public OAuthUserDetails(SysUserDTO user) {
-        this.setId(user.getId().longValue());
+        this.setId(user.getId());
         this.setUsername(user.getUserName());
         this.setPassword(user.getPassword());
-        this.setEnabled(user.getLocked());
+        this.setEnabled(true);
         if (CollectionUtil.isNotEmpty(user.getRoles()) && CollectionUtil.isNotEmpty(user.getAuthorities())) {
             authorities = new ArrayList<>();
             user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));

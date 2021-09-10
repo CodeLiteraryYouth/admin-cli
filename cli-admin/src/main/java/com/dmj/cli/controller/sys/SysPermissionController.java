@@ -6,11 +6,15 @@ import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.dmj.cli.service.sys.SysPermissionService;
 import com.dmj.cli.service.sys.SysRoleService;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2021-06-28
  */
 @RestController
-@RequestMapping("/sys-permission")
+@RequestMapping("/sys/menu")
 @Api(tags = "系统管理-权限管理")
 public class SysPermissionController {
 
@@ -32,9 +36,16 @@ public class SysPermissionController {
     private SysRoleService roleService;
 
     @ApiOperation("权限列表")
-    @GetMapping("/page")
-    public BaseResult<PageInfo<SysPermissionVO>> pageInfoBaseResult(@ModelAttribute PermissionQuery query) {
+    @GetMapping("/list")
+    public BaseResult<List<SysPermissionVO>> pageInfoBaseResult(@ModelAttribute PermissionQuery query) {
         return service.pagePermission(query);
+    }
+
+    @ApiOperation("查询当前用户菜单和权限列表")
+    @GetMapping("/nav")
+    public BaseResult<Map<String,Object>> listUserPermission(Authentication authentication) {
+        UserDetails userDetails= (UserDetails) authentication.getPrincipal();
+        return service.listUserPermissions(userDetails.getUsername());
     }
 
     @PostMapping("/save")

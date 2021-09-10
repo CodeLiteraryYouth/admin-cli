@@ -1,21 +1,18 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.SysDict;
 import com.dmj.cli.domain.query.BaseQuery;
+import com.dmj.cli.service.sys.SysDictService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.domain.SysDict;
-import com.dmj.cli.service.sys.SysDictService;
-import org.springframework.web.bind.annotation.RestController;
-import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,7 +24,7 @@ import java.util.List;
  * @since 2021-08-10
  */
 @RestController
-@RequestMapping("/sys-dict")
+@RequestMapping("/sys/dict")
 @Api(tags = "数据字典表")
 public class SysDictController extends BaseController {
 
@@ -64,7 +61,7 @@ public class SysDictController extends BaseController {
     }
 
     @ApiOperation("分页查询数据字典详情")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<SysDict>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<SysDict> sysDicts = service.list();

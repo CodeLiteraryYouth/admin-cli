@@ -1,17 +1,16 @@
 package com.dmj.cli.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -32,7 +31,7 @@ public class SysPermission extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "权限名称")
     @TableField("permission_name")
@@ -42,13 +41,17 @@ public class SysPermission extends BaseEntity implements Serializable {
     @TableField("permission_type")
     private String permissionType;
 
+    @ApiModelProperty(value = "权限路径")
+    @TableField("permission_url")
+    private String permissionUrl;
+
     @ApiModelProperty(value = "权限标识")
     @TableField("permission_str")
     private String permissionStr;
 
     @ApiModelProperty(value = "父类权限ID")
     @TableField("parent_id")
-    private Integer parentId;
+    private Long parentId;
 
     @ApiModelProperty(value = "权限标识排序")
     @TableField("permission_order")
@@ -57,6 +60,10 @@ public class SysPermission extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "是否展示该权限")
     @TableField("is_view")
     private Boolean isView;
+
+    @ApiModelProperty(value = "菜单图标")
+    @TableField("icon")
+    private String icon;
 
 
 }

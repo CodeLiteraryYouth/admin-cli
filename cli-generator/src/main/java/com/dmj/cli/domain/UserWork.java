@@ -1,15 +1,16 @@
 package com.dmj.cli.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -29,15 +30,15 @@ public class UserWork extends BaseEntity implements Serializable {
     private static final long serialVersionUID=1L;
     
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "用户ID")
     @TableField("user_id")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "周练ID")
     @TableField("job_id")
-    private Integer jobId;
+    private Long jobId;
 
     @ApiModelProperty(value = "作业标题")
     @TableField("work_title")

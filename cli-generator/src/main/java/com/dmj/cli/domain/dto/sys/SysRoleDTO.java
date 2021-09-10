@@ -22,7 +22,7 @@ public class SysRoleDTO implements Serializable {
 
     @ApiModelProperty(value = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "角色编码")
     @TableField("role_code")
@@ -61,6 +61,6 @@ public class SysRoleDTO implements Serializable {
     @TableLogic
     private Boolean deleteFlag;
 
-    private List<Integer> permissionIds;
+    private List<Long> permissionIds;
 
 }

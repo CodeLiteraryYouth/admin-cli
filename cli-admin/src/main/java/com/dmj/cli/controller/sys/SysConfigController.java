@@ -1,16 +1,15 @@
 package com.dmj.cli.controller.sys;
 
 
-import com.dmj.cli.domain.BaseController;
-import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.SysConfig;
 import com.dmj.cli.service.sys.SysConfigService;
-import org.springframework.web.bind.annotation.RestController;
-import javax.annotation.Resource;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -21,7 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @since 2021-08-10
  */
 @RestController
-@RequestMapping("/sys-config")
+@RequestMapping("/sys/config")
 @Api(tags = "系统配置信息表")
 public class SysConfigController extends BaseController {
     @Resource
@@ -52,7 +51,7 @@ public class SysConfigController extends BaseController {
         return BaseResult.success(data);
     }
 
-    @PostMapping("/page")
+    @PostMapping("/list")
     public BaseResult<Page<SysConfig>> page(@RequestBody Page<SysConfig> page) {
         page = service.page(page);
         return BaseResult.success(page);
