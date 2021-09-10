@@ -69,5 +69,6 @@ public class BannerController extends BaseController {
                 .eq(Objects.isNull(query.getType()),Banner::getType,query.getType()));
         return pageInfoBaseResult(list);
     }
+
 }
 

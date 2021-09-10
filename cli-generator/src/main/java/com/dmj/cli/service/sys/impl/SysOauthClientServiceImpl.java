@@ -31,8 +31,8 @@ public class SysOauthClientServiceImpl extends ServiceImpl<SysOauthClientMapper,
     @Override
     public BaseResult<PageInfo<SysOauthClient>> pageOauthClient(OauthClientQuery query) {
         Assert.notNull(query,"bad request");
-        Assert.notNull(query.getPageNo(),"pageNo is null");
-        PageHelper.startPage(query.getPageNo(),query.getPageSize());
+        Assert.notNull(query.getPageNum(),"pageNo is null");
+        PageHelper.startPage(query.getPageNum(),query.getPageSize());
         List<SysOauthClient> sysOauthClients=sysOauthClientMapper.listOauthClients(query);
         PageInfo<SysOauthClient> pageInfo=new PageInfo<>(sysOauthClients);
         return BaseResult.success(pageInfo);

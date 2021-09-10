@@ -59,8 +59,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public BaseResult<PageInfo<SysRoleVO>> pageRole(RoleQuery roleQuery) {
         Assert.notNull(roleQuery,"bad request");
-        Assert.notNull(roleQuery.getPageNo(),"pageNo is null");
-        PageHelper.startPage(roleQuery.getPageNo(),roleQuery.getPageSize());
+        Assert.notNull(roleQuery.getPageNum(),"pageNo is null");
+        PageHelper.startPage(roleQuery.getPageNum(),roleQuery.getPageSize());
         List<SysRoleVO> sysRoleVOS=sysRoleMapper.listRole(roleQuery);
         PageInfo<SysRoleVO> pageInfo=new PageInfo<>(sysRoleVOS);
         return BaseResult.success(pageInfo);

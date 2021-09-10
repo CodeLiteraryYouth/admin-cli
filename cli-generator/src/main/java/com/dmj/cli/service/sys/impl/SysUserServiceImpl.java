@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -96,9 +95,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public BaseResult<PageInfo<SysUserVO>> pageUserList(UserQuery userQuery) {
         Assert.notNull(userQuery,"bad request");
-        Assert.notNull(userQuery.getPageNo(),"pageNo is null");
+        Assert.notNull(userQuery.getPageNum(),"pageNo is null");
         Assert.notNull(userQuery.getPageSize(),"pageSize is null");
-        PageHelper.startPage(userQuery.getPageNo(),userQuery.getPageSize());
+        PageHelper.startPage(userQuery.getPageNum(),userQuery.getPageSize());
         List<SysUserVO> sysUserVOS=sysUserMapper.listSysUser(userQuery);
         PageInfo<SysUserVO> pageInfo=new PageInfo<SysUserVO>(sysUserVOS);
         return BaseResult.success(pageInfo);

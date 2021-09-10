@@ -3,19 +3,18 @@ package com.dmj.cli.controller.sys;
 
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.Tool;
 import com.dmj.cli.domain.query.sys.ToolQuery;
+import com.dmj.cli.service.sys.ToolService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.domain.Tool;
-import com.dmj.cli.service.sys.ToolService;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.github.pagehelper.PageInfo;
+
 import java.util.List;
-import com.dmj.cli.domain.BaseController;
 
 /**
  * <p>
@@ -65,7 +64,7 @@ public class ToolController extends BaseController {
     @GetMapping("/page")
     public BaseResult<PageInfo<List<Tool>>> page(@ModelAttribute ToolQuery query) {
         Assert.notNull(query,"bad request");
-        Assert.notNull(query.getPageNo(),"pageNo is null");
+        Assert.notNull(query.getPageNum(),"pageNo is null");
         Assert.notNull(query.getPageSize(),"pageSize is null");
         startPage();
         List<Tool> list=null;
