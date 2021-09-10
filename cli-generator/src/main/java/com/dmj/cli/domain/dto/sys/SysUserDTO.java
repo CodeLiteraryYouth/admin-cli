@@ -3,9 +3,7 @@ package com.dmj.cli.domain.dto.sys;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.dmj.cli.domain.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -21,8 +19,6 @@ import java.util.List;
  * @since 2021-06-28
  */
 @Data
-@TableName("sys_user")
-@ApiModel(value="SysUser对象", description="")
 public class SysUserDTO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
