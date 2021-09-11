@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 
@@ -41,15 +43,25 @@ public class SysRoleController {
     }
 
     @ApiOperation("修改角色")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<SysRole> update(@RequestBody SysRoleDTO entity) {
         return service.updateRole(entity);
     }
 
+    @GetMapping("/select")
+    public BaseResult<List<SysRole>> select() {
+        return BaseResult.success(service.list());
+    }
 
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-       return service.deleteRole(id);
+    @GetMapping("/info")
+    public BaseResult<SysRoleVO> info(@RequestParam Long id) {
+        return service.info(id);
+    }
+
+
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+       return service.deleteRole(ids);
     }
 
 }

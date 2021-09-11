@@ -55,6 +55,9 @@
         left join sys_role_permission rp on r.id=rp.role_id
         left join sys_permission p on rp.permission_id=p.id
         where r.delete_flag=false
+        <if test="id != null">
+            and r.id=#{id}
+        </if>
         <if test="startTime !=null and endTime != null">
             and r.create_time between #{startTime} and #{endTime}
         </if>
@@ -69,7 +72,10 @@
         </if>
     </select>
     <select id="listUsersByRoleId" resultType="java.lang.Long">
-        select ur.user_id from sys_user_role ur where ur.role_id=#{roleId}
+        select ur.user_id from sys_user_role ur where ur.role_id in
+        <foreach collection="roleIds" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

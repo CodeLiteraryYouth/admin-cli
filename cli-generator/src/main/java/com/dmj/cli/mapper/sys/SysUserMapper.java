@@ -24,4 +24,5 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     List<Long> listMenuIdsByUserId(@Param("userId") Long userId);
 
     List<SysUserVO> listSysUser(UserQuery userQuery);
+
 }

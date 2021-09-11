@@ -8,6 +8,8 @@ import com.dmj.cli.domain.query.sys.RoleQuery;
 import com.dmj.cli.domain.vo.sys.SysRoleVO;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -20,9 +22,11 @@ public interface SysRoleService extends IService<SysRole> {
 
     BaseResult<PageInfo<SysRoleVO>> pageRole(RoleQuery roleQuery);
 
+    BaseResult<SysRoleVO> info(Long id);
+
     BaseResult insertRole(SysRoleDTO sysRoleDTO);
 
     BaseResult updateRole(SysRoleDTO sysRoleDTO);
 
-    BaseResult deleteRole(Long roleId);
+    BaseResult deleteRole(List<Long> roleIds);
 }

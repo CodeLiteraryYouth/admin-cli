@@ -20,5 +20,5 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     List<SysRoleVO> listRole(RoleQuery roleQuery);
 
-    List<Long> listUsersByRoleId(@Param("roleId") Long roleId);
+    List<Long> listUsersByRoleId(@Param("roleId") List<Long> roleIds);
 }

@@ -23,6 +23,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.query.BaseQuery;
+import java.util.List;
 
 /**
  * <p>
@@ -59,20 +60,20 @@ public class ${table.controllerName} extends BaseController {
         return BaseResult.success(entity);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult update(@RequestBody ${entity} entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> id) {
         service.removeById(id);
         return BaseResult.success();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<${entity}> select(@PathVariable Long id) {
         ${entity} data = service.getById(id);
         return BaseResult.success(data);

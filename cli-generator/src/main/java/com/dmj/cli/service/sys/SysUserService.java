@@ -28,6 +28,8 @@ public interface SysUserService extends IService<SysUser> {
 
     BaseResult<PageInfo<SysUserVO>> pageUserList(UserQuery userQuery);
 
+    BaseResult<SysUserVO> info(Long id);
+
     BaseResult insertUser(SysUserDTO sysUserDTO);
 
     BaseResult updateUser(SysUserDTO sysUserDTO);

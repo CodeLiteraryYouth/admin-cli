@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,9 +67,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return BaseResult.success(pageInfo);
     }
 
-    private void refreshUserAuthorities(Long roleId) {
-        Assert.notNull(roleId,"roleId is null");
-        List<Long> userIds=sysRoleMapper.listUsersByRoleId(roleId);
+    @Override
+    public BaseResult<SysRoleVO> info(Long id) {
+        RoleQuery query=new RoleQuery();
+        query.setId(id);
+        List<SysRoleVO> sysRoleVOS=sysRoleMapper.listRole(query);
+        return BaseResult.success(sysRoleVOS.get(0));
+    }
+
+    private void refreshUserAuthorities(List<Long> roleIds) {
+        Assert.notNull(roleIds,"roleId is null");
+        List<Long> userIds=sysRoleMapper.listUsersByRoleId(roleIds);
         if (CollectionUtil.isNotEmpty(userIds)) {
             List<SysUser> sysUsers = sysUserService.listByIds(userIds);
             List<String> userNames = sysUsers.stream().map(SysUser::getUserName).collect(Collectors.toList());
@@ -114,18 +123,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 sysRolePermission.setPermissionId(permissionId);
                 sysRolePermissionMapper.insert(sysRolePermission);
             }
-            refreshUserAuthorities(Long.valueOf(sysRoleDTO.getId()));
+            refreshUserAuthorities(Arrays.asList(sysRoleDTO.getId()));
         }
         return BaseResult.success();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-    public BaseResult deleteRole(Long roleId) {
-        Assert.notNull(roleId,"roleId is null");
-        int res=sysRoleMapper.deleteById(roleId);
+    public BaseResult deleteRole(List<Long> roleIds) {
+        Assert.notNull(roleIds,"roleId is null");
+        int res=sysRoleMapper.deleteBatchIds(roleIds);
         if (res > 0) {
-            refreshUserAuthorities(roleId);
+            refreshUserAuthorities(roleIds);
         }
         return BaseResult.success();
     }

@@ -104,6 +104,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public BaseResult<SysUserVO> info(Long id) {
+        UserQuery query=new UserQuery();
+        query.setId(id);
+        List<SysUserVO> sysUserVOS=sysUserMapper.listSysUser(query);
+        return BaseResult.success(sysUserVOS.get(0));
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public BaseResult insertUser(SysUserDTO sysUserDTO) {
         Assert.notNull(sysUserDTO,"bad request");

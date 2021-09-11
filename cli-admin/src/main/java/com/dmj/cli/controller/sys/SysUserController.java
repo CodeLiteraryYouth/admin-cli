@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -44,16 +45,21 @@ public class SysUserController {
     }
 
     @ApiOperation("修改用户")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult update(@RequestBody SysUserDTO entity) {
         return service.updateUser(entity);
     }
 
+    @GetMapping("/info")
+    public BaseResult<SysUserVO> info(@RequestParam Long id) {
+        return service.info(id);
+    }
+
 
     @ApiOperation("删除用户(逻辑删除)")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<String> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
