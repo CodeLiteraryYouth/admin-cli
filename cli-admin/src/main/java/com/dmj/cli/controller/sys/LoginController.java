@@ -9,10 +9,13 @@ import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.vo.sys.LoginForm;
 import com.dmj.cli.security.CaptchaException;
 import com.dmj.cli.service.sys.SysUserService;
+import com.dmj.cli.util.jwt.JwtUtils;
+import com.dmj.cli.util.str.StringUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @apiNote
  **/
 @RestController
+@Api(tags = "登录退出接口")
 public class LoginController {
 
     @Autowired
@@ -29,12 +33,15 @@ public class LoginController {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
 
     @PostMapping("/login")
-    public BaseResult<SysUserDTO> login(@RequestBody LoginForm loginForm) {
+    public BaseResult<SysUserDTO> login(LoginForm loginForm) {
         Assert.notNull(loginForm,"bad request");
-        Assert.notNull(loginForm.getUserName(),"userName is null");
-        SysUserDTO sysUserDTO=sysUserService.getUserByName(loginForm.getUserName());
+        Assert.notNull(loginForm.getUsername(),"userName is null");
+        SysUserDTO sysUserDTO=sysUserService.getUserByName(loginForm.getUsername());
         if (sysUserDTO == null) {
             return BaseResult.fail(ResultStatusCode.NOT_EXIST_USER_OR_ERROR_PWD);
         }
@@ -49,5 +56,14 @@ public class LoginController {
         }
         redisUtils.hdel(GlobalConstants.CAPTCHA,loginForm.getUuid());
         return BaseResult.success(sysUserDTO);
+    }
+
+    @GetMapping("/logout")
+    public BaseResult logout() {
+       String userName=jwtUtils.getUserName();
+       if (StringUtils.isEmpty(userName)) {
+           return BaseResult.fail("user is logout");
+       }
+       return BaseResult.success();
     }
 }

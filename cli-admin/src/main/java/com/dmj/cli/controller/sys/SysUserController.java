@@ -1,14 +1,25 @@
 package com.dmj.cli.controller.sys;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.enums.ResultStatusCode;
+import com.dmj.cli.domain.SysUser;
+import com.dmj.cli.domain.dto.sys.PasswordDTO;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
 import com.dmj.cli.service.sys.SysUserService;
+import com.dmj.cli.util.jwt.JwtUtils;
+import com.dmj.cli.util.str.StringUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,12 +34,15 @@ import java.util.List;
  * @since 2021-06-28
  */
 @RestController
-@RequestMapping("/sys/user")
+@RequestMapping("sys/user")
 @Api(tags = "系统管理-用户管理")
 public class SysUserController {
 
     @Resource
     private SysUserService service;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
     @ApiOperation("查询用户列表")
@@ -51,8 +65,35 @@ public class SysUserController {
     }
 
     @GetMapping("/info")
-    public BaseResult<SysUserVO> info(@RequestParam Long id) {
+    public BaseResult<SysUserVO> info() {
+        String userName= jwtUtils.getUserName();
+        if (StringUtils.isEmpty(userName)) {
+            return BaseResult.fail("token is null");
+        }
+        Long id=service.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName,userName)).getId();
         return service.info(id);
+    }
+
+    @ApiOperation("修改密码")
+    @PostMapping("/password")
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public BaseResult password(@RequestBody PasswordDTO passwordDTO) {
+        Assert.notNull(passwordDTO.getNewPassword(),"newPassword is null");
+        String userName= jwtUtils.getUserName();
+        if (StringUtils.isEmpty(userName)) {
+            return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
+        }
+        String password=new BCryptPasswordEncoder().encode(passwordDTO.getPassword());
+        String newPassword=new BCryptPasswordEncoder().encode(passwordDTO.getNewPassword());
+        if (!password.equals(newPassword)) {
+            return BaseResult.fail("password is error");
+        }
+        SysUserDTO sysUserDTO=service.getUserByName(userName);
+        SysUser sysUser=new SysUser();
+        BeanUtil.copyProperties(sysUserDTO,sysUser);
+        sysUser.setPassword(newPassword);
+        service.updateById(sysUser);
+        return BaseResult.success();
     }
 
 

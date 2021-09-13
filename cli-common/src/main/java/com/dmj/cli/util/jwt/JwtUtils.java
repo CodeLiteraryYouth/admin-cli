@@ -1,5 +1,7 @@
 package com.dmj.cli.util.jwt;
 
+import cn.hutool.core.util.StrUtil;
+import com.dmj.cli.util.ServletUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,6 +9,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -55,6 +58,23 @@ public class JwtUtils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public String getUserName() {
+        HttpServletRequest request= ServletUtils.getRequest();
+        String jwt=request.getHeader(getHeader());
+        if (StrUtil.isBlankOrUndefined(jwt)) {
+            return null;
+        }
+        Claims claims=getClaimByToken(jwt);
+        if (claims == null) {
+            return null;
+        }
+        if (isTokenExpired(claims)) {
+            return null;
+        }
+        String userName=claims.getSubject();
+        return userName;
     }
 
     public boolean isTokenExpired(Claims claims) {

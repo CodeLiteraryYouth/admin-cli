@@ -1,13 +1,14 @@
 package com.dmj.cli.domain.vo.sys;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.dmj.cli.domain.BaseEntity;
 import com.dmj.cli.domain.SysRole;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,9 +20,7 @@ import java.util.List;
  * @since 2021-06-28
  */
 @Data
-@TableName("sys_user")
-@ApiModel(value="SysUser对象", description="")
-public class SysUserVO implements Serializable {
+public class SysUserVO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -61,26 +60,6 @@ public class SysUserVO implements Serializable {
     @TableField("locked")
     private Boolean locked;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "创建者")
-    @TableField("creator")
-    private String creator;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField("updater")
-    private String updater;
-
-    @ApiModelProperty(value = "删除标记")
-    @TableField("delete_flag")
-    @TableLogic
-    private Boolean deleteFlag;
 
     private List<SysRole> sysRoles;
 

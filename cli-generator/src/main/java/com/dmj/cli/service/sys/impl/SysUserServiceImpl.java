@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.SysUserRole;
+import com.dmj.cli.domain.dto.sys.PasswordDTO;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;
@@ -63,13 +65,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Object value=redisUtils.get(AuthConstants.CACHE_AUTHORITIES+":"+userName);
         if (null== value) {
             sysUserDTO = sysUserMapper.getUserByName(userName);
-            if (null == sysUserDTO) {
+            if (null != sysUserDTO) {
                 List<Long> permissionIds = sysUserMapper.listMenuIdsByUserId(sysUserDTO.getId());
                 List<SysPermission> sysPermissions = sysPermissionMapper.selectBatchIds(permissionIds);
                 List<String> permissionStrs = sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
                 sysUserDTO.setAuthorities(permissionStrs);
+                redisUtils.set(AuthConstants.CACHE_AUTHORITIES+":"+userName,sysUserDTO,60L);
             }
-            redisUtils.set(AuthConstants.CACHE_AUTHORITIES+":"+userName,sysUserDTO);
         } else {
             sysUserDTO= (SysUserDTO) redisUtils.get(AuthConstants.CACHE_AUTHORITIES+":"+userName);
         }
@@ -123,7 +125,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 SysUserRole sysUserRole=new SysUserRole();
                 sysUserRole.setUserId(sysUser.getId());
                 LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<SysRole>();
-                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode,roleCode));
+                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode, GlobalConstants.ROLE_PREFIX+roleCode));
                 if (Objects.nonNull(sysRole)) {
                     sysUserRole.setRoleId(sysRole.getId());
                 }
@@ -147,7 +149,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 SysUserRole sysUserRole=new SysUserRole();
                 sysUserRole.setUserId(sysUser.getId());
                 LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<SysRole>();
-                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode,roleCode));
+                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode,GlobalConstants.ROLE_PREFIX+roleCode));
                 if (Objects.nonNull(sysRole)) {
                     sysUserRole.setRoleId(sysRole.getId());
                 }

@@ -60,11 +60,6 @@
             <result column="role_code" property="roleCode" />
             <result column="role_name" property="roleName" />
             <result column="role_desc" property="roleDesc" />
-            <result column="create_time" property="createTime" />
-            <result column="creator" property="creator" />
-            <result column="update_time" property="updateTime" />
-            <result column="updater" property="updater" />
-            <result column="delete_flag" property="deleteFlag" />
         </collection>
     </resultMap>
 
@@ -89,8 +84,7 @@
         select
         u.id, u.user_name, u.password, u.nick_name, u.mobile, u.email, u.phone, u.avatar_url,
         u.locked, u.create_time, u.creator, u.update_time, u.updater, u.delete_flag,
-        r.role_code,r.role_name,r.role_desc,r.sys_default,r.create_time,r.creator,r.update_time,
-        r.updater,r.delete_flag
+        r.role_code,r.role_name,r.role_desc
         from sys_user u
         left join sys_user_role ur on u.id=ur.user_id
         left join sys_role r on ur.role_id=r.id

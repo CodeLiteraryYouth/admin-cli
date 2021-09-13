@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 public class LoginForm implements Serializable {
 
-    private String userName;
+    private String username;
 
     private String password;
 

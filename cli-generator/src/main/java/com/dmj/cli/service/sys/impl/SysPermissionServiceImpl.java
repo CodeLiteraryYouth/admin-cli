@@ -71,8 +71,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             perms=sysPermissions.stream().map(SysPermission::getPermissionStr).collect(Collectors.toList());
 
         }
+        List<SysPermissionVO> menuList=DataTransferUtils.list2Tree(sysPermissionVOS,"id","parentId","children");
         Map<String,Object> result=new HashMap<>(2);
-        result.put("menuList",DataTransferUtils.list2Tree(sysPermissions,"id","parentId","children"));
+        result.put("menuList",menuList);
         result.put("permissions",perms);
         return BaseResult.success(result);
     }
