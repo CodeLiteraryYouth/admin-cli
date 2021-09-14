@@ -16,6 +16,7 @@
 
     <properties>
         <dom4j.version>2.1.1</dom4j.version>
+        <ijapy.version>2.7.7</ijapy.version>
     </properties>
 
     <dependencies>
@@ -29,6 +30,18 @@
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>${dom4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.javen205</groupId>
+            <artifactId>IJPay-WxPay</artifactId>
+            <version>${ijapy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.javen205</groupId>
+            <artifactId>IJPay-AliPay</artifactId>
+            <version>${ijapy.version}</version>
         </dependency>
     </dependencies>
 

@@ -10,15 +10,16 @@ public class BaseResult<T> {
     /**
      * 返回的代码，200表示成功，其他表示失败
      */
-    private int code;
+    protected int code;
     /**
      * 成功或失败时返回的错误信息
      */
-    private String msg;
+    protected String msg;
     /**
      * 成功时返回的数据信息
      */
-    private T data;
+    protected T data;
+
     public BaseResult(int code, String msg, T data){
         this.code = code;
         this.msg = msg;
@@ -63,6 +64,10 @@ public class BaseResult<T> {
 
     public static BaseResult success(Object data) {
         return new BaseResult(ResultStatusCode.OK,data);
+    }
+
+    public static boolean isSuccess(int code) {
+        return code==200;
     }
 
     public static BaseResult fail() {
