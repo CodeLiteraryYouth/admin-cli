@@ -21,10 +21,10 @@ public class CodeGenerator {
     private static final String MODULE = "cli-generator";
     private static final String AUTHOR = "zd";
 
-    private static final String URL                = "jdbc:mysql://106.14.224.151:3307/admin_cli?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC";
+    private static final String URL                = "jdbc:mysql://106.14.224.151:3000/admin_cli?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC";
     private static final String DRIVER             = "com.mysql.cj.jdbc.Driver";
     private static final String USERNAME           = "root";
-    private static final String PASSWORD           = "123456";
+    private static final String PASSWORD           = "1fa35e0b4c7f43fda109c98096430f20";
     private static final String MODULE_PACKAGE     = "com.dmj.cli";
     private static final String MAPPER_XML         = "/src/main/resources/mapper";
     private static final String TEMPLATE_PATH      = "/templates/mapper.xml.vm";
@@ -86,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("banner");
+        config.setInclude("t_order_detail");
         // 设置不需要generator的表名
         // config.setExclude();
 

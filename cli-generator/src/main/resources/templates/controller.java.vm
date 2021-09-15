@@ -68,8 +68,8 @@ public class ${table.controllerName} extends BaseController {
 
 
     @DeleteMapping("/delete")
-    public BaseResult delete(@RequestBody List<Long> id) {
-        service.removeById(id);
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 

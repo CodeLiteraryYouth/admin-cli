@@ -1,8 +1,8 @@
 package com.dmj.cli.service;
 
-import com.dmj.cli.entity.pay.PayRequest;
-import com.dmj.cli.entity.pay.PayResponse;
-import com.dmj.cli.entity.pay.RefundResponse;
+import com.dmj.cli.domain.dto.pay.PayRequest;
+import com.dmj.cli.domain.dto.pay.PayResponse;
+import com.dmj.cli.domain.dto.pay.RefundResponse;
 
 import java.util.Map;
 

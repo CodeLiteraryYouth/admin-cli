@@ -1,6 +1,5 @@
 package com.dmj.cli.entity;
 
-import com.dmj.cli.entity.pay.PayRequest;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:/jdpay.properties")
 @ConfigurationProperties(prefix = "jdpay")
-public class JdPayBean extends PayRequest {
+public class JdPayBean {
     private String mchId;
     private String rsaPrivateKey;
     private String desKey;

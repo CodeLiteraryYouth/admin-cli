@@ -1,6 +1,5 @@
 package com.dmj.cli.entity;
 
-import com.dmj.cli.entity.pay.PayRequest;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:/unionpay.properties")
 @ConfigurationProperties(prefix = "union")
-public class UnionPayBean extends PayRequest {
+public class UnionPayBean {
     private String machId;
     private String key;
     private String serverUrl;

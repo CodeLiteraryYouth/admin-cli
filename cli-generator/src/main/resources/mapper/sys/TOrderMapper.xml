@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.sys.TOrderMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.TOrder">
+            <id column="id" property="id" />
+            <result column="user_id" property="userId" />
+            <result column="code" property="code" />
+            <result column="amount" property="amount" />
+            <result column="payment_type" property="paymentType" />
+            <result column="status" property="status" />
+            <result column="create_time" property="createTime" />
+            <result column="trade_no" property="tradeNo" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+            id, user_id, code, amount, payment_type, status, create_time, trade_no
+        </sql>
+
+</mapper>

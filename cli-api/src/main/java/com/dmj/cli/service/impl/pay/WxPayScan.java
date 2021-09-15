@@ -2,9 +2,9 @@ package com.dmj.cli.service.impl.pay;
 
 import com.dmj.cli.controller.wxpay.AbstractWxPayApiController;
 import com.dmj.cli.entity.WxPayBean;
-import com.dmj.cli.entity.pay.PayRequest;
-import com.dmj.cli.entity.pay.PayResponse;
-import com.dmj.cli.entity.pay.RefundResponse;
+import com.dmj.cli.domain.dto.pay.PayRequest;
+import com.dmj.cli.domain.dto.pay.PayResponse;
+import com.dmj.cli.domain.dto.pay.RefundResponse;
 import com.dmj.cli.service.PayService;
 import com.dmj.cli.util.ServletUtils;
 import com.dmj.cli.util.str.StringUtils;
@@ -18,7 +18,6 @@ import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.ijpay.wxpay.model.UnifiedOrderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -27,7 +26,6 @@ import java.util.Map;
  * @date 2021/9/14
  * @apiNote
  **/
-@Service
 @Slf4j
 public class WxPayScan extends AbstractWxPayApiController implements PayService {
 

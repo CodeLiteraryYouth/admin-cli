@@ -1,7 +1,12 @@
-package com.dmj.cli.entity.pay;
+package com.dmj.cli.domain.dto.pay;
 
 import cn.hutool.json.JSONObject;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * @author zd
@@ -9,7 +14,10 @@ import lombok.Data;
  * @apiNote
  **/
 @Data
-public class PayRequest {
+@Builder
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class PayRequest implements Serializable {
 
     /**
      * 支付主体

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmj.cli.mapper.sys.TOrderDetailMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.TOrderDetail">
+                    <id column="order_id" property="orderId" />
+                    <result column="sku_id" property="skuId" />
+                    <result column="sku_type" property="skuType" />
+                    <result column="price" property="price" />
+                    <result column="actual_price" property="actualPrice" />
+                    <result column="num" property="num" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+            order_id, sku_id, sku_type, price, actual_price, num
+        </sql>
+
+</mapper>

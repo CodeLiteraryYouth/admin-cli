@@ -1,10 +1,9 @@
 package com.dmj.cli.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.dmj.cli.entity.pay.PayRequest;
 
 
-public class H5SceneInfo extends PayRequest {
+public class H5SceneInfo {
     private H5 h5_info;
 
     public H5 getH5Info() {

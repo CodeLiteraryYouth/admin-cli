@@ -66,9 +66,6 @@ public class BaseResult<T> {
         return new BaseResult(ResultStatusCode.OK,data);
     }
 
-    public static boolean isSuccess(int code) {
-        return code==200;
-    }
 
     public static BaseResult fail() {
         return new BaseResult(ResultStatusCode.SYSTEM_ERR);

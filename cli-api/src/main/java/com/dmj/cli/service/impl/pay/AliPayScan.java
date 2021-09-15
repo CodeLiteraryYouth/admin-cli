@@ -5,17 +5,16 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.domain.AlipayTradePrecreateModel;
 import com.dmj.cli.common.constant.PayConstant;
 import com.dmj.cli.controller.alipay.AbstractAliPayApiController;
+import com.dmj.cli.domain.dto.pay.PayRequest;
+import com.dmj.cli.domain.dto.pay.PayResponse;
+import com.dmj.cli.domain.dto.pay.RefundResponse;
 import com.dmj.cli.entity.AliPayBean;
-import com.dmj.cli.entity.pay.PayRequest;
-import com.dmj.cli.entity.pay.PayResponse;
-import com.dmj.cli.entity.pay.RefundResponse;
 import com.dmj.cli.service.PayService;
 import com.dmj.cli.util.str.StringUtils;
 import com.ijpay.alipay.AliPayApi;
 import com.ijpay.alipay.AliPayApiConfig;
 import com.ijpay.alipay.AliPayApiConfigKit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -25,7 +24,6 @@ import java.util.Map;
  * @date 2021/9/14
  * @apiNote
  **/
-@Service
 @Slf4j
 public class AliPayScan extends AbstractAliPayApiController implements PayService {
 
@@ -77,7 +75,7 @@ public class AliPayScan extends AbstractAliPayApiController implements PayServic
             return (PayResponse) PayResponse.fail("订单号不能为空");
         }
         String storeId=params.getExtras().getStr("storeId");
-        String notifyUrl = aliPayBean.getDomain() + "/aliPay/cert_notify_url";
+        String notifyUrl = aliPayBean.getDomain() + NOTIFY_URL;
         AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
         model.setSubject(StringUtils.isBlank(params.getBody()) ? "支付主体" : params.getBody());
         model.setTotalAmount(totalAmount);
@@ -87,9 +85,10 @@ public class AliPayScan extends AbstractAliPayApiController implements PayServic
         try {
             String resultStr = AliPayApi.tradePrecreatePayToResponse(model, notifyUrl).getBody();
             JSONObject jsonObject = JSONObject.parseObject(resultStr);
-            String code = jsonObject.getJSONObject("alipay_trade_precreate_response").getString("code");
+            JSONObject response=jsonObject.getJSONObject("alipay_trade_precreate_response");
+            String code = response.getString("code");
             if (PayConstant.Ali_Success_Code.equals(code)) {
-                return (PayResponse) PayResponse.success(jsonObject);
+                return (PayResponse) PayResponse.success(response);
             }
         } catch (Exception e) {
             log.error("微信扫码支付异常",e);
