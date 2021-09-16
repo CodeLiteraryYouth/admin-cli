@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
-        JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(authenticationManager());
-        return jwtAuthenticationFilter;
-    };
+    //@Bean
+    //public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
+    //    JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(authenticationManager());
+    //    return jwtAuthenticationFilter;
+    //};
 
 
 

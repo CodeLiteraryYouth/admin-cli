@@ -64,14 +64,19 @@ public class SysUserController {
         return service.updateUser(entity);
     }
 
+    @GetMapping("/info/{id}")
+    public BaseResult<SysUserVO> info(@PathVariable(required = false) Long id) {
+        return service.info(id);
+    }
+
     @GetMapping("/info")
     public BaseResult<SysUserVO> info() {
         String userName= jwtUtils.getUserName();
         if (StringUtils.isEmpty(userName)) {
             return BaseResult.fail("token is null");
         }
-        Long id=service.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName,userName)).getId();
-        return service.info(id);
+        Long userId=service.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName,userName)).getId();
+        return service.info(userId);
     }
 
     @ApiOperation("修改密码")

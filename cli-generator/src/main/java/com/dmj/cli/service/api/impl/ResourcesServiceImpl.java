@@ -3,6 +3,7 @@ package com.dmj.cli.service.api.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
@@ -14,8 +15,6 @@ import com.dmj.cli.domain.vo.api.ResourcesVO;
 import com.dmj.cli.mapper.api.ResourcesMapper;
 import com.dmj.cli.mapper.api.ResourcesTypeMiddleMapper;
 import com.dmj.cli.service.api.ResourcesService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -86,26 +84,24 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-    public BaseResult delete(Long id) {
-        Assert.notNull(id,"bad request");
-        resourcesMapper.deleteById(id);
-        resourcesTypeMiddleMapper.delete(new LambdaQueryWrapper<ResourcesTypeMiddle>().eq(ResourcesTypeMiddle::getResourcesId,id));
+    public BaseResult delete(List<Long> ids) {
+        resourcesMapper.deleteBatchIds(ids);
+        ids.forEach(id->{
+            resourcesTypeMiddleMapper.delete(new LambdaQueryWrapper<ResourcesTypeMiddle>().eq(ResourcesTypeMiddle::getResourcesId,id));
+        });
         return BaseResult.success();
     }
 
     @Override
-    public BaseResult<List<ResourcesVO>> listResources(ResourcesQuery query) {
+    public List<ResourcesVO> listResources(ResourcesQuery query) {
         List<ResourcesVO> resourcesVOS=resourcesMapper.listResources(query);
-        resourcesVOS.stream().map(resourcesVO -> {
-            ResourcesVO resources=new ResourcesVO();
-            BeanUtils.copyProperties(resources,resourcesVO);
+        resourcesVOS.forEach(resourcesVO -> {
             Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, resourcesVO.getId().toString());
             Double collectNum = redisUtils.score(GlobalConstants.COLLECT_NUM, resourcesVO.getId().toString());
-            resources.setViewNum(viewNum == null ? 0L : viewNum.longValue());
-            resources.setCollectNum(collectNum == null ? 0L : collectNum.longValue());
-            return resources;
-        }).collect(Collectors.toList());
-        return BaseResult.success(resourcesVOS);
+            resourcesVO.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+            resourcesVO.setCollectNum(collectNum == null ? 0L : collectNum.longValue());
+        });
+        return resourcesVOS;
     }
 
     @Override

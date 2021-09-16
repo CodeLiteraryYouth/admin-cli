@@ -1,6 +1,8 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.query.BaseQuery;
 import com.github.pagehelper.PageInfo;
@@ -25,7 +27,7 @@ import java.util.List;
  * @since 2021-08-13
  */
 @RestController
-@RequestMapping("/course-type")
+@RequestMapping("/course/type")
 @Api(tags = "课程类型")
 public class CourseTypeController extends BaseController {
 
@@ -40,7 +42,7 @@ public class CourseTypeController extends BaseController {
     }
 
     @ApiOperation("更新课程分类信息")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<CourseType> update(@RequestBody CourseType entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
@@ -48,24 +50,25 @@ public class CourseTypeController extends BaseController {
 
 
     @ApiOperation("删除课程分类信息")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("查询课程分类详情")
-    @GetMapping("/get/{id}")
-    public BaseResult<CourseType> select(@PathVariable String id) {
+    @GetMapping("/info/{id}")
+    public BaseResult<CourseType> select(@PathVariable Long id) {
         CourseType data = service.getById(id);
         return BaseResult.success(data);
     }
 
     @ApiOperation("查询课程分类详情")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<CourseType>>> page(@ModelAttribute BaseQuery query) {
         startPage();
-        List<CourseType> courseTypes=service.list();
+        List<CourseType> courseTypes=service.list(Wrappers.<CourseType>lambdaQuery()
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),CourseType::getTypeName,query.getSearchVal()));
         return pageInfoBaseResult(courseTypes);
     }
 }

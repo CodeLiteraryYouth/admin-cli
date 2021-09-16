@@ -2,6 +2,7 @@ package com.dmj.cli.handler;
 
 import cn.hutool.json.JSONUtil;
 import com.dmj.cli.common.constant.AuthConstants;
+import com.dmj.cli.common.constant.WxConstant;
 import com.dmj.cli.common.exception.LoginException;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UserInfo;
@@ -47,6 +48,10 @@ public class LoginAspect {
             throw new LoginException("当前用户未登录，请前去登录");
         }
         UserInfo userInfo= JSONUtil.toBean(user,UserInfo.class);
+
+        if (WxConstant.EVENT_TYPE.unsubscrib.equals(userInfo.getEvent())) {
+            throw new LoginException("未关注公众号，请前去关注公众号");
+        }
         if (!userInfo.getLoginStatus()) {
             throw new LoginException("当前用户未登录，请前去登录");
         }

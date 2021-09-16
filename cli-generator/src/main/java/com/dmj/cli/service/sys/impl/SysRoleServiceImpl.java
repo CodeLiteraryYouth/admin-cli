@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -123,7 +123,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 sysRolePermission.setPermissionId(permissionId);
                 sysRolePermissionMapper.insert(sysRolePermission);
             }
-            refreshUserAuthorities(Arrays.asList(sysRoleDTO.getId()));
+            refreshUserAuthorities(Collections.singletonList(sysRole.getId()));
         }
         return BaseResult.success();
     }

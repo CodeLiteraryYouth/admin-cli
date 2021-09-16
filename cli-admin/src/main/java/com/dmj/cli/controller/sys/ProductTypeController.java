@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2021-09-06
  */
 @RestController
-@RequestMapping("/product-type")
+@RequestMapping("/product/type")
 @Api(tags = "作品管理-作品标签")
 public class ProductTypeController extends BaseController {
 
@@ -38,28 +38,28 @@ public class ProductTypeController extends BaseController {
     }
 
     @ApiOperation("修改作品标签")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<ProductType> update(@RequestBody ProductType entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
     @ApiOperation("删除作品标签")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("删除作品标签详情")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<ProductType> select(@PathVariable Long id) {
         ProductType data = service.getById(id);
         return BaseResult.success(data);
     }
 
     @ApiOperation("分页查询作品标签")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<ProductType>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<ProductType> list= service.list();

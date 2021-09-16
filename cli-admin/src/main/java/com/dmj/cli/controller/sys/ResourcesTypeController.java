@@ -1,18 +1,15 @@
 package com.dmj.cli.controller.sys;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.ResourcesType;
+import com.dmj.cli.domain.query.BaseQuery;
 import com.dmj.cli.service.api.ResourcesTypeService;
-    import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import java.util.List;
 
 /**
@@ -24,7 +21,7 @@ import java.util.List;
  * @since 2021-08-12
  */
 @RestController
-@RequestMapping("/resources-type")
+@RequestMapping("/resources/type")
 @Api(tags = "资源类型管理")
 public class ResourcesTypeController {
 
@@ -39,23 +36,29 @@ public class ResourcesTypeController {
     }
 
     @ApiOperation("修改资源标签分类")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<ResourcesType> update(@RequestBody ResourcesType entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
+    @GetMapping("/info/{id}")
+    public BaseResult<ResourcesType> info(@PathVariable Long id) {
+        ResourcesType data=service.getById(id);
+        return BaseResult.success(data);
+    }
+
 
     @ApiOperation("删除标签分类")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("查询所有标签")
     @GetMapping("/list")
-    public BaseResult<List<ResourcesType>> list() {
+    public BaseResult<List<ResourcesType>> list(BaseQuery query) {
         List<ResourcesType> resourcesTypes=service.list();
         return BaseResult.success(resourcesTypes);
     }

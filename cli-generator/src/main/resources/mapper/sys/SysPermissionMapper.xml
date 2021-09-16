@@ -22,6 +22,7 @@
         <id column="id" property="id" />
         <result column="permission_name" property="permissionName" />
         <result column="permission_type" property="permissionType" />
+        <result column="permission_url" property="permissionUrl" />
         <result column="permission_str" property="permissionStr" />
         <result column="parent_id" property="parentId" />
         <result column="permission_order" property="permissionOrder" />
@@ -38,13 +39,16 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, permission_name, permission_type,permission_str, parent_id, permission_order, is_view, creator, create_time, updater, update_time, delete_flag
+        id, permission_name, permission_type,permission_url,permission_str, parent_id, permission_order, is_view, creator, create_time, updater, update_time, delete_flag
     </sql>
     <select id="listPermission" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from sys_permission
         where delete_flag=false
+        <if test="id != null">
+            and id=#{id}
+        </if>
         <if test="startTime !=null and endTime != null">
             and create_time between #{startTime} and #{endTime}
         </if>

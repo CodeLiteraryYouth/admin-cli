@@ -47,7 +47,7 @@
         p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creator,p.create_time,p.updater,
         p.update_time,p.delete_flag
     </sql>
-    <select id="listRole" resultType="com.dmj.cli.domain.vo.sys.SysRoleVO">
+    <select id="listRole" resultMap="ResultMapVO">
         select
         <include refid="Base_Column_List"></include>
         from sys_role r

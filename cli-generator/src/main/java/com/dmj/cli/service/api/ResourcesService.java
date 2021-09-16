@@ -23,9 +23,9 @@ public interface ResourcesService extends IService<Resources> {
 
     BaseResult update(ResourcesDTO resourcesDTO);
 
-    BaseResult delete(Long id);
+    BaseResult delete(List<Long> id);
 
-    BaseResult<List<ResourcesVO>> listResources(ResourcesQuery query);
+    List<ResourcesVO> listResources(ResourcesQuery query);
 
     BaseResult<ResourcesVO> getResourcesById(Long id);
 

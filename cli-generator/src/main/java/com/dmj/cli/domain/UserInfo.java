@@ -7,8 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -19,11 +20,10 @@ import lombok.experimental.Accessors;
  * @since 2021-08-11
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("user_info")
 @ApiModel(value="UserInfo对象", description="用户信息表")
-public class UserInfo extends BaseEntity {
+public class UserInfo {
 
     private static final long serialVersionUID=1L;
     
@@ -81,6 +81,12 @@ public class UserInfo extends BaseEntity {
     @ApiModelProperty(value = "场景ID")
     @TableField("scene_id")
     private String sceneId;
+
+    @TableField("create_time")
+    private Date createTime;
+
+    @TableField("update_time")
+    private Date updateTime;
     
     
 }

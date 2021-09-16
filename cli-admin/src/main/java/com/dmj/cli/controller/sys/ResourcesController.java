@@ -1,21 +1,19 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.Resources;
 import com.dmj.cli.domain.dto.sys.ResourcesDTO;
 import com.dmj.cli.domain.query.api.ResourcesQuery;
 import com.dmj.cli.domain.vo.api.ResourcesVO;
+import com.dmj.cli.service.api.ResourcesService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.domain.Resources;
-import com.dmj.cli.service.api.ResourcesService;
-    import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import java.util.List;
 
 /**
@@ -29,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resources")
 @Api(tags = "资源管理")
-public class ResourcesController {
+public class ResourcesController extends BaseController {
 
     @Resource
     private ResourcesService service;
@@ -40,7 +38,7 @@ public class ResourcesController {
        return service.insert(entity);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("更新资源")
     public BaseResult<Resources> update(@RequestBody ResourcesDTO entity) {
         return service.update(entity);
@@ -48,21 +46,23 @@ public class ResourcesController {
 
 
     @ApiOperation("删除资源")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        return service.delete(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@PathVariable List<Long> ids) {
+        return service.delete(ids);
     }
 
     @ApiOperation("获取资源详情")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<ResourcesVO> select(@PathVariable Long id) {
         return service.getResourcesById(id);
     }
 
     @ApiOperation("获取资源列表")
     @GetMapping("/list")
-    public BaseResult<List<ResourcesVO>> list(@ModelAttribute ResourcesQuery query) {
-        return service.listResources(query);
+    public BaseResult<PageInfo<List<ResourcesVO>>> list(@ModelAttribute ResourcesQuery query) {
+        startPage();
+        List<ResourcesVO> resourcesVOS = service.listResources(query);
+        return pageInfoBaseResult(resourcesVOS);
     }
 }
 

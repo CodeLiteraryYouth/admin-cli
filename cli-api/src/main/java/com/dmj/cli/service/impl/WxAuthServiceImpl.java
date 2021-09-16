@@ -200,6 +200,7 @@ public class WxAuthServiceImpl implements WxAuthService {
             }
         }
 
+        //非第一次登录公众号
         if (WxConstant.EVENT_TYPE.SCAN.name().equals(wxEventDTO.getEvent())) {
             //清楚上次的登录缓存信息s
             redisUtils.del(userInfo.getSceneId());
@@ -209,6 +210,18 @@ public class WxAuthServiceImpl implements WxAuthService {
             userInfoService.updateById(userInfo);
         }
 
+        //取消订阅
+        if (WxConstant.EVENT_TYPE.unsubscrib.name().equals(wxEventDTO.getEvent())) {
+            //清楚上次的登录缓存信息s
+            redisUtils.del(userInfo.getSceneId());
+            userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getOpenId,wxEventDTO.getFromUserName()));
+            userInfo.setSceneId(wxEventDTO.getEventKey());
+            userInfo.setLoginStatus(false);
+            userInfo.setEvent(wxEventDTO.getEvent());
+            userInfoService.updateById(userInfo);
+        }
+
+        //记录登录信息
         if (WxConstant.EVENT_TYPE.subscribe.name().equals(wxEventDTO.getEvent()) || WxConstant.EVENT_TYPE.SCAN.name().equals(wxEventDTO.getEvent())) {
             UserLoginLog userLoginLog=new UserLoginLog();
             userLoginLog.setEventKey(wxEventDTO.getEventKey());
@@ -220,7 +233,7 @@ public class WxAuthServiceImpl implements WxAuthService {
             userLoginLog.setTicket(wxEventDTO.getTicket());
             userLoginLogService.save(userLoginLog);
             //存储当前登录信息
-            redisUtils.set(wxEventDTO.getEventKey(),JSONUtil.toJsonStr(userInfo),3600);
+            redisUtils.set(wxEventDTO.getEventKey(),JSONUtil.toJsonStr(userInfo));
         }
     }
 

@@ -53,8 +53,8 @@ public class SysRoleController {
         return BaseResult.success(service.list());
     }
 
-    @GetMapping("/info")
-    public BaseResult<SysRoleVO> info(@RequestParam Long id) {
+    @GetMapping("/info/{id}")
+    public BaseResult<SysRoleVO> info(@PathVariable Long id) {
         return service.info(id);
     }
 

@@ -17,6 +17,8 @@ public class BaseQuery implements Serializable {
 
     private Long id;
 
+    private Long typeId;
+
     private Integer pageNum;
 
     private Integer pageSize;

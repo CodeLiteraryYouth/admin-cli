@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2021-08-11
  */
 @RestController
-@RequestMapping("/user-info")
+@RequestMapping("/userinfo")
 @Api(tags = "用户信息表")
 public class UserInfoController extends BaseController {
 
@@ -34,7 +34,7 @@ public class UserInfoController extends BaseController {
 
 
     @ApiOperation("查询会员信息列表")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<UserInfo>>> page(@ModelAttribute UserInfoQuery query) {
         startPage();
         List<UserInfo> userInfos= service.list();

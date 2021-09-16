@@ -36,13 +36,17 @@ public class Product extends BaseEntity implements Serializable {
     @TableField("type_id")
     private Long typeId;
 
+    @ApiModelProperty(value = "封面地址")
+    @TableField("cover_url")
+    private String coverUrl;
+
     @ApiModelProperty(value = "标题")
     @TableField("title")
     private String title;
 
     @ApiModelProperty(value = "作品说明")
-    @TableField("desc")
-    private String desc;
+    @TableField("product_desc")
+    private String productDesc;
 
     @ApiModelProperty(value = "图片地址")
     @TableField("img_url")
@@ -51,10 +55,6 @@ public class Product extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "视频地址")
     @TableField("video_url")
     private String videoUrl;
-
-    @ApiModelProperty(value = "封面地址")
-    @TableField("cover_url")
-    private String coverUrl;
 
     @ApiModelProperty(value = "文章内容")
     @TableField("content")

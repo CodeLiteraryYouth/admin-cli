@@ -101,6 +101,10 @@ public interface WxConstant {
          */
         subscribe,
         /**
+         * 取消关注
+         */
+        unsubscrib,
+        /**
          * 浏览
          */
         SCAN;

@@ -39,7 +39,7 @@ public class SysDictController extends BaseController {
     }
 
     @ApiOperation("修改数据字典值")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<SysDict> update(@RequestBody SysDict entity) {
         Assert.notNull(entity.getId(),"id is null");
         service.saveOrUpdate(entity);
@@ -47,14 +47,14 @@ public class SysDictController extends BaseController {
     }
 
     @ApiOperation("删除数据字典")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("查询数据字典详情")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<SysDict> select(@PathVariable Long id) {
         SysDict data = service.getById(id);
         return BaseResult.success(data);
