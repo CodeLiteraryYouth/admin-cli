@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@PropertySource("classpath:/alipay.properties")
+@PropertySource("classpath:production/alipay.properties")
 @ConfigurationProperties(prefix = "alipay")
 public class AliPayBean {
     private String appId;

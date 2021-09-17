@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@PropertySource("classpath:/jdpay.properties")
+@PropertySource("classpath:production/jdpay.properties")
 @ConfigurationProperties(prefix = "jdpay")
 public class JdPayBean {
     private String mchId;

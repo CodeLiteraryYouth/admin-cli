@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@PropertySource("classpath:/unionpay.properties")
+@PropertySource("classpath:production/unionpay.properties")
 @ConfigurationProperties(prefix = "union")
 public class UnionPayBean {
     private String machId;

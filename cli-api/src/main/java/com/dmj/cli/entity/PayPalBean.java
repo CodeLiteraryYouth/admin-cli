@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@PropertySource("classpath:/paypal.properties")
+@PropertySource("classpath:production/paypal.properties")
 @ConfigurationProperties(prefix = "paypal")
 public class PayPalBean {
     private String clientId;

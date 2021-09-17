@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@PropertySource("classpath:/wxpay.properties")
+@PropertySource("classpath:production/wxpay.properties")
 @ConfigurationProperties(prefix = "wxpay")
 public class WxPayBean {
     private String appId;
