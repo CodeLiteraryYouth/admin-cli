@@ -1,5 +1,6 @@
 package com.dmj.cli.service.impl.pay;
 
+import cn.hutool.core.util.NumberUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.domain.AlipayTradePrecreateModel;
@@ -78,7 +79,8 @@ public class AliPayScan extends AbstractAliPayApiController implements PayServic
         String notifyUrl = aliPayBean.getDomain() + NOTIFY_URL;
         AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
         model.setSubject(StringUtils.isBlank(params.getBody()) ? "支付主体" : params.getBody());
-        model.setTotalAmount(totalAmount);
+        //分转换为元
+        model.setTotalAmount(NumberUtil.toStr(NumberUtil.div(totalAmount,"100")));
         model.setStoreId(storeId);
         model.setTimeoutExpress(StringUtils.isBlank(params.getTimeOut()) ? "5m" : params.getTimeOut());
         model.setOutTradeNo(outTradeNo);

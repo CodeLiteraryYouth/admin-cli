@@ -28,14 +28,14 @@ public interface UserService {
      * @param userId
      * @return
      */
-     BaseResult<Map<String, List<CollectInfoVO>>> getCollectInfo(Long userId);
+     BaseResult<Map<String, List<CollectInfoVO>>> getCollectInfo(String sceneId);
 
     /**
      * 查询观看记录
      * @param userId
      * @return
      */
-     BaseResult<List<VidelLogVO>> listVideoLog(Long userId);
+     BaseResult<List<VidelLogVO>> listVideoLog(String sceneId);
 
     /**
      * 查询用户支付记录

@@ -1,6 +1,8 @@
 package com.dmj.cli.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -70,7 +73,9 @@ public class BusinessCooperationApiController extends BaseController {
     @GetMapping("/page")
     public BaseResult<PageInfo<List<BusinessCooperation>>> page(@ModelAttribute BaseQuery query) {
         startPage();
-        List<BusinessCooperation> list= service.list();
+        List<BusinessCooperation> list= service.list(Wrappers.<BusinessCooperation>lambdaQuery()
+                .eq(Objects.nonNull(query.getTypeId()),BusinessCooperation::getTypeId,query.getTypeId())
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),BusinessCooperation::getTitle,query.getSearchVal()));
         return pageInfoBaseResult(list);
     }
 }

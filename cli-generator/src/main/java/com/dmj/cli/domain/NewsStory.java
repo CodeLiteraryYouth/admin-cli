@@ -37,8 +37,8 @@ public class NewsStory extends BaseEntity implements Serializable {
     private String title;
 
     @ApiModelProperty(value = "描述")
-    @TableField("desc")
-    private String desc;
+    @TableField("story_desc")
+    private String storyDesc;
 
     @ApiModelProperty(value = "封面地址")
     @TableField("cover_url")

@@ -80,9 +80,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResult<Map<String, List<CollectInfoVO>>> getCollectInfo(Long userId) {
-        Assert.notNull(userId,"userId is null");
-        List<CollectInfoVO> collectInfoVOS=userCollLogMapper.listCollectInfos(userId);
+    public BaseResult<Map<String, List<CollectInfoVO>>> getCollectInfo(String sceneId) {
+        Assert.notNull(sceneId,"sceneId is null");
+        UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
+        List<CollectInfoVO> collectInfoVOS=userCollLogMapper.listCollectInfos(userInfoVO.getId());
         Map<String, List<CollectInfoVO>> result=null;
         if (CollectionUtil.isNotEmpty(collectInfoVOS)) {
             result = collectInfoVOS.stream().collect(Collectors.groupingBy(CollectInfoVO::getType));
@@ -91,9 +92,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResult<List<VidelLogVO>> listVideoLog(Long userId) {
-        Assert.notNull(userId,"userId is null");
-        return BaseResult.success(userVideoLogMapper.listVideoLog(userId));
+    public BaseResult<List<VidelLogVO>> listVideoLog(String sceneId) {
+        Assert.notNull(sceneId,"sceneId is null");
+        UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
+        return BaseResult.success(userVideoLogMapper.listVideoLog(userInfoVO.getId()));
     }
 
     @Override

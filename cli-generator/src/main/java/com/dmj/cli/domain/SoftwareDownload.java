@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -42,8 +42,8 @@ public class SoftwareDownload implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "软件描述")
-    @TableField("desc")
-    private String desc;
+    @TableField("download_desc")
+    private String downloadDesc;
 
     @ApiModelProperty(value = "软件版本")
     @TableField("version")
@@ -51,7 +51,7 @@ public class SoftwareDownload implements Serializable {
 
     @ApiModelProperty(value = "软件发布时间")
     @TableField("publish_time")
-    private LocalDateTime publishTime;
+    private Date publishTime;
 
     @ApiModelProperty(value = "软件大小")
     @TableField("size")

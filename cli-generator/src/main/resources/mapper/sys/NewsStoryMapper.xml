@@ -6,7 +6,7 @@
         <resultMap id="BaseResultMap" type="com.dmj.cli.domain.NewsStory">
             <id column="id" property="id" />
             <result column="title" property="title" />
-            <result column="desc" property="desc" />
+            <result column="story_desc" property="storyDesc" />
             <result column="cover_url" property="coverUrl" />
             <result column="view_num" property="viewNum" />
             <result column="creator" property="creator" />
@@ -18,7 +18,7 @@
 
         <!-- 通用查询结果列 -->
         <sql id="Base_Column_List">
-            id, title, desc, cover_url, view_num, creator, create_time, updater, update_time, delete_flag
+            id, title, story_desc, cover_url, view_num, creator, create_time, updater, update_time, delete_flag
         </sql>
     <select id="listNewsStory" resultMap="BaseResultMap">
         select

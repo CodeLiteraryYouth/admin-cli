@@ -10,9 +10,6 @@ import lombok.Data;
 @Data
 public class CourseQuery extends BaseQuery {
 
-    @ApiModelProperty(value = "类型ID")
-    private Long typeId;
-
     @ApiModelProperty(value = "查询字段")
     private String searchVal;
 }

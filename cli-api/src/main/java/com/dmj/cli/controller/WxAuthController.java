@@ -2,6 +2,7 @@ package com.dmj.cli.controller;
 
 import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.vo.wx.WxQrcodeVO;
 import com.dmj.cli.service.WxAuthService;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "获取登录二维码")
-public class WxAuthController {
+public class WxAuthController extends BaseController {
 
     @Autowired
     private WxAuthService wxAuthService;
@@ -32,9 +33,9 @@ public class WxAuthController {
 
     @Login
     @ApiOperation("根据sceneId获取用户信息")
-    @GetMapping("user-by-sceneId/{sceneId}")
-    public BaseResult<UserInfo> getUserBySceneId(@PathVariable Long sceneId) {
-        return wxAuthService.getUserBySceneId(sceneId);
+    @GetMapping("/user/info")
+    public BaseResult<UserInfo> getUserBySceneId() {
+        return wxAuthService.getUserBySceneId(getSceneId());
     }
 
     @GetMapping("checkToken")

@@ -49,7 +49,7 @@ public class ResourcesApiController {
     @ApiOperation("获取资源列表")
     @GetMapping("/list")
     public BaseResult<List<ResourcesVO>> list(@ModelAttribute ResourcesQuery query) {
-        return service.listResources(query);
+        return BaseResult.success(service.listResources(query));
     }
 
     @Login

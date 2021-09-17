@@ -1,7 +1,6 @@
 package com.dmj.cli.controller.sys;
 
 
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
@@ -40,32 +39,29 @@ public class ToolController extends BaseController {
     }
 
     @ApiOperation("修改工具")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<Tool> update(@RequestBody Tool entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
     @ApiOperation("删除工具")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("查询工具详情")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<Tool> select(@PathVariable Long id) {
         Tool data = service.getById(id);
         return BaseResult.success(data);
     }
 
     @ApiOperation("分页查询工具列表")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<Tool>>> page(@ModelAttribute ToolQuery query) {
-        Assert.notNull(query,"bad request");
-        Assert.notNull(query.getPageNum(),"pageNo is null");
-        Assert.notNull(query.getPageSize(),"pageSize is null");
         startPage();
         List<Tool> list=null;
         if (query.getTypeId() != null) {

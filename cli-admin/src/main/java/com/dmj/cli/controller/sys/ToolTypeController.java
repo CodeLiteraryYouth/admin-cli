@@ -1,19 +1,18 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.ToolType;
+import com.dmj.cli.domain.query.BaseQuery;
+import com.dmj.cli.service.sys.ToolTypeService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.domain.ToolType;
-import com.dmj.cli.service.sys.ToolTypeService;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.github.pagehelper.PageInfo;
+
 import java.util.List;
-import com.dmj.cli.domain.BaseController;
-import com.dmj.cli.domain.query.BaseQuery;
 
 /**
  * <p>
@@ -24,7 +23,7 @@ import com.dmj.cli.domain.query.BaseQuery;
  * @since 2021-08-31
  */
 @RestController
-@RequestMapping("/tool-type")
+@RequestMapping("/tool/type")
 @Api(tags = "工具类型维护")
 public class ToolTypeController extends BaseController {
 
@@ -39,7 +38,7 @@ public class ToolTypeController extends BaseController {
     }
 
     @ApiOperation("修改工具类型")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<ToolType> update(@RequestBody ToolType entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
@@ -47,14 +46,20 @@ public class ToolTypeController extends BaseController {
 
 
     @ApiOperation("删除工具类型")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
+    @GetMapping("/info/{id}")
+    public BaseResult<ToolType> info(@PathVariable Long id) {
+        ToolType data=service.getById(id);
+        return BaseResult.success(data);
+    }
+
     @ApiOperation("分页查询工具类型")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<ToolType>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<ToolType> list= service.list();

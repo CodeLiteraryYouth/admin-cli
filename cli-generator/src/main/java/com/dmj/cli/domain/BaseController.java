@@ -74,6 +74,10 @@ public class BaseController {
         return getRequest().getHeader(AuthConstants.LOGIN_TOKEN_KEY);
     }
 
+    protected Long getSceneId() {
+        return Long.valueOf(getToken());
+    }
+
     protected <T> BaseResult<PageInfo<List<T>>> pageInfoBaseResult(List<T> list) {
         PageInfo<T> pageInfo=new PageInfo<T>(list);
         return BaseResult.success(pageInfo);

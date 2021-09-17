@@ -35,7 +35,7 @@ public class ToolApiController extends BaseController {
 
 
     @ApiOperation("查询工具类型")
-    @GetMapping("/tyoe/list")
+    @GetMapping("/type/list")
     public BaseResult<List<ToolType>> listType() {
         return BaseResult.success(toolTypeService.list());
     }

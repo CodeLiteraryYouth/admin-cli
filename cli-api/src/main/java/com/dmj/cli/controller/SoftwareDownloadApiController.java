@@ -1,6 +1,8 @@
 package com.dmj.cli.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.DownloadType;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -53,7 +56,9 @@ public class SoftwareDownloadApiController extends BaseController {
     @GetMapping("/page")
     public BaseResult<PageInfo<List<SoftwareDownload>>> page(@ModelAttribute BaseQuery query) {
         startPage();
-        List<SoftwareDownload> list= service.list();
+        List<SoftwareDownload> list= service.list(Wrappers.<SoftwareDownload>lambdaQuery()
+                .eq(Objects.nonNull(query.getTypeId()),SoftwareDownload::getTypeId,query.getTypeId())
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),SoftwareDownload::getName,query.getSearchVal()));
         return pageInfoBaseResult(list);
     }
 }

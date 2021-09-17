@@ -1,19 +1,25 @@
 package com.dmj.cli.controller.sys;
 
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
+import com.dmj.cli.domain.BusinessCooperation;
+import com.dmj.cli.domain.query.BaseQuery;
+import com.dmj.cli.domain.vo.sys.BusinessCooperationVO;
+import com.dmj.cli.service.sys.BusinessCooperationService;
+import com.dmj.cli.service.sys.BusinessCooperationTypeService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.domain.BusinessCooperation;
-import com.dmj.cli.service.sys.BusinessCooperationService;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.github.pagehelper.PageInfo;
+
+import java.util.ArrayList;
 import java.util.List;
-import com.dmj.cli.domain.BaseController;
-import com.dmj.cli.domain.query.BaseQuery;
+import java.util.Objects;
 
 /**
  * <p>
@@ -24,12 +30,15 @@ import com.dmj.cli.domain.query.BaseQuery;
  * @since 2021-08-17
  */
 @RestController
-@RequestMapping("/business-cooperation")
+@RequestMapping("/business/cooperation")
 @Api(tags = "企业合作")
 public class BusinessCooperationController extends BaseController {
 
     @Autowired
     private BusinessCooperationService service;
+
+    @Autowired
+    private BusinessCooperationTypeService typeService;
 
     @ApiOperation("新增企业合作详情")
     @PostMapping("/save")
@@ -39,32 +48,44 @@ public class BusinessCooperationController extends BaseController {
     }
 
     @ApiOperation("修改企业合作详情")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<BusinessCooperation> update(@RequestBody BusinessCooperation entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
     @ApiOperation("删除企业合作详情")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("查询企业合作详情")
-    @GetMapping("/get/{id}")
-    public BaseResult<BusinessCooperation> select(@PathVariable Long id) {
+    @GetMapping("/info/{id}")
+    public BaseResult<BusinessCooperationVO> select(@PathVariable Long id) {
         BusinessCooperation data = service.getById(id);
-        return BaseResult.success(data);
+        BusinessCooperationVO vo=new BusinessCooperationVO();
+        BeanUtil.copyProperties(data,vo);
+        vo.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
+        return BaseResult.success(vo);
     }
 
     @ApiOperation("分页查询企业合作详情")
-    @GetMapping("/page")
-    public BaseResult<PageInfo<List<BusinessCooperation>>> page(@ModelAttribute BaseQuery query) {
+    @GetMapping("/list")
+    public BaseResult<PageInfo<List<BusinessCooperationVO>>> page(@ModelAttribute BaseQuery query) {
         startPage();
-        List<BusinessCooperation> list= service.list();
-        return pageInfoBaseResult(list);
+        List<BusinessCooperation> list= service.list(Wrappers.<BusinessCooperation>lambdaQuery()
+                .eq(Objects.nonNull(query.getTypeId()),BusinessCooperation::getTypeId,query.getTypeId())
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),BusinessCooperation::getTitle,query.getSearchVal()));
+        List<BusinessCooperationVO> cooperationVOS=new ArrayList<>(list.size());
+        list.forEach(item->{
+            BusinessCooperationVO vo=new BusinessCooperationVO();
+            BeanUtil.copyProperties(item,vo);
+            vo.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
+            cooperationVOS.add(vo);
+        });
+        return pageInfoBaseResult(cooperationVOS);
     }
 }
 
