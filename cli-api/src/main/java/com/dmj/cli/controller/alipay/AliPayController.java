@@ -11,6 +11,7 @@ import com.dmj.cli.domain.TOrder;
 import com.dmj.cli.domain.dto.pay.OrderFormRequest;
 import com.dmj.cli.entity.AliPayBean;
 import com.dmj.cli.service.TOrderService;
+import com.dmj.cli.service.api.UserInfoAccountService;
 import com.dmj.cli.util.str.StringUtils;
 import com.ijpay.alipay.AliPayApi;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class AliPayController {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private UserInfoAccountService accountService;
+
 
     /**
      * 1、获取订单信息
@@ -69,16 +73,20 @@ public class AliPayController {
             if (verifyResult) {
                 String tradeNo=params.get("out_trade_no");
                 String reqJson=redisUtils.get(tradeNo).toString();
+                //支付流水号
+                String payNo=params.get("trade_no");
                 if (StringUtils.isNotBlank(reqJson)) {
                     OrderFormRequest formRequest= JSONUtil.toBean(reqJson,OrderFormRequest.class);
                     if (PayConstant.SkuType.RECHARGE.getId() == formRequest.getSkuType()) {
-                        //填充充值成功以后用户账户的次数修改等逻辑
+                        //填充充值成功以后用户账户的变更
+                        accountService.updateUserAccount(formRequest,payNo,PayConstant.TradeChannel.Ali.getCode());
                     } else {
                         TOrder tOrder=tOrderService.getOne(Wrappers.<TOrder>lambdaQuery().eq(TOrder::getCode,tradeNo));
                         //防止订单已支付被重复推送
                         if (OrderConstant.OrderStatus.PREPARE.getCode() == tOrder.getStatus()) {
                             tOrder.setPaymentType(PayConstant.TradeChannel.Ali.getCode());
                             tOrder.setStatus(OrderConstant.OrderStatus.PAYMENT.getCode());
+                            tOrder.setTradeNo(payNo);
                             tOrderService.updateById(tOrder);
                         }
                     }

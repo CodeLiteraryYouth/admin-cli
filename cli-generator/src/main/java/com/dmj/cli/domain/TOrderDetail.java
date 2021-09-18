@@ -54,7 +54,7 @@ public class TOrderDetail implements Serializable {
 
     @ApiModelProperty(value = "购买商品实际数量")
     @TableField("num")
-    private Integer num;
+    private Long num;
     
     
 }

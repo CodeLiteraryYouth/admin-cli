@@ -5,16 +5,12 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.common.constant.WxConstant;
 import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.UserInfoAccount;
-import com.dmj.cli.domain.UserPayLog;
-import com.dmj.cli.domain.query.api.UserPayLogQuery;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
-import com.dmj.cli.domain.vo.api.UserPayLogVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 import com.dmj.cli.mapper.api.UserCollLogMapper;
 import com.dmj.cli.mapper.api.UserVideoLogMapper;
@@ -22,13 +18,11 @@ import com.dmj.cli.service.UserService;
 import com.dmj.cli.service.api.CourseService;
 import com.dmj.cli.service.api.ResourcesService;
 import com.dmj.cli.service.api.UserInfoAccountService;
-import com.dmj.cli.service.api.UserPayLogService;
 import com.dmj.cli.util.str.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,9 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserVideoLogMapper userVideoLogMapper;
-
-    @Autowired
-    private UserPayLogService userPayLogService;
 
     @Autowired
     private ResourcesService resourcesService;
@@ -98,26 +89,4 @@ public class UserServiceImpl implements UserService {
         return BaseResult.success(userVideoLogMapper.listVideoLog(userInfoVO.getId()));
     }
 
-    @Override
-    public BaseResult<List<UserPayLogVO>> listPayLogs(UserPayLogQuery query) {
-        Assert.notNull(query,"bad request");
-        Assert.notNull(query.getUserId(),"userId is null");
-        Assert.notNull(query.getTradeType(),"tradeType is null");
-        List<UserPayLogVO> userPayLogVOS=new ArrayList<>();
-        List<UserPayLog> userPayLogs=userPayLogService.list(Wrappers.<UserPayLog>lambdaQuery()
-                .eq(UserPayLog::getUserId,query.getUserId())
-                .eq(UserPayLog::getTradeType,query.getTradeType()));
-        userPayLogs.stream().map(userPayLog -> {
-            UserPayLogVO userPayLogVO=new UserPayLogVO();
-            BeanUtil.copyProperties(userPayLog,userPayLogVO);
-            if (WxConstant.TRADE_TYPE.RESOURCES_PAY.name().equals(query.getTradeType())) {
-                userPayLogVO.setResources(resourcesService.getById(userPayLog.getTradeId()));
-            } else {
-                userPayLogVO.setCourse(courseService.getById(userPayLog.getTradeId()));
-            }
-            userPayLogVOS.add(userPayLogVO);
-            return userPayLog;
-        });
-        return BaseResult.success(userPayLogVOS);
-    }
 }

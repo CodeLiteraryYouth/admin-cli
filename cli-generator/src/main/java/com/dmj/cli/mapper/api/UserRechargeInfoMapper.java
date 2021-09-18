@@ -1,6 +1,6 @@
 package com.dmj.cli.mapper.api;
 
-import com.dmj.cli.domain.UserPayLog;
+import com.dmj.cli.domain.UserRechargeInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author zd
- * @since 2021-08-19
+ * @since 2021-09-18
  */
-public interface UserPayLogMapper extends BaseMapper<UserPayLog> {
+public interface UserRechargeInfoMapper extends BaseMapper<UserRechargeInfo> {
 
 }

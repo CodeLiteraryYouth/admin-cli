@@ -3,16 +3,16 @@ package com.dmj.cli.controller;
 import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
-import com.dmj.cli.domain.query.api.UserPayLogQuery;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
-import com.dmj.cli.domain.vo.api.UserPayLogVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 import com.dmj.cli.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -47,10 +47,5 @@ public class UserController extends BaseController {
         return userInfoService.listVideoLog(getToken());
     }
 
-    @ApiOperation("查询用户支付记录")
-    @GetMapping("/pay/log")
-    public BaseResult<List<UserPayLogVO>> listPayLogs(@ModelAttribute UserPayLogQuery query) {
-        return userInfoService.listPayLogs(query);
-    }
 
 }

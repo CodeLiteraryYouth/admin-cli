@@ -79,7 +79,7 @@ public class ${table.controllerName} extends BaseController {
         return BaseResult.success(data);
     }
 
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<${entity}>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<${entity}> list= service.list();

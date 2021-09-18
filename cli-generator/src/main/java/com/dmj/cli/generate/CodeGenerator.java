@@ -86,7 +86,7 @@ public class CodeGenerator {
         // config.setSuperControllerClass();
 
         // 设置需要generator的表名
-        config.setInclude("t_order_detail");
+        config.setInclude("user_recharge_info");
         // 设置不需要generator的表名
         // config.setExclude();
 

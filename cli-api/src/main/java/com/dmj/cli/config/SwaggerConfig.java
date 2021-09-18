@@ -32,7 +32,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("图像PC端接口文档")
-                .termsOfServiceUrl("http://localhost:8001/doc.html")
+                .termsOfServiceUrl("http://localhost:8001/api/doc.html")
                 .build();
     }
 }

@@ -8,6 +8,7 @@ import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.TOrder;
 import com.dmj.cli.domain.dto.pay.OrderFormRequest;
 import com.dmj.cli.service.TOrderService;
+import com.dmj.cli.service.api.UserInfoAccountService;
 import com.dmj.cli.util.str.StringUtils;
 import com.ijpay.core.enums.SignType;
 import com.ijpay.core.kit.HttpKit;
@@ -40,6 +41,9 @@ public class WxPayController {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private UserInfoAccountService accountService;
+
 
     /**
      * 异步通知
@@ -60,16 +64,19 @@ public class WxPayController {
                 // 更新订单信息
                 String tradeNo=params.get("out_trade_no");
                 String reqJson=redisUtils.get(tradeNo).toString();
+                String payNo=params.get("transaction_id");
                 if (StringUtils.isNotBlank(reqJson)) {
                     OrderFormRequest formRequest= JSONUtil.toBean(reqJson,OrderFormRequest.class);
                     if (PayConstant.SkuType.RECHARGE.getId() == formRequest.getSkuType()) {
                         //填充充值成功以后用户账户的次数修改等逻辑
+                        accountService.updateUserAccount(formRequest,payNo,PayConstant.TradeChannel.Wx.getCode());
                     } else {
                         TOrder tOrder=tOrderService.getOne(Wrappers.<TOrder>lambdaQuery().eq(TOrder::getCode,tradeNo));
                         //防止订单已支付被重复推送
                         if (OrderConstant.OrderStatus.PREPARE.getCode() == tOrder.getStatus()) {
                             tOrder.setPaymentType(PayConstant.TradeChannel.Wx.getCode());
                             tOrder.setStatus(OrderConstant.OrderStatus.PAYMENT.getCode());
+                            tOrder.setTradeNo(payNo);
                             tOrderService.updateById(tOrder);
                         }
                     }

@@ -3,7 +3,6 @@ package com.dmj.cli.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.AuthConstants;
@@ -21,7 +20,6 @@ import com.dmj.cli.domain.dto.pay.PayResponse;
 import com.dmj.cli.handler.pay.PayContextHandler;
 import com.dmj.cli.mapper.sys.TOrderMapper;
 import com.dmj.cli.service.TOrderService;
-import com.dmj.cli.service.impl.pay.AliPayScan;
 import com.dmj.cli.service.impl.pay.WxPayScan;
 import com.dmj.cli.service.sys.TOrderDetailService;
 import com.dmj.cli.util.ServletUtils;
@@ -88,11 +86,11 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
                 .setBody(orderFormRequest.getBody())
                 .setTimeOut(orderFormRequest.getTimeOut())
                 .setExtras(orderFormRequest.getExtras());
-        PayContextHandler aliHandler=new PayContextHandler(new AliPayScan());
-        PayResponse aliRes= aliHandler.pay(payRequest);
-        if (!aliRes.isSuccess()) {
-            return BaseResult.fail(aliRes.getMsg());
-        }
+        //PayContextHandler aliHandler=new PayContextHandler(new AliPayScan());
+        //PayResponse aliRes= aliHandler.pay(payRequest);
+        //if (!aliRes.isSuccess()) {
+        //    return BaseResult.fail(aliRes.getMsg());
+        //}
         PayContextHandler wxHandler=new PayContextHandler(new WxPayScan());
         PayResponse wxRes= wxHandler.pay(payRequest);
         if (!wxRes.isSuccess()) {
@@ -108,13 +106,13 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         tOrderDetailService.save(tOrderDetail);
         Long timeOut=StringUtils.isBlank(orderFormRequest.getTimeOut()) ? 5*60 : getTimeout(orderFormRequest.getTimeOut());
         redisUtils.set(tradeNo, JSONUtil.toJsonStr(orderFormRequest),timeOut);
-        JSONObject aliData=(JSONObject)aliRes.getData();
-        String aliCodeUrl=aliData.getString("qr_code");
+        //JSONObject aliData=(JSONObject)aliRes.getData();
+        //String aliCodeUrl=aliData.getString("qr_code");
         Map<String,String> wxData=(Map<String, String>) wxRes.getData();
         String wxCodeUrl=wxData.get("code_url");
         Map<String,String> result=new HashMap<>(3);
         result.put("tradeNo",tradeNo);
-        result.put("aliCodeUrl",aliCodeUrl);
+        //result.put("aliCodeUrl",aliCodeUrl);
         result.put("wxCodeUrl",wxCodeUrl);
         return BaseResult.success(result);
     }

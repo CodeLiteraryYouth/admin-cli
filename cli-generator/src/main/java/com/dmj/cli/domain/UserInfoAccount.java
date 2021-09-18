@@ -33,9 +33,9 @@ public class UserInfoAccount extends BaseEntity implements Serializable {
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "账户类型(VIDEO:观看账户 DOWNLOAD:下载账户)")
+    @ApiModelProperty(value = "1:下载 2:观看")
     @TableField("account_type")
-    private String accountType;
+    private Integer accountType;
 
     @ApiModelProperty(value = "账户余额(单位:分)")
     @TableField("account_amount")

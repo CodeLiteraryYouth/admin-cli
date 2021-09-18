@@ -38,12 +38,12 @@ public class OrderFormRequest implements Serializable {
 
     @NotNull
     @ApiModelProperty(value = "购买商品实际数量")
-    private Integer num;
+    private Long num;
 
     @ApiModelProperty(value = "支付主体")
     private String body;
 
-    @ApiModelProperty(value = "支付超时时间")
+    @ApiModelProperty(value = "支付超时时间(m:分钟 h:小时 d:天)")
     private String timeOut;
 
     @ApiModelProperty(value = "支付扩展参数(json格式 例如{'storeId': 'A10010'})")

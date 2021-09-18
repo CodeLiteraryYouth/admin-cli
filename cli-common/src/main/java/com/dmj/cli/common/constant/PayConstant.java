@@ -50,9 +50,10 @@ public interface PayConstant {
     }
 
     enum TradeChannel {
-        Cash(1),
-        Wx(2),
-        Ali(3);
+        Wx(1),
+        Ali(2),
+        Cash(3);
+
 
         private int code;
 

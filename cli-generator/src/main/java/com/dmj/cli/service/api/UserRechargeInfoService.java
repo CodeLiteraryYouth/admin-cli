@@ -1,6 +1,6 @@
 package com.dmj.cli.service.api;
 
-import com.dmj.cli.domain.UserPayLog;
+import com.dmj.cli.domain.UserRechargeInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author zd
- * @since 2021-08-19
+ * @since 2021-09-18
  */
-public interface UserPayLogService extends IService<UserPayLog> {
+public interface UserRechargeInfoService extends IService<UserRechargeInfo> {
 
 }
