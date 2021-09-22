@@ -40,33 +40,33 @@ public class BannerController extends BaseController {
     }
 
     @ApiOperation("修改广告位")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<Banner> update(@RequestBody Banner entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
     @ApiOperation("删除广告位")
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody List<Long> ids) {
+        service.removeByIds(ids);
         return BaseResult.success();
     }
 
     @ApiOperation("获取广告位详情")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<Banner> select(@PathVariable Long id) {
         Banner data = service.getById(id);
         return BaseResult.success(data);
     }
 
     @ApiOperation("分页查询广告位")
-    @GetMapping("/page")
+    @GetMapping("/list")
     public BaseResult<PageInfo<List<Banner>>> page(@ModelAttribute BannerQuery query) {
         startPage();
         List<Banner> list= service.list(Wrappers.<Banner>lambdaQuery()
-                .eq(Objects.isNull(query.getLocation()),Banner::getLocation,query.getLocation())
-                .eq(Objects.isNull(query.getType()),Banner::getType,query.getType()));
+                .eq(Objects.nonNull(query.getLocation()),Banner::getLocation,query.getLocation())
+                .eq(Objects.nonNull(query.getType()),Banner::getType,query.getType()));
         return pageInfoBaseResult(list);
     }
 

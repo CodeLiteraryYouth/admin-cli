@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class ProductQuery extends BaseQuery {
 
-    @ApiModelProperty(value ="false:文章 true:作品")
+    @ApiModelProperty(value ="false:文章(推荐作品) true:作品(经验分享)")
     private Boolean isArticle;
 
     @ApiModelProperty(value = "类型ID")

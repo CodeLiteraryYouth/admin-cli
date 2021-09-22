@@ -12,9 +12,6 @@ import java.io.Serializable;
 @Data
 public class ResourcesQuery extends BaseQuery implements Serializable {
 
-    @ApiModelProperty(value = "素材标签")
-    private Long typeId;
-
     @ApiModelProperty(value = "是否免费")
     private Boolean free;
 

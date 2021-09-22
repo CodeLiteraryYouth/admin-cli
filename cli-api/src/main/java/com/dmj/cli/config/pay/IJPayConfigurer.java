@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class IJPayConfigurer extends WebMvcConfigurationSupport {
 
     @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
-        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        return new StringHttpMessageConverter(StandardCharsets.UTF_8);
     }
 
     @Override
