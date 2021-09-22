@@ -20,6 +20,10 @@ import java.io.Serializable;
 public class PayRequest implements Serializable {
 
     /**
+     * 支付用户ID
+     */
+    private Long userId;
+    /**
      * 支付主体
      */
     private String body;

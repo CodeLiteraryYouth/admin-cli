@@ -1,10 +1,10 @@
 package com.dmj.cli.service.impl.pay;
 
 import com.dmj.cli.controller.wxpay.AbstractWxPayApiController;
-import com.dmj.cli.entity.WxPayBean;
 import com.dmj.cli.domain.dto.pay.PayRequest;
 import com.dmj.cli.domain.dto.pay.PayResponse;
 import com.dmj.cli.domain.dto.pay.RefundResponse;
+import com.dmj.cli.entity.WxPayBean;
 import com.dmj.cli.service.PayService;
 import com.dmj.cli.util.ServletUtils;
 import com.dmj.cli.util.str.StringUtils;
@@ -17,8 +17,8 @@ import com.ijpay.wxpay.WxPayApiConfig;
 import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.ijpay.wxpay.model.UnifiedOrderModel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 public class WxPayScan extends AbstractWxPayApiController implements PayService {
 
-    @Autowired
+    @Resource
     WxPayBean wxPayBean;
 
     private String notifyUrl;
