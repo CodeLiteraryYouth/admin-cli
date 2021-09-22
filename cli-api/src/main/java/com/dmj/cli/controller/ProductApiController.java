@@ -10,6 +10,7 @@ import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Product;
 import com.dmj.cli.domain.ProductType;
 import com.dmj.cli.domain.query.api.ProductQuery;
+import com.dmj.cli.domain.vo.api.DesignerVO;
 import com.dmj.cli.service.api.ProductService;
 import com.dmj.cli.service.api.ProductTypeService;
 import com.github.pagehelper.PageInfo;
@@ -78,6 +79,12 @@ public class ProductApiController extends BaseController {
         startPage();
         List<Product> list= service.page(query);
         return pageInfoBaseResult(list);
+    }
+
+    @ApiOperation("/设计师列表")
+    @GetMapping("/designer/list")
+    public BaseResult<List<DesignerVO>> listDesigner() {
+        return BaseResult.success(service.listDesigner());
     }
 }
 

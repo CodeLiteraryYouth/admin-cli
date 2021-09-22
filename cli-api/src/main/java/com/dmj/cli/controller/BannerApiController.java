@@ -38,8 +38,8 @@ public class BannerApiController extends BaseController {
     public BaseResult<PageInfo<List<Banner>>> page(@ModelAttribute BannerQuery query) {
         startPage();
         List<Banner> list= service.list(Wrappers.<Banner>lambdaQuery()
-                .eq(Objects.isNull(query.getLocation()),Banner::getLocation,query.getLocation())
-                .eq(Objects.isNull(query.getType()),Banner::getType,query.getType()));
+                .eq(Objects.nonNull(query.getLocation()),Banner::getLocation,query.getLocation())
+                .eq(Objects.nonNull(query.getType()),Banner::getType,query.getType()));
         return pageInfoBaseResult(list);
     }
 

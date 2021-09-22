@@ -3,6 +3,7 @@ package com.dmj.cli.mapper.api;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.Product;
 import com.dmj.cli.domain.query.api.ProductQuery;
+import com.dmj.cli.domain.vo.api.DesignerVO;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ import java.util.List;
 public interface ProductMapper extends BaseMapper<Product> {
 
     List<Product> listProducts(ProductQuery query);
+
+    List<DesignerVO> listDesigner();
 }

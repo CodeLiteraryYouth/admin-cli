@@ -57,5 +57,9 @@
             and is_pass=#{isPass}
         </if>
     </select>
+    <select id="listDesigner" resultType="com.dmj.cli.domain.vo.api.DesignerVO">
+        select distinct p.creator as sceneId, u.nick_name as nickName, u.avatar_url as avatarUrl
+        from product p left join user_info u on p.creator=u.scene_id
+    </select>
 
 </mapper>
