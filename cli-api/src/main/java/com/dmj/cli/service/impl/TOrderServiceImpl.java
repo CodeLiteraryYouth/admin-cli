@@ -147,7 +147,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
             throw new LoginException("当前用户未登录，请前去登录");
         }
         UserInfo userInfo= JSONUtil.toBean(user,UserInfo.class);
-        String tradeNo= IdUtil.getSnowflake(1, 1).nextIdStr();
+        String tradeNo= IdUtil.getSnowflake().nextIdStr();
         TOrder tOrder=tOrderMapper.selectOne(Wrappers.<TOrder>lambdaQuery().eq(TOrder::getCode,tradeNo));
         if (tOrder != null && OrderConstant.OrderStatus.PREPARE.getCode() != tOrder.getStatus()) {
             return BaseResult.fail(ResultStatusCode.ORDER_PAY_ERROR);
