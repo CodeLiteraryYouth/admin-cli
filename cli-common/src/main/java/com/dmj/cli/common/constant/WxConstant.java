@@ -28,7 +28,7 @@ public interface WxConstant {
     /**
      * 服务端配置的TOKEN
      */
-    String SERVER_TOKEN="";
+    String SERVER_TOKEN="wylzd19950823";
 
     /**
      * 已关注公众号
