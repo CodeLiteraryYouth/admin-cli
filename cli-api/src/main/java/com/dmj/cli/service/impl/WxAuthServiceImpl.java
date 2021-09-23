@@ -3,6 +3,7 @@ package com.dmj.cli.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -62,7 +63,7 @@ public class WxAuthServiceImpl implements WxAuthService {
     @Override
     public BaseResult<WxQrcodeVO> getQrcode() {
         String codeUrl=WxConstant.QRCODE_URL.replace("TOKEN",WxConstant.SERVER_TOKEN);
-        String sceneId = (System.currentTimeMillis()+"").substring(0,10);
+        String sceneId = IdUtil.getSnowflake().nextIdStr();
         Map<String,Object> param=new HashMap<>();
         param.put("expire_seconds",3600);
         param.put("action_name",WxConstant.ACTION.QR_SCENE.name());
