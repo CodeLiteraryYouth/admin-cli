@@ -52,5 +52,4 @@ public class Banner extends BaseEntity implements Serializable {
     @TableField("type")
     private Integer type;
 
-    
 }
