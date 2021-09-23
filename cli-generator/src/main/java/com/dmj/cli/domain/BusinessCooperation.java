@@ -57,15 +57,15 @@ public class BusinessCooperation extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "浏览数")
     @TableField("view_num")
-    private Integer viewNum;
+    private Long viewNum;
 
     @ApiModelProperty(value = "点赞数")
     @TableField("favour_num")
-    private Integer favourNum;
+    private Long favourNum;
 
     @ApiModelProperty(value = "收藏数")
     @TableField("collect_num")
-    private Integer collectNum;
+    private Long collectNum;
 
     
 }

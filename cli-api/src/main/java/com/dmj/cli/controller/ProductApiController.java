@@ -6,6 +6,8 @@ import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.constant.GlobalConstants;
+import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Product;
 import com.dmj.cli.domain.ProductType;
@@ -40,6 +42,9 @@ public class ProductApiController extends BaseController {
     @Autowired
     private ProductTypeService productTypeService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
 
     @ApiOperation("获取作品标签列表")
     @GetMapping("/type/list")
@@ -52,6 +57,7 @@ public class ProductApiController extends BaseController {
     @GetMapping("/get/{id}")
     public BaseResult<Product> select(@PathVariable Long id) {
         Product data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -78,6 +84,7 @@ public class ProductApiController extends BaseController {
     public BaseResult<PageInfo<List<Product>>> page(@ModelAttribute ProductQuery query) {
         startPage();
         List<Product> list= service.page(query);
+        list.forEach(this::buildNum);
         return pageInfoBaseResult(list);
     }
 
@@ -85,6 +92,14 @@ public class ProductApiController extends BaseController {
     @GetMapping("/designer/list")
     public BaseResult<List<DesignerVO>> listDesigner() {
         return BaseResult.success(service.listDesigner());
+    }
+
+
+    private void buildNum(Product data) {
+        Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, data.getId().toString());
+        Double favourNUm = redisUtils.score(GlobalConstants.FAVOUR_NUM, data.getId().toString());
+        data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+        data.setFavourNum(favourNUm == null ? 0L : favourNUm.longValue());
     }
 }
 

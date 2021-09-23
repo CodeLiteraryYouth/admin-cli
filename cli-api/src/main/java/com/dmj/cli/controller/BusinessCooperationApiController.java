@@ -7,6 +7,8 @@ import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.common.constant.GlobalConstants;
+import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.BusinessCooperation;
 import com.dmj.cli.domain.BusinessCooperationType;
@@ -41,6 +43,9 @@ public class BusinessCooperationApiController extends BaseController {
     @Autowired
     private BusinessCooperationTypeService typeService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @ApiOperation("查询合作列表")
     @GetMapping("/type/list")
     public BaseResult<List<BusinessCooperationType>> typeList() {
@@ -52,6 +57,7 @@ public class BusinessCooperationApiController extends BaseController {
     @GetMapping("/get/{id}")
     public BaseResult<BusinessCooperation> select(@PathVariable Long id) {
         BusinessCooperation data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -76,7 +82,18 @@ public class BusinessCooperationApiController extends BaseController {
         List<BusinessCooperation> list= service.list(Wrappers.<BusinessCooperation>lambdaQuery()
                 .eq(Objects.nonNull(query.getTypeId()),BusinessCooperation::getTypeId,query.getTypeId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),BusinessCooperation::getTitle,query.getSearchVal()));
+        list.forEach(this::buildNum);
         return pageInfoBaseResult(list);
+    }
+
+
+    private void buildNum(BusinessCooperation data) {
+        Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, data.getId().toString());
+        Double collectNum = redisUtils.score(GlobalConstants.COLLECT_NUM, data.getId().toString());
+        Double favourNUm = redisUtils.score(GlobalConstants.FAVOUR_NUM, data.getId().toString());
+        data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+        data.setCollectNum(collectNum == null ? 0L : collectNum.longValue());
+        data.setFavourNum(favourNUm == null ? 0L : favourNUm.longValue());
     }
 }
 

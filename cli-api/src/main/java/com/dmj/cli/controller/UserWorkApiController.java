@@ -49,6 +49,7 @@ public class UserWorkApiController extends BaseController {
     @GetMapping("/get/{id}")
     public BaseResult<UserWork> select(@PathVariable Long id) {
         UserWork data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -64,7 +65,14 @@ public class UserWorkApiController extends BaseController {
     public BaseResult<PageInfo<List<UserWork>>> page(@ModelAttribute UserWorkQuery query) {
         startPage();
         List<UserWork> userWorks=service.list(new LambdaQueryWrapper<UserWork>().eq(UserWork::getJobId,query.getJobId()));
-        userWorks.forEach(userWork -> userWork.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM,userWork.getId().toString()).longValue()));
+        userWorks.forEach(this::buildNum);
         return pageInfoBaseResult(userWorks);
+    }
+
+    private void buildNum(UserWork data) {
+        Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM, data.getId().toString());
+        Double favourNUm = redisUtils.score(GlobalConstants.FAVOUR_NUM, data.getId().toString());
+        data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+        data.setFavourNum(favourNUm == null ? 0L : favourNUm.longValue());
     }
 }

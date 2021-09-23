@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class PracticesJobApiController extends BaseController {
     @GetMapping("/get/{id}")
     public BaseResult<PracticesJob> select(@PathVariable Long id) {
         PracticesJob data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -42,7 +44,13 @@ public class PracticesJobApiController extends BaseController {
     public BaseResult<PageInfo<List<PracticesJob>>> page(@ModelAttribute PracticesJobQuery query) {
         startPage();
         List<PracticesJob> list=service.list();
-        list.forEach(practicesJob -> practicesJob.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM,practicesJob.getId().toString()).longValue()));
+        list.forEach(this::buildNum);
         return pageInfoBaseResult(list);
     }
+
+    private void buildNum(PracticesJob data) {
+        Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM,data.getId().toString());
+        data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
+    }
+
 }
