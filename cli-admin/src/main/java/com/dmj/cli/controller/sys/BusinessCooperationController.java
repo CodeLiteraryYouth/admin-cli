@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,19 +72,12 @@ public class BusinessCooperationController extends BaseController {
 
     @ApiOperation("分页查询企业合作详情")
     @GetMapping("/list")
-    public BaseResult<PageInfo<List<BusinessCooperationVO>>> page(@ModelAttribute BaseQuery query) {
+    public BaseResult<PageInfo<List<BusinessCooperation>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<BusinessCooperation> list= service.list(Wrappers.<BusinessCooperation>lambdaQuery()
                 .eq(Objects.nonNull(query.getTypeId()),BusinessCooperation::getTypeId,query.getTypeId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),BusinessCooperation::getTitle,query.getSearchVal()));
-        List<BusinessCooperationVO> cooperationVOS=new ArrayList<>(list.size());
-        list.forEach(item->{
-            BusinessCooperationVO vo=new BusinessCooperationVO();
-            BeanUtil.copyProperties(item,vo);
-            vo.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
-            cooperationVOS.add(vo);
-        });
-        return pageInfoBaseResult(cooperationVOS);
+        return pageInfoBaseResult(list);
     }
 }
 

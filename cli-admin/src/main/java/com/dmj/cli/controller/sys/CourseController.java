@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,14 +77,13 @@ public class CourseController extends BaseController {
         List<Course> courses=service.list(Wrappers.<Course>lambdaQuery()
                 .eq(Objects.nonNull(query.getTypeId()),Course::getTypeId,query.getTypeId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),Course::getCourseTitle,query.getSearchVal()));
-        List<CourseVO> courseVOS=new ArrayList<>(courses.size());
-        courses.forEach(course -> {
-            CourseVO courseVO=new CourseVO();
-            BeanUtil.copyProperties(course,courseVO);
-            courseVO.setTypeName(typeService.getById(course.getTypeId()).getTypeName());
-            courseVOS.add(courseVO);
+        PageInfo<List<Course>> pageInfo=pageInfoBaseResult(courses).getData();
+        PageInfo<List<CourseVO>> courseVOS=new PageInfo<>();
+        BeanUtil.copyProperties(pageInfo,courseVOS);
+        courseVOS.getList().get(0).forEach(item -> {
+            item.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
         });
-        return pageInfoBaseResult(courseVOS);
+        return BaseResult.success(courseVOS);
     }
 }
 
