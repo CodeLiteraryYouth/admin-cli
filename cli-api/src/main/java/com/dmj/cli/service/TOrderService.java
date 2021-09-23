@@ -3,6 +3,7 @@ package com.dmj.cli.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.TOrder;
+import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.dto.pay.OrderFormRequest;
 
 import java.util.Map;
@@ -19,4 +20,5 @@ public interface TOrderService extends IService<TOrder> {
 
     BaseResult<Map<String,String>> getCodeUrl(OrderFormRequest orderFormRequest);
 
+    BaseResult<UserInfoAccount> cashPay(OrderFormRequest request);
 }

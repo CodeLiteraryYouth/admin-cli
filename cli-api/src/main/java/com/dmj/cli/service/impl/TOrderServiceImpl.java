@@ -8,18 +8,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.OrderConstant;
+import com.dmj.cli.common.constant.PayConstant;
 import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.exception.LoginException;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.TOrder;
 import com.dmj.cli.domain.TOrderDetail;
 import com.dmj.cli.domain.UserInfo;
+import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.dto.pay.OrderFormRequest;
 import com.dmj.cli.domain.dto.pay.PayRequest;
 import com.dmj.cli.domain.dto.pay.PayResponse;
 import com.dmj.cli.handler.pay.PayContextHandler;
 import com.dmj.cli.mapper.sys.TOrderMapper;
 import com.dmj.cli.service.TOrderService;
+import com.dmj.cli.service.api.UserInfoAccountService;
 import com.dmj.cli.service.impl.pay.WxPayScan;
 import com.dmj.cli.service.sys.TOrderDetailService;
 import com.dmj.cli.util.ServletUtils;
@@ -34,6 +37,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -53,11 +57,85 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     private TOrderDetailService tOrderDetailService;
 
     @Autowired
+    private UserInfoAccountService accountService;
+
+    @Autowired
     private RedisUtils redisUtils;
 
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public BaseResult<Map<String, String>> getCodeUrl(OrderFormRequest orderFormRequest) {
+        BaseResult<TOrder> orderInfo=buildOrderInfo(orderFormRequest);
+        if (orderInfo.getCode() != 200 ) {
+            return BaseResult.fail(orderInfo);
+        }
+        TOrder tOrder=orderInfo.getData();
+        PayRequest payRequest=PayRequest.builder().build()
+                .setTotalAmount(NumberUtil.toStr(tOrder.getAmount()))
+                .setOutTradeNo(tOrder.getCode())
+                .setBody(orderFormRequest.getBody())
+                .setTimeOut(orderFormRequest.getTimeOut())
+                .setExtras(orderFormRequest.getExtras());
+        //PayContextHandler aliHandler=new PayContextHandler(new AliPayScan());
+        //PayResponse aliRes= aliHandler.pay(payRequest);
+        //if (!aliRes.isSuccess()) {
+        //    return BaseResult.fail(aliRes.getMsg());
+        //}
+        PayContextHandler wxHandler=new PayContextHandler(new WxPayScan());
+        PayResponse wxRes= wxHandler.pay(payRequest);
+        if (!wxRes.isSuccess()) {
+            return BaseResult.fail(wxRes.getMsg());
+        }
+
+        Long timeOut=StringUtils.isBlank(orderFormRequest.getTimeOut()) ? 5*60 : getTimeout(orderFormRequest.getTimeOut());
+        redisUtils.set(tOrder.getCode(), JSONUtil.toJsonStr(orderFormRequest),timeOut);
+        //JSONObject aliData=(JSONObject)aliRes.getData();
+        //String aliCodeUrl=aliData.getString("qr_code");
+        Map<String,String> wxData=(Map<String, String>) wxRes.getData();
+        String wxCodeUrl=wxData.get("code_url");
+        Map<String,String> result=new HashMap<>(3);
+        result.put("tradeNo",tOrder.getCode());
+        //result.put("aliCodeUrl",aliCodeUrl);
+        result.put("wxCodeUrl",wxCodeUrl);
+        return BaseResult.success(result);
+    }
+
+    /**
+     * 1、判断用户账户是否存在
+     * 2、判断账户余额是否充足
+     * 3、完成账户的扣减并更改订单状态
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    public BaseResult<UserInfoAccount> cashPay(OrderFormRequest orderFormRequest) {
+        BaseResult<TOrder> orderInfo=buildOrderInfo(orderFormRequest);
+        if (orderInfo.getCode() != 200 ) {
+            return BaseResult.fail(orderInfo);
+        }
+        TOrder tOrder=orderInfo.getData();
+        Integer skuType = orderFormRequest.getSkuType();
+        UserInfoAccount account=accountService.getOne(Wrappers.<UserInfoAccount>lambdaQuery()
+                .eq(Objects.nonNull(orderFormRequest.getUserId()),UserInfoAccount::getUserId,orderFormRequest.getUserId())
+                .eq(skuType != null,UserInfoAccount::getAccountType,skuType));
+        if (account == null) {
+            return BaseResult.fail("不存在该账户，请前去创建新账户");
+        }
+        account.setAccountAmount(NumberUtil.sub(account.getAccountAmount(),orderFormRequest.getActualPrice()));
+        account.setAccountNum(NumberUtil.sub(account.getAccountNum(),orderFormRequest.getNum()).longValue());
+        accountService.updateById(account);
+        //防止订单已支付被重复推送
+        if (OrderConstant.OrderStatus.PREPARE.getCode() == tOrder.getStatus()) {
+            tOrder.setPaymentType(PayConstant.TradeChannel.Cash.getCode());
+            tOrder.setStatus(OrderConstant.OrderStatus.PAYMENT.getCode());
+            //生成支付流水号
+            String payNo=IdUtil.getSnowflake().nextIdStr();
+            tOrder.setTradeNo(payNo);
+            tOrderMapper.updateById(tOrder);
+        }
+        return BaseResult.success(account);
+    }
+
+    private BaseResult<TOrder> buildOrderInfo(OrderFormRequest orderFormRequest) {
         HttpServletRequest request= ServletUtils.getRequest();
         String token = request.getHeader(AuthConstants.LOGIN_TOKEN_KEY);
         if (StringUtils.isBlank(token)) {
@@ -80,22 +158,6 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
                 .setCreateTime(LocalDateTime.now())
                 .setUserId(userInfo.getId())
                 .setAmount(amount);
-        PayRequest payRequest=PayRequest.builder().build()
-                .setTotalAmount(NumberUtil.toStr(amount))
-                .setOutTradeNo(tradeNo)
-                .setBody(orderFormRequest.getBody())
-                .setTimeOut(orderFormRequest.getTimeOut())
-                .setExtras(orderFormRequest.getExtras());
-        //PayContextHandler aliHandler=new PayContextHandler(new AliPayScan());
-        //PayResponse aliRes= aliHandler.pay(payRequest);
-        //if (!aliRes.isSuccess()) {
-        //    return BaseResult.fail(aliRes.getMsg());
-        //}
-        PayContextHandler wxHandler=new PayContextHandler(new WxPayScan());
-        PayResponse wxRes= wxHandler.pay(payRequest);
-        if (!wxRes.isSuccess()) {
-            return BaseResult.fail(wxRes.getMsg());
-        }
         tOrderMapper.insert(tOrder);
         TOrderDetail tOrderDetail=TOrderDetail.builder().build()
                 .setOrderId(tOrder.getId())
@@ -104,17 +166,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
                 .setPrice(orderFormRequest.getActualPrice())
                 .setNum(orderFormRequest.getNum());
         tOrderDetailService.save(tOrderDetail);
-        Long timeOut=StringUtils.isBlank(orderFormRequest.getTimeOut()) ? 5*60 : getTimeout(orderFormRequest.getTimeOut());
-        redisUtils.set(tradeNo, JSONUtil.toJsonStr(orderFormRequest),timeOut);
-        //JSONObject aliData=(JSONObject)aliRes.getData();
-        //String aliCodeUrl=aliData.getString("qr_code");
-        Map<String,String> wxData=(Map<String, String>) wxRes.getData();
-        String wxCodeUrl=wxData.get("code_url");
-        Map<String,String> result=new HashMap<>(3);
-        result.put("tradeNo",tradeNo);
-        //result.put("aliCodeUrl",aliCodeUrl);
-        result.put("wxCodeUrl",wxCodeUrl);
-        return BaseResult.success(result);
+        return BaseResult.success(tOrder);
     }
 
     /**

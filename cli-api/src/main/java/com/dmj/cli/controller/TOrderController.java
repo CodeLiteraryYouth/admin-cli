@@ -8,6 +8,7 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.OrderConstant;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.TOrder;
+import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.dto.pay.OrderFormRequest;
 import com.dmj.cli.service.TOrderService;
 import io.swagger.annotations.Api;
@@ -38,6 +39,13 @@ public class TOrderController extends BaseController {
     @PostMapping("/codeUrl")
     public BaseResult<Map<String,String>> save(@RequestBody OrderFormRequest entity) {
         return service.getCodeUrl(entity);
+    }
+
+    @Login
+    @ApiOperation("现金支付")
+    @PostMapping("/cashPay")
+    public BaseResult<UserInfoAccount> cashPay(@RequestBody OrderFormRequest request) {
+        return service.cashPay(request);
     }
 
     @Login
