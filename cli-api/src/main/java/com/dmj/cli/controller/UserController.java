@@ -23,24 +23,26 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "个人中心")
-@Login
 public class UserController extends BaseController {
 
     @Autowired
     private UserService userInfoService;
 
+    @Login
     @ApiOperation("查询个人中心信息")
     @GetMapping("/info")
     public BaseResult<UserInfoVO> get() {
         return userInfoService.getUserBySceneId(getToken());
     }
 
+    @Login
     @ApiOperation("查询个人收藏信息")
     @GetMapping("/collect")
     public BaseResult<Map<String, List<CollectInfoVO>>> getUserCollect() {
         return userInfoService.getCollectInfo(getToken());
     }
 
+    @Login
     @ApiOperation("查询观看记录")
     @GetMapping("/video")
     public BaseResult<List<VidelLogVO>> listVideoLog() {

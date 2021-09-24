@@ -4,11 +4,13 @@ import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.ResourcesType;
 import com.dmj.cli.domain.query.api.ResourcesQuery;
 import com.dmj.cli.domain.vo.api.ResourcesVO;
 import com.dmj.cli.service.api.ResourcesService;
 import com.dmj.cli.service.api.ResourcesTypeService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resources")
 @Api(tags = "资源列表")
-public class ResourcesApiController {
+public class ResourcesApiController extends BaseController {
 
     @Autowired
     private ResourcesService service;
@@ -48,8 +50,10 @@ public class ResourcesApiController {
 
     @ApiOperation("获取资源列表")
     @GetMapping("/list")
-    public BaseResult<List<ResourcesVO>> list(@ModelAttribute ResourcesQuery query) {
-        return BaseResult.success(service.listResources(query));
+    public BaseResult<PageInfo<List<ResourcesVO>>> list(@ModelAttribute ResourcesQuery query) {
+        startPage();
+        List<ResourcesVO> list= service.listResources(query);
+        return pageInfoBaseResult(list);
     }
 
     @Login
