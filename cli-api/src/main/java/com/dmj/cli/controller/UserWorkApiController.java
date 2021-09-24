@@ -1,6 +1,7 @@
 package com.dmj.cli.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Favour;
 import com.dmj.cli.annotation.view.View;
@@ -19,6 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zd
@@ -64,7 +66,9 @@ public class UserWorkApiController extends BaseController {
     @GetMapping("/page")
     public BaseResult<PageInfo<List<UserWork>>> page(@ModelAttribute UserWorkQuery query) {
         startPage();
-        List<UserWork> userWorks=service.list(new LambdaQueryWrapper<UserWork>().eq(UserWork::getJobId,query.getJobId()));
+        List<UserWork> userWorks=service.list(Wrappers.<UserWork>lambdaQuery()
+                .eq(Objects.nonNull(query.getJobId()),UserWork::getJobId,query.getJobId())
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),UserWork::getWorkTitle,query.getSearchVal()));
         userWorks.forEach(this::buildNum);
         return pageInfoBaseResult(userWorks);
     }

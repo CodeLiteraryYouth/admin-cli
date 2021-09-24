@@ -1,5 +1,7 @@
 package com.dmj.cli.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
@@ -43,7 +45,8 @@ public class PracticesJobApiController extends BaseController {
     @GetMapping("/page")
     public BaseResult<PageInfo<List<PracticesJob>>> page(@ModelAttribute PracticesJobQuery query) {
         startPage();
-        List<PracticesJob> list=service.list();
+        List<PracticesJob> list=service.list(Wrappers.<PracticesJob>lambdaQuery()
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),PracticesJob::getJobTitle,query.getSearchVal()));
         list.forEach(this::buildNum);
         return pageInfoBaseResult(list);
     }

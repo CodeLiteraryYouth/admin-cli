@@ -99,6 +99,8 @@ public class Product extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "作品排序")
     @TableField("sort")
     private Long sort;
+
+    private String typeName;
     
     
 }

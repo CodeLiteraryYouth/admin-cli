@@ -1,14 +1,12 @@
 package com.dmj.cli.controller.sys;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.BusinessCooperation;
 import com.dmj.cli.domain.query.BaseQuery;
-import com.dmj.cli.domain.vo.sys.BusinessCooperationVO;
 import com.dmj.cli.service.sys.BusinessCooperationService;
 import com.dmj.cli.service.sys.BusinessCooperationTypeService;
 import com.github.pagehelper.PageInfo;
@@ -62,12 +60,10 @@ public class BusinessCooperationController extends BaseController {
 
     @ApiOperation("查询企业合作详情")
     @GetMapping("/info/{id}")
-    public BaseResult<BusinessCooperationVO> select(@PathVariable Long id) {
+    public BaseResult<BusinessCooperation> select(@PathVariable Long id) {
         BusinessCooperation data = service.getById(id);
-        BusinessCooperationVO vo=new BusinessCooperationVO();
-        BeanUtil.copyProperties(data,vo);
-        vo.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
-        return BaseResult.success(vo);
+        data.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
+        return BaseResult.success(data);
     }
 
     @ApiOperation("分页查询企业合作详情")
@@ -77,6 +73,9 @@ public class BusinessCooperationController extends BaseController {
         List<BusinessCooperation> list= service.list(Wrappers.<BusinessCooperation>lambdaQuery()
                 .eq(Objects.nonNull(query.getTypeId()),BusinessCooperation::getTypeId,query.getTypeId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),BusinessCooperation::getTitle,query.getSearchVal()));
+        list.forEach(item->{
+            item.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
+        });
         return pageInfoBaseResult(list);
     }
 }

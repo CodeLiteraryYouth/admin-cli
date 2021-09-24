@@ -1,14 +1,12 @@
 package com.dmj.cli.controller.sys;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Course;
 import com.dmj.cli.domain.query.BaseQuery;
-import com.dmj.cli.domain.vo.sys.CourseVO;
 import com.dmj.cli.service.api.CourseService;
 import com.dmj.cli.service.api.CourseTypeService;
 import com.github.pagehelper.PageInfo;
@@ -62,28 +60,23 @@ public class CourseController extends BaseController {
 
     @ApiOperation("获取课程详情")
     @GetMapping("/info/{id}")
-    public BaseResult<CourseVO> select(@PathVariable Long id) {
+    public BaseResult<Course> select(@PathVariable Long id) {
         Course data = service.getById(id);
-        CourseVO courseVO=new CourseVO();
-        BeanUtil.copyProperties(data,courseVO);
-        courseVO.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
+        data.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
         return BaseResult.success(data);
     }
 
     @ApiOperation("查询课程分页信息")
     @GetMapping("/list")
-    public BaseResult<PageInfo<List<CourseVO>>> page(@ModelAttribute BaseQuery query) {
+    public BaseResult<PageInfo<List<Course>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<Course> courses=service.list(Wrappers.<Course>lambdaQuery()
                 .eq(Objects.nonNull(query.getTypeId()),Course::getTypeId,query.getTypeId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),Course::getCourseTitle,query.getSearchVal()));
-        PageInfo<List<Course>> pageInfo=pageInfoBaseResult(courses).getData();
-        PageInfo<List<CourseVO>> courseVOS=new PageInfo<>();
-        BeanUtil.copyProperties(pageInfo,courseVOS);
-        courseVOS.getList().get(0).forEach(item -> {
+        courses.forEach(item -> {
             item.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
         });
-        return BaseResult.success(courseVOS);
+        return BaseResult.success(courses);
     }
 }
 

@@ -1,12 +1,14 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Tool;
 import com.dmj.cli.domain.query.sys.ToolQuery;
 import com.dmj.cli.service.sys.ToolService;
+import com.dmj.cli.service.sys.ToolTypeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -30,6 +33,9 @@ public class ToolController extends BaseController {
 
     @Autowired
     private ToolService service;
+
+    @Autowired
+    private ToolTypeService typeService;
 
     @ApiOperation("新增工具")
     @PostMapping("/save")
@@ -56,6 +62,7 @@ public class ToolController extends BaseController {
     @GetMapping("/info/{id}")
     public BaseResult<Tool> select(@PathVariable Long id) {
         Tool data = service.getById(id);
+        data.setTypeName(typeService.getById(data.getTypeId()).getTypeName());
         return BaseResult.success(data);
     }
 
@@ -63,12 +70,12 @@ public class ToolController extends BaseController {
     @GetMapping("/list")
     public BaseResult<PageInfo<List<Tool>>> page(@ModelAttribute ToolQuery query) {
         startPage();
-        List<Tool> list=null;
-        if (query.getTypeId() != null) {
-             list = service.list(Wrappers.<Tool>lambdaQuery().eq(Tool::getTypeId,query.getTypeId()));
-        } else {
-             list = service.list();
-        }
+        List<Tool> list=service.list(Wrappers.<Tool>lambdaQuery()
+                .eq(Objects.nonNull(query.getTypeId()),Tool::getTypeId,query.getTypeId())
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),Tool::getToolTitle,query.getSearchVal()));
+        list.forEach(item -> {
+            item.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
+        });
         return pageInfoBaseResult(list);
     }
 }

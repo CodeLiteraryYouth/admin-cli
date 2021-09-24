@@ -60,6 +60,7 @@ public class SoftwareDownload implements Serializable {
     @ApiModelProperty(value = "软件下载信息")
     @TableField("content")
     private String content;
-    
+
+    private String typeName;
     
 }
