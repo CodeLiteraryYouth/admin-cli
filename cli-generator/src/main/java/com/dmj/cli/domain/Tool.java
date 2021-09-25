@@ -52,6 +52,7 @@ public class Tool extends BaseEntity implements Serializable {
     @TableField("tool_url")
     private String toolUrl;
 
+    @TableField(exist = false)
     private String typeName;
     
     

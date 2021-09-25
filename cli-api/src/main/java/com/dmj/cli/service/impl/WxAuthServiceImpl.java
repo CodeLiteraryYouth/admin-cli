@@ -74,6 +74,7 @@ public class WxAuthServiceImpl implements WxAuthService {
         param.put("action_info", info);
         try {
             String result=HttpUtil.post(codeUrl,param);
+            log.info("获取公众号二维码信息为:{}",result);
             WxQrcodeVO wxQrcodeVO= JSONUtil.toBean(result,WxQrcodeVO.class);
             wxQrcodeVO.setSceneId(sceneId);
             return BaseResult.success(wxQrcodeVO);

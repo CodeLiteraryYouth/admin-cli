@@ -67,6 +67,7 @@ public class BusinessCooperation extends BaseEntity implements Serializable {
     @TableField("collect_num")
     private Long collectNum;
 
+    @TableField(exist = false)
     private String typeName;
 
     

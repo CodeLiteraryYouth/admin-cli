@@ -61,6 +61,7 @@ public class SoftwareDownload implements Serializable {
     @TableField("content")
     private String content;
 
+    @TableField(exist = false)
     private String typeName;
     
 }

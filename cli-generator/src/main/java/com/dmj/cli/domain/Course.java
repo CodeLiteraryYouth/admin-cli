@@ -76,6 +76,7 @@ public class Course extends BaseEntity implements Serializable {
     @TableField("free")
     private Boolean free;
 
+    @TableField(exist = false)
     private String typeName;
 
 }

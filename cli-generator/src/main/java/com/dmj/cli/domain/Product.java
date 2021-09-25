@@ -100,6 +100,7 @@ public class Product extends BaseEntity implements Serializable {
     @TableField("sort")
     private Long sort;
 
+    @TableField(exist = false)
     private String typeName;
     
     
