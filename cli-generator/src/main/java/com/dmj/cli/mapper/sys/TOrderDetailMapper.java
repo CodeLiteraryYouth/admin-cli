@@ -2,6 +2,10 @@ package com.dmj.cli.mapper.sys;
 
 import com.dmj.cli.domain.TOrderDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.dmj.cli.domain.vo.api.PayLogVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TOrderDetailMapper extends BaseMapper<TOrderDetail> {
 
+    List<PayLogVO> listPayLog(@Param("userId") Long userId,@Param("skuType") Long skuType);
 }

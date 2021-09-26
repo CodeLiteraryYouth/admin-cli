@@ -1,37 +1,23 @@
-package com.dmj.cli.domain;
+package com.dmj.cli.domain.vo.api;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author zd
- * @since 2021-09-15
- */
+ * @date 2021/9/26
+ * @apiNote
+ **/
 @Data
-@Builder
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("t_order_detail")
-@ApiModel(value="TOrderDetail对象", description="")
-public class TOrderDetail implements Serializable {
+public class PayLogVO implements Serializable {
 
-    private static final long serialVersionUID=1L;
-    
     @ApiModelProperty(value = "订单id")
     @TableId(value = "order_id", type = IdType.AUTO)
     private Long orderId;
@@ -56,5 +42,12 @@ public class TOrderDetail implements Serializable {
     @TableField("num")
     private Long num;
 
+    @ApiModelProperty(value = "标题")
+    private String title;
 
+    @ApiModelProperty(value = "封面地址")
+    private String coverUrl;
+
+    @ApiModelProperty(value = "支付时间")
+    private Date payDate;
 }

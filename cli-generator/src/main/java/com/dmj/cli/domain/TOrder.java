@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -58,7 +58,7 @@ public class TOrder implements Serializable {
 
     @ApiModelProperty(value = "订单创建时间")
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "支付交易流水号")
     @TableField("trade_no")

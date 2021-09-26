@@ -17,6 +17,7 @@ public enum ResultStatusCode {
     SHIRO_ERROR(10003, "登录异常"),
     UNAUTHO_ERROR(10004, "您没有该权限"),
     USER_LOCKED(10005,"用户已锁定，请联系管理员"),
+    TOKEN_ERROR(10006,"获取token异常"),
     BIND_PHONE(10010, "请绑定手机号"),
 
     ORDER_PAY_ERROR(20000,"该订单已失效，请重新生成订单");

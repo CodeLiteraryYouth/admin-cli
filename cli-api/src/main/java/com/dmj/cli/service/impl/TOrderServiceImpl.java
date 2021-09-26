@@ -1,5 +1,6 @@
 package com.dmj.cli.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
@@ -34,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -155,7 +155,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         BigDecimal amount= NumberUtil.mul(orderFormRequest.getActualPrice(),NumberUtil.toBigDecimal(orderFormRequest.getNum()));
         tOrder = TOrder.builder().build()
                 .setCode(tradeNo)
-                .setCreateTime(LocalDateTime.now())
+                .setCreateTime(DateUtil.date())
                 .setUserId(userInfo.getId())
                 .setAmount(amount);
         tOrderMapper.insert(tOrder);

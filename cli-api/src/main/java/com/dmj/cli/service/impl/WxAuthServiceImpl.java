@@ -62,11 +62,21 @@ public class WxAuthServiceImpl implements WxAuthService {
 
     @Override
     public BaseResult<WxQrcodeVO> getQrcode() {
-        String codeUrl=WxConstant.QRCODE_URL.replace("TOKEN",WxConstant.SERVER_TOKEN);
+        String token=getToken();
+        if (StringUtils.isBlank(token)) {
+            //做三次重试
+            for(int i=0; i<3 ;i++) {
+                token=getToken();
+            }
+            if (StringUtils.isBlank(token)) {
+                return BaseResult.fail(ResultStatusCode.TOKEN_ERROR);
+            }
+        }
+        String codeUrl=WxConstant.QRCODE_URL.replace("TOKEN",token);
         String sceneId = IdUtil.getSnowflake().nextIdStr();
         Map<String,Object> param=new HashMap<>();
         param.put("expire_seconds",3600);
-        param.put("action_name",WxConstant.ACTION.QR_SCENE.name());
+        param.put("action_name",WxConstant.ACTION.QR_STR_SCENE.name());
         JSONObject info = new JSONObject();
         JSONObject scen = new JSONObject();
         scen.put("scene_id", sceneId);
@@ -82,6 +92,23 @@ public class WxAuthServiceImpl implements WxAuthService {
             log.error("获取二维码异常",e.getCause());
             return BaseResult.fail(e.getCause());
         }
+    }
+
+    /**
+     * 获取access_token
+     * @return
+     */
+    private String getToken() {
+        Map<String,Object> params=new HashMap<>();
+        params.put("grant_type",WxConstant.GRANT_TYPE.client_credential.name());
+        params.put("appid",WxConstant.APP_ID);
+        params.put("secret",WxConstant.APP_SECRET);
+        String result=HttpUtil.get(WxConstant.ACCESS_TOKEN_URL,params);
+        JSONObject jsonObject=JSONUtil.toBean(result,JSONObject.class);
+        String value=jsonObject.getStr("access_token");
+        Long expires=jsonObject.getLong("expires_in");
+        redisUtils.set(WxConstant.SERVER_TOKEN,value,expires);
+        return jsonObject.getStr("access_token");
     }
 
     @Override
@@ -109,15 +136,20 @@ public class WxAuthServiceImpl implements WxAuthService {
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         String echoStr = request.getParameter("echostr");
-        //对token时间戳排序进行加密验证
-        String[] arr = {WxConstant.SERVER_TOKEN, timestamp, nonce};
-        Arrays.sort(arr);
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(StringUtils.join(arr).getBytes());
-            String temp = byteToStr(digest);
-            if (!(temp.toLowerCase()).equals(signature)){
-                echoStr= GlobalConstants.SUCCESS;
+            //对token时间戳排序进行加密验证
+            String token=(String) redisUtils.get(WxConstant.SERVER_TOKEN);
+            if (StringUtils.isBlank(token)) {
+                echoStr=GlobalConstants.FAIL;
+            } else {
+                String[] arr = {token, timestamp, nonce};
+                Arrays.sort(arr);
+                MessageDigest md = MessageDigest.getInstance("SHA-1");
+                byte[] digest = md.digest(StringUtils.join(arr).getBytes());
+                String temp = byteToStr(digest);
+                if (!(temp.toLowerCase()).equals(signature)) {
+                    echoStr = GlobalConstants.SUCCESS;
+                }
             }
         } catch (Exception e) {
             echoStr=GlobalConstants.FAIL;
@@ -152,7 +184,7 @@ public class WxAuthServiceImpl implements WxAuthService {
         response.setContentType("application/json;charset=UTF-8");
         ServletOutputStream outputStream=response.getOutputStream();
         Map<String, String> map = getResultMap(request);
-        log.info("微信推送的事件信息为",JSON.toJSONString(map));
+        log.info("微信推送的事件信息为:{}",JSON.toJSONString(map));
         WxEventDTO wxEventDTO=BeanUtil.mapToBean(map, WxEventDTO.class,false, CopyOptions.create());
         if (Objects.isNull(wxEventDTO)) {
             outputStream.write(GlobalConstants.FAIL.getBytes(StandardCharsets.UTF_8));
@@ -177,7 +209,8 @@ public class WxAuthServiceImpl implements WxAuthService {
         //第一次关注公众号
         if (WxConstant.EVENT_TYPE.subscribe.name().equals(wxEventDTO.getEvent())) {
             Map<String,Object> params=new HashMap<>();
-            params.put("access_token",WxConstant.SERVER_TOKEN);
+            String token=(String)redisUtils.get(WxConstant.SERVER_TOKEN);
+            params.put("access_token",token);
             params.put("openid",wxEventDTO.getFromUserName());
             params.put("lang",GlobalConstants.ZH_CN);
             String result=HttpUtil.get(WxConstant.USER_INFO_URL,params);
@@ -235,7 +268,7 @@ public class WxAuthServiceImpl implements WxAuthService {
             userLoginLog.setTicket(wxEventDTO.getTicket());
             userLoginLogService.save(userLoginLog);
             //存储当前登录信息
-            redisUtils.set(wxEventDTO.getEventKey(),JSONUtil.toJsonStr(userInfo));
+            redisUtils.set(wxEventDTO.getEventKey(),JSONUtil.toJsonStr(userInfo),7200);
         }
     }
 
@@ -256,5 +289,14 @@ public class WxAuthServiceImpl implements WxAuthService {
         ins.close();
         return map;
 
+    }
+
+    public static void main(String[] args) {
+        Map<String,Object> params=new HashMap<>();
+        params.put("grant_type",WxConstant.GRANT_TYPE.client_credential.name());
+        params.put("appid",WxConstant.APP_ID);
+        params.put("secret",WxConstant.APP_SECRET);
+        String result=HttpUtil.get(WxConstant.ACCESS_TOKEN_URL,params);
+        System.out.println(result);
     }
 }

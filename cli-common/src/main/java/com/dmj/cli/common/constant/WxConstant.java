@@ -8,12 +8,12 @@ public interface WxConstant {
     /**
      * 微信公众号APPID
      */
-    String APP_ID="";
+    String APP_ID="wx9ca9ecb961002bb8";
 
     /**
      * 微信公众号的APPSECRET
      */
-    String APP_SECRET="";
+    String APP_SECRET="69cb1af2220f648706d93ec502a3d857";
 
     /**
      * 微信商户密钥
@@ -26,9 +26,9 @@ public interface WxConstant {
     String TRADE_NO="";
 
     /**
-     * 服务端配置的TOKEN
+     * access_token的key值
      */
-    String SERVER_TOKEN="wylzd19950823";
+    String SERVER_TOKEN="access_token";
 
     /**
      * 已关注公众号
@@ -59,6 +59,8 @@ public interface WxConstant {
      * 获取二维码图片的URL
      */
     String QRCODE_URL="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN";
+
+
 
     /**
      * 获取用户信息

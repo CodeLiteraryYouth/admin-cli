@@ -7,13 +7,17 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
+import com.dmj.cli.domain.Course;
+import com.dmj.cli.domain.Resources;
 import com.dmj.cli.domain.UserInfo;
 import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
+import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 import com.dmj.cli.mapper.api.UserCollLogMapper;
 import com.dmj.cli.mapper.api.UserVideoLogMapper;
+import com.dmj.cli.mapper.sys.TOrderDetailMapper;
 import com.dmj.cli.service.UserService;
 import com.dmj.cli.service.api.CourseService;
 import com.dmj.cli.service.api.ResourcesService;
@@ -25,6 +29,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private TOrderDetailMapper detailMapper;
 
     @Override
     public BaseResult<UserInfoVO> getUserBySceneId(String sceneId) {
@@ -87,6 +95,28 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(sceneId,"sceneId is null");
         UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
         return BaseResult.success(userVideoLogMapper.listVideoLog(userInfoVO.getId()));
+    }
+
+    @Override
+    public BaseResult<List<PayLogVO>> listPayLog(String sceneId,Long skuType) {
+        Assert.notNull(Objects.isNull(skuType),"skuType is null");
+        UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
+        List<PayLogVO> payLogVOS=detailMapper.listPayLog(userInfoVO.getId(),skuType);
+        payLogVOS.forEach(item-> {
+            switch (skuType.intValue()) {
+                case 1:
+                    Resources resources=resourcesService.getById(item.getSkuId());
+                    item.setTitle(resources.getTitle());
+                    item.setCoverUrl(resources.getCoverUrl());
+                    break;
+                case 2:
+                    Course course=courseService.getById(item.getSkuId());
+                    item.setTitle(course.getCourseTitle());
+                    item.setCoverUrl(course.getCoverUrl());
+                    break;
+            }
+        });
+        return BaseResult.success(payLogVOS);
     }
 
 }

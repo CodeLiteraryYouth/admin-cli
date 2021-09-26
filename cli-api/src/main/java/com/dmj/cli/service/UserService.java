@@ -2,6 +2,7 @@ package com.dmj.cli.service;
 
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
+import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
 import com.dmj.cli.domain.vo.api.VidelLogVO;
 
@@ -34,5 +35,12 @@ public interface UserService {
      * @return
      */
      BaseResult<List<VidelLogVO>> listVideoLog(String sceneId);
+
+    /**
+     * 查询支付记录
+     * @param skuType
+     * @return
+     */
+     BaseResult<List<PayLogVO>> listPayLog(String sceneId,Long skuType);
 
 }

@@ -2,19 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dmj.cli.mapper.sys.TOrderDetailMapper">
 
-        <!-- 通用查询映射结果 -->
-        <resultMap id="BaseResultMap" type="com.dmj.cli.domain.TOrderDetail">
-                    <id column="order_id" property="orderId" />
-                    <result column="sku_id" property="skuId" />
-                    <result column="sku_type" property="skuType" />
-                    <result column="price" property="price" />
-                    <result column="actual_price" property="actualPrice" />
-                    <result column="num" property="num" />
-        </resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dmj.cli.domain.vo.api.PayLogVO">
+        <id column="order_id" property="orderId" />
+        <result column="sku_id" property="skuId" />
+        <result column="sku_type" property="skuType" />
+        <result column="price" property="price" />
+        <result column="actual_price" property="actualPrice" />
+        <result column="num" property="num" />
+        <result column="create_time" property="payDate" />
+    </resultMap>
 
-        <!-- 通用查询结果列 -->
-        <sql id="Base_Column_List">
-            order_id, sku_id, sku_type, price, actual_price, num
-        </sql>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        od.order_id, od.sku_id, od.sku_type, od.price, od.actual_price, num, o.create_time
+    </sql>
+    <select id="listPayLog" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_order o left join t_order_detail od
+        on o.id=od.order_id
+        <if test="userId != null">
+            and o.user_id = #{userId}
+        </if>
+        <if test="skuType != null">
+            and od.sku_type = #{skuType}
+        </if>
+    </select>
 
 </mapper>
