@@ -35,13 +35,6 @@ public class UVAspect {
 
     @Before("allController()")
     public void pointController(JoinPoint joinPoint) {
-        //请求参数
-        Object[] args = joinPoint.getArgs();
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        // 类路径URL
-        String methodPackage = signature.getDeclaringTypeName();
-        // 方法名
-        String method = signature.getMethod().getName();
 
         String ip = getIpAddr(ServletUtils.getRequest());
 
@@ -50,16 +43,6 @@ public class UVAspect {
 
         redisUtils.pfAdd(date,ip);
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("请求ip:")
-                .append(ip)
-                .append(".")
-                .append(methodPackage)
-                .append(".")
-                .append(method)
-                .append("，请求参数：")
-                .append(JSON.toJSONString(args));
-        log.info(builder.toString());
     }
 
     private String getIpAddr(HttpServletRequest request) {

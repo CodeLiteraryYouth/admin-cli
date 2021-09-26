@@ -79,11 +79,11 @@ public class WxAuthServiceImpl implements WxAuthService {
         param.put("action_name",WxConstant.ACTION.QR_STR_SCENE.name());
         JSONObject info = new JSONObject();
         JSONObject scen = new JSONObject();
-        scen.put("scene_id", sceneId);
+        scen.put("scene_str", sceneId);
         info.put("scene", scen);
         param.put("action_info", info);
         try {
-            String result=HttpUtil.post(codeUrl,param);
+            String result=HttpUtil.post(codeUrl,JSONUtil.toJsonStr(param));
             log.info("获取公众号二维码信息为:{}",result);
             WxQrcodeVO wxQrcodeVO= JSONUtil.toBean(result,WxQrcodeVO.class);
             wxQrcodeVO.setSceneId(sceneId);
@@ -106,9 +106,7 @@ public class WxAuthServiceImpl implements WxAuthService {
         String result=HttpUtil.get(WxConstant.ACCESS_TOKEN_URL,params);
         JSONObject jsonObject=JSONUtil.toBean(result,JSONObject.class);
         String value=jsonObject.getStr("access_token");
-        Long expires=jsonObject.getLong("expires_in");
-        redisUtils.set(WxConstant.SERVER_TOKEN,value,expires);
-        return jsonObject.getStr("access_token");
+        return value;
     }
 
     @Override
@@ -119,9 +117,11 @@ public class WxAuthServiceImpl implements WxAuthService {
         UserInfo userInfo=null;
         if (StringUtils.isBlank(result)) {
             userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getSceneId,sceneId));
-            userInfo.setLoginStatus(false);
-            userInfoService.updateById(userInfo);
-            return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
+            if (Objects.isNull(userInfo)) {
+                return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
+            } else {
+                return BaseResult.success(userInfo);
+            }
         } else {
             userInfo=JSONUtil.toBean(result,UserInfo.class);
             return BaseResult.success(userInfo);
@@ -138,18 +138,14 @@ public class WxAuthServiceImpl implements WxAuthService {
         String echoStr = request.getParameter("echostr");
         try {
             //对token时间戳排序进行加密验证
-            String token=(String) redisUtils.get(WxConstant.SERVER_TOKEN);
-            if (StringUtils.isBlank(token)) {
-                echoStr=GlobalConstants.FAIL;
-            } else {
-                String[] arr = {token, timestamp, nonce};
-                Arrays.sort(arr);
-                MessageDigest md = MessageDigest.getInstance("SHA-1");
-                byte[] digest = md.digest(StringUtils.join(arr).getBytes());
-                String temp = byteToStr(digest);
-                if (!(temp.toLowerCase()).equals(signature)) {
-                    echoStr = GlobalConstants.SUCCESS;
-                }
+            String token=WxConstant.SERVER_TOKEN;
+            String[] arr = {token, timestamp, nonce};
+            Arrays.sort(arr);
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(StringUtils.join(arr).getBytes());
+            String temp = byteToStr(digest);
+            if (!(temp.toLowerCase()).equals(signature)) {
+                echoStr = GlobalConstants.SUCCESS;
             }
         } catch (Exception e) {
             echoStr=GlobalConstants.FAIL;
@@ -209,8 +205,7 @@ public class WxAuthServiceImpl implements WxAuthService {
         //第一次关注公众号
         if (WxConstant.EVENT_TYPE.subscribe.name().equals(wxEventDTO.getEvent())) {
             Map<String,Object> params=new HashMap<>();
-            String token=(String)redisUtils.get(WxConstant.SERVER_TOKEN);
-            params.put("access_token",token);
+            params.put("access_token",getToken());
             params.put("openid",wxEventDTO.getFromUserName());
             params.put("lang",GlobalConstants.ZH_CN);
             String result=HttpUtil.get(WxConstant.USER_INFO_URL,params);
@@ -229,6 +224,7 @@ public class WxAuthServiceImpl implements WxAuthService {
                 userInfo.setOpenId(jsonObject.getStr("openid"));
                 userInfo.setNickName(jsonObject.getStr("nickname"));
                 userInfo.setCreateTime(DateUtil.date());
+                userInfo.setEvent(wxEventDTO.getEvent());
                 userInfo.setLoginStatus(true);
                 userInfo.setSceneId(wxEventDTO.getEventKey());
                 userInfoService.save(userInfo);
@@ -242,7 +238,9 @@ public class WxAuthServiceImpl implements WxAuthService {
             userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getOpenId,wxEventDTO.getFromUserName()));
             userInfo.setSceneId(wxEventDTO.getEventKey());
             userInfo.setLoginStatus(true);
+            userInfo.setEvent(wxEventDTO.getEvent());
             userInfoService.updateById(userInfo);
+            redisUtils.set(wxEventDTO.getEventKey(),userInfo);
         }
 
         //取消订阅

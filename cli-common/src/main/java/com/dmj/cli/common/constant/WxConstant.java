@@ -8,27 +8,18 @@ public interface WxConstant {
     /**
      * 微信公众号APPID
      */
-    String APP_ID="wx9ca9ecb961002bb8";
+    String APP_ID="wxb84e88d8717f7173";
 
     /**
      * 微信公众号的APPSECRET
      */
-    String APP_SECRET="69cb1af2220f648706d93ec502a3d857";
+    String APP_SECRET="f5e9721a1964eeb7e641c6e4967e5285";
 
-    /**
-     * 微信商户密钥
-     */
-    String MAH_PASSSWORD="";
-
-    /**
-     * 微信支付商户号
-     */
-    String TRADE_NO="";
 
     /**
      * access_token的key值
      */
-    String SERVER_TOKEN="access_token";
+    String SERVER_TOKEN="wylzd950823";
 
     /**
      * 已关注公众号
