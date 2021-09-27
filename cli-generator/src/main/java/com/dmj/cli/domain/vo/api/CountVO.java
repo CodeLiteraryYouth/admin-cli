@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author zd
@@ -14,14 +15,17 @@ import java.io.Serializable;
 public class CountVO implements Serializable {
 
     @ApiModelProperty(value = "当日注册数")
-    private Long registerNum;
+    private Integer registerNum;
 
     @ApiModelProperty(value = "日活数")
-    private Long uvNum;
+    private Integer uvNum;
 
     @ApiModelProperty(value = "产品总数")
-    private Long productNum;
+    private Integer productNum;
 
     @ApiModelProperty(value = "文章总数")
-    private Long articleNum;
+    private Integer articleNum;
+
+    @ApiModelProperty(value = "统计柱状图")
+    private List<CountItemVO> itemVOS;
 }

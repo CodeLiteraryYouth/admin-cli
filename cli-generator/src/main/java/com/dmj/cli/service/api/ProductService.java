@@ -2,7 +2,9 @@ package com.dmj.cli.service.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.domain.Product;
+import com.dmj.cli.domain.query.api.CountQuery;
 import com.dmj.cli.domain.query.api.ProductQuery;
+import com.dmj.cli.domain.vo.api.CountItemVO;
 import com.dmj.cli.domain.vo.api.DesignerVO;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
  * @since 2021-09-06
  */
 public interface ProductService extends IService<Product> {
+
+    List<CountItemVO> listCountItem(CountQuery query);
 
     List<Product> page(ProductQuery query);
 

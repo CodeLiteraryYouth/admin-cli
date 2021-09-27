@@ -2,7 +2,9 @@ package com.dmj.cli.mapper.api;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dmj.cli.domain.Product;
+import com.dmj.cli.domain.query.api.CountQuery;
 import com.dmj.cli.domain.query.api.ProductQuery;
+import com.dmj.cli.domain.vo.api.CountItemVO;
 import com.dmj.cli.domain.vo.api.DesignerVO;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
  * @since 2021-09-06
  */
 public interface ProductMapper extends BaseMapper<Product> {
+
+    List<CountItemVO> listCountItem(CountQuery query);
 
     List<Product> listProducts(ProductQuery query);
 

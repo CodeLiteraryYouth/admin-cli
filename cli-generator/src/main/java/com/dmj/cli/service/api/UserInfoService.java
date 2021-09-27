@@ -1,7 +1,11 @@
 package com.dmj.cli.service.api;
 
-import com.dmj.cli.domain.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dmj.cli.domain.UserInfo;
+import com.dmj.cli.domain.query.api.CountQuery;
+import com.dmj.cli.domain.vo.api.CountItemVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-08-11
  */
 public interface UserInfoService extends IService<UserInfo> {
+
+    List<CountItemVO> listItemVOS(CountQuery query);
 
 }

@@ -29,7 +29,7 @@ public class UVCountTask {
         Long count=redisUtils.pfCount(key);
         UvCount uvCount=UvCount.builder().build()
                 .setUvNum(count)
-                .setDate(key);
+                .setCreateTime(DateUtil.date());
         uvCountService.save(uvCount);
     }
 }

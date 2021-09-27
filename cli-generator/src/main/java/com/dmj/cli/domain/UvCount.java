@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -35,8 +36,8 @@ public class UvCount implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "日期")
-    @TableField("date")
-    private String date;
+    @TableField("create_time")
+    private Date createTime;
 
     @ApiModelProperty(value = "统计数")
     @TableField("uv_num")

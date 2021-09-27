@@ -2,7 +2,9 @@ package com.dmj.cli.service.api.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.domain.Product;
+import com.dmj.cli.domain.query.api.CountQuery;
 import com.dmj.cli.domain.query.api.ProductQuery;
+import com.dmj.cli.domain.vo.api.CountItemVO;
 import com.dmj.cli.domain.vo.api.DesignerVO;
 import com.dmj.cli.mapper.api.ProductMapper;
 import com.dmj.cli.service.api.ProductService;
@@ -24,6 +26,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Override
+    public List<CountItemVO> listCountItem(CountQuery query) {
+        return productMapper.listCountItem(query);
+    }
 
     @Override
     public List<Product> page(ProductQuery query) {

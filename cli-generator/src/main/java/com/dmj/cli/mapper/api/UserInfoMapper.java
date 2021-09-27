@@ -1,7 +1,11 @@
 package com.dmj.cli.mapper.api;
 
-import com.dmj.cli.domain.UserInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.dmj.cli.domain.UserInfo;
+import com.dmj.cli.domain.query.api.CountQuery;
+import com.dmj.cli.domain.vo.api.CountItemVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
+    List<CountItemVO> listCountItem(CountQuery query);
 }
