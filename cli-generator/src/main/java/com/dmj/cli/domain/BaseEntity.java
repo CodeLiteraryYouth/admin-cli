@@ -41,4 +41,14 @@ public class BaseEntity implements Serializable {
     @TableField("delete_flag")
     @TableLogic
     private Boolean deleteFlag;
+
+    @ApiModelProperty(value = "是否点赞")
+    @TableField(exist = false)
+    private Boolean isFavour = false;
+
+    @ApiModelProperty(value = "是否收藏")
+    @TableField(exist = false)
+    private Boolean isCollect = false;
+
+
 }
