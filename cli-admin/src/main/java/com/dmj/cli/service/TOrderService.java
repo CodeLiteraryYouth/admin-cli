@@ -1,6 +1,6 @@
-package com.dmj.cli.mapper.sys;
+package com.dmj.cli.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.domain.TOrder;
 import com.dmj.cli.domain.query.sys.TOrderQuery;
 import com.dmj.cli.domain.vo.sys.TOrderVO;
@@ -9,13 +9,13 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ *  服务类
  * </p>
  *
  * @author zd
  * @since 2021-09-15
  */
-public interface TOrderMapper extends BaseMapper<TOrder> {
+public interface TOrderService extends IService<TOrder> {
 
     List<TOrderVO> listOrder(TOrderQuery query);
 }
