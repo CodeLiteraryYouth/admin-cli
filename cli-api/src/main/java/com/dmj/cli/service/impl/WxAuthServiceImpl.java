@@ -230,12 +230,11 @@ public class WxAuthServiceImpl implements WxAuthService {
                 userInfoService.save(userInfo);
             }
         }
-
         //非第一次登录公众号
         if (WxConstant.EVENT_TYPE.SCAN.name().equals(wxEventDTO.getEvent())) {
-            //清楚上次的登录缓存信息s
-            redisUtils.del(userInfo.getSceneId());
+            //清楚上次的登录缓存信息
             userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getOpenId,wxEventDTO.getFromUserName()));
+            redisUtils.del(userInfo.getSceneId());
             userInfo.setSceneId(wxEventDTO.getEventKey());
             userInfo.setLoginStatus(true);
             userInfo.setEvent(wxEventDTO.getEvent());
@@ -245,9 +244,9 @@ public class WxAuthServiceImpl implements WxAuthService {
 
         //取消订阅
         if (WxConstant.EVENT_TYPE.unsubscrib.name().equals(wxEventDTO.getEvent())) {
-            //清楚上次的登录缓存信息s
-            redisUtils.del(userInfo.getSceneId());
+            //清楚上次的登录缓存信息
             userInfo=userInfoService.getOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getOpenId,wxEventDTO.getFromUserName()));
+            redisUtils.del(userInfo.getSceneId());
             userInfo.setSceneId(wxEventDTO.getEventKey());
             userInfo.setLoginStatus(false);
             userInfo.setEvent(wxEventDTO.getEvent());

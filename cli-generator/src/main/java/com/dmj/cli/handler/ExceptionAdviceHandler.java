@@ -70,7 +70,7 @@ public class ExceptionAdviceHandler {
      * @param e
      * @return
      */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(AdminException.class)
     public BaseResult adminHandleException(AdminException e) {
         return BaseResult.fail(e.getMessage());
@@ -81,7 +81,7 @@ public class ExceptionAdviceHandler {
      * @param e
      * @return
      */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(LoginException.class)
     public BaseResult loginException(LoginException e) {
         return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
