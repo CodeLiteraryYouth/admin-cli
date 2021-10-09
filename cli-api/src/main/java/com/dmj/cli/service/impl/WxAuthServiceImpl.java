@@ -176,7 +176,7 @@ public class WxAuthServiceImpl implements WxAuthService {
     }
 
     @Override
-    public void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException,DocumentException {
+    public void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/json;charset=UTF-8");
         ServletOutputStream outputStream=response.getOutputStream();
         Map<String, String> map = getResultMap(request);

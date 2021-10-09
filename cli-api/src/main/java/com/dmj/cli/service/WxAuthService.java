@@ -41,5 +41,5 @@ public interface WxAuthService {
      * @param response
      * @return
      */
-    void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException;
+    void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

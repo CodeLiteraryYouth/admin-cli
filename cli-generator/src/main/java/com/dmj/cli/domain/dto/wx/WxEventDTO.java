@@ -23,4 +23,6 @@ public class WxEventDTO implements Serializable {
     private String EventKey;
 
     private String Ticket;
+
+    private String Encrypt;
 }
