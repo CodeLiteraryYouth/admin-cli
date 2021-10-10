@@ -4,6 +4,7 @@ import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.Course;
 import com.dmj.cli.domain.CourseType;
 import com.dmj.cli.domain.query.api.CourseQuery;
@@ -23,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/course")
 @Api(tags = "课程查询")
-public class CourseApiController {
+public class CourseApiController extends BaseController {
 
     @Autowired
     private CourseService courseService;
@@ -56,8 +57,8 @@ public class CourseApiController {
     @Login
     @ApiOperation("观看视频")
     @GetMapping("/watch")
-    public BaseResult watch(@RequestParam Long id,@RequestParam Long userId) {
-        return courseService.watchVideo(id, userId);
+    public BaseResult watch(@RequestParam Long id) {
+        return courseService.watchVideo(id, getSceneId());
     }
 
     @Login

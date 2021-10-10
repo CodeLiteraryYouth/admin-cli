@@ -10,6 +10,7 @@ import com.dmj.cli.domain.UserCollLog;
 import com.dmj.cli.domain.UserDownloadLog;
 import com.dmj.cli.service.api.UserCollLogService;
 import com.dmj.cli.service.api.UserDownloadLogService;
+import com.dmj.cli.service.api.UserVideoLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -40,6 +41,9 @@ public class ViewAspect {
 
     @Autowired
     private UserDownloadLogService userDownloadLogService;
+
+    @Autowired
+    private UserVideoLogService userVideoLogService;
 
     @Pointcut("@annotation(com.dmj.cli.annotation.view.Collect) " +
             "|| @annotation(com.dmj.cli.annotation.view.Download) " +

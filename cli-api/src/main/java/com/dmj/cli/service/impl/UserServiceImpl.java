@@ -14,7 +14,7 @@ import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
-import com.dmj.cli.domain.vo.api.VidelLogVO;
+import com.dmj.cli.domain.vo.api.VideoLogVO;
 import com.dmj.cli.mapper.api.UserCollLogMapper;
 import com.dmj.cli.mapper.api.UserVideoLogMapper;
 import com.dmj.cli.mapper.sys.TOrderDetailMapper;
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResult<List<VidelLogVO>> listVideoLog(String sceneId) {
+    public BaseResult<List<VideoLogVO>> listVideoLog(String sceneId) {
         Assert.notNull(sceneId,"sceneId is null");
         UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
         return BaseResult.success(userVideoLogMapper.listVideoLog(userInfoVO.getId()));

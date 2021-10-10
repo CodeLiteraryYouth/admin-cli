@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @author zd
  */
 @Data
-public class VidelLogVO implements Serializable {
+public class VideoLogVO implements Serializable {
 
     private Long id;
 

@@ -14,7 +14,7 @@
         <sql id="Base_Column_List">
             id, video_id, user_id, video_time
         </sql>
-    <select id="listVideoLog" resultType="com.dmj.cli.domain.vo.api.VidelLogVO">
+    <select id="listVideoLog" resultType="com.dmj.cli.domain.vo.api.VideoLogVO">
         select c.id as id,c.course_title as title,c.course_desc as videoDesc,
         uv.video_time as time,c.cover_url as coverUrl from user_video_log uv
         left join course c on uv.video_id=c.id where uv.user_id=#{userId}

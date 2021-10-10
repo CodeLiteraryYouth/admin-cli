@@ -2,8 +2,7 @@ package com.dmj.cli.mapper.api;
 
 import com.dmj.cli.domain.UserVideoLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dmj.cli.domain.vo.api.CollectInfoVO;
-import com.dmj.cli.domain.vo.api.VidelLogVO;
+import com.dmj.cli.domain.vo.api.VideoLogVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +22,5 @@ public interface UserVideoLogMapper extends BaseMapper<UserVideoLog> {
      * @param userId
      * @return
      */
-    List<VidelLogVO> listVideoLog(@Param("userId") Long userId);
+    List<VideoLogVO> listVideoLog(@Param("userId") Long userId);
 }

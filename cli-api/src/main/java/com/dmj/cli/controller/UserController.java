@@ -6,7 +6,7 @@ import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
-import com.dmj.cli.domain.vo.api.VidelLogVO;
+import com.dmj.cli.domain.vo.api.VideoLogVO;
 import com.dmj.cli.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +47,7 @@ public class UserController extends BaseController {
     @Login
     @ApiOperation("查询观看记录")
     @GetMapping("/video")
-    public BaseResult<List<VidelLogVO>> listVideoLog() {
+    public BaseResult<List<VideoLogVO>> listVideoLog() {
         return userInfoService.listVideoLog(getToken());
     }
 

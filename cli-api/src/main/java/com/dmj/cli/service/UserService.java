@@ -4,7 +4,7 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
-import com.dmj.cli.domain.vo.api.VidelLogVO;
+import com.dmj.cli.domain.vo.api.VideoLogVO;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public interface UserService {
      * @param sceneId
      * @return
      */
-     BaseResult<List<VidelLogVO>> listVideoLog(String sceneId);
+     BaseResult<List<VideoLogVO>> listVideoLog(String sceneId);
 
     /**
      * 查询支付记录
