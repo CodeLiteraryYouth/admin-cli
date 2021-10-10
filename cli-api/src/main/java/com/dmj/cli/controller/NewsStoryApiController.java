@@ -7,6 +7,7 @@ import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.NewsStory;
+import com.dmj.cli.domain.PracticesJob;
 import com.dmj.cli.domain.query.BaseQuery;
 import com.dmj.cli.service.sys.NewsStoryService;
 import com.github.pagehelper.PageInfo;
@@ -41,6 +42,7 @@ public class NewsStoryApiController extends BaseController {
     @GetMapping("/get/{id}")
     public BaseResult<NewsStory> select(@PathVariable Long id) {
         NewsStory data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -49,8 +51,13 @@ public class NewsStoryApiController extends BaseController {
     public BaseResult<PageInfo<List<NewsStory>>> page(@ModelAttribute BaseQuery query) {
         startPage();
         List<NewsStory> newsStories=service.listNewsStory(query);
-        newsStories.forEach(newsStory -> newsStory.setViewNum(redisUtils.score(GlobalConstants.VIEW_NUM,newsStory.getId().toString()).longValue()));
+        newsStories.forEach(this::buildNum);
         return pageInfoBaseResult(newsStories);
+    }
+
+    private void buildNum(NewsStory data) {
+        Double viewNum = redisUtils.score(GlobalConstants.VIEW_NUM,data.getId().toString());
+        data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
     }
 }
 

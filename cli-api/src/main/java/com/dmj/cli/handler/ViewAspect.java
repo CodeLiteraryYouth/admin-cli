@@ -1,5 +1,6 @@
 package com.dmj.cli.handler;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.Download;
 import com.dmj.cli.annotation.view.Favour;
@@ -97,21 +98,31 @@ public class ViewAspect {
         if (collect != null) {
             Double collData=redisUtils.score(GlobalConstants.COLLECT_NUM,id.toString());
             redisUtils.zsIncr(GlobalConstants.COLLECT_NUM,id.toString(),collData);
-            UserCollLog userCollLog=new UserCollLog();
-            userCollLog.setUserId(userId);
-            userCollLog.setCollectId(id);
-            userCollLog.setCollectTime(LocalDateTime.now());
-            userCollLog.setCollectType(collect.type());
-            userCollLogService.save(userCollLog);
+            UserCollLog userCollLog=userCollLogService.getOne(Wrappers.<UserCollLog>lambdaQuery().eq(UserCollLog::getCollectId,id));
+            if (userCollLog == null) {
+                userCollLog = new UserCollLog();
+                userCollLog.setUserId(userId);
+                userCollLog.setCollectId(id);
+                userCollLog.setCollectTime(LocalDateTime.now());
+                userCollLog.setCollectType(collect.type());
+                userCollLogService.save(userCollLog);
+            } else {
+                userCollLogService.remove(Wrappers.<UserCollLog>lambdaQuery().eq(UserCollLog::getCollectId,id));
+            }
         }
         if (download != null) {
             Double downloadData=redisUtils.score(GlobalConstants.DOWNLOAD_NUM,id.toString());
             redisUtils.zsIncr(GlobalConstants.DOWNLOAD_NUM,id.toString(),downloadData);
-            UserDownloadLog userDownloadLog=new UserDownloadLog();
-            userDownloadLog.setDownloadId(id);
-            userDownloadLog.setUserId(userId);
-            userDownloadLog.setDownloadTime(LocalDateTime.now());
-            userDownloadLogService.save(userDownloadLog);
+            UserDownloadLog userDownloadLog = userDownloadLogService.getOne(Wrappers.<UserDownloadLog>lambdaQuery().eq(UserDownloadLog::getDownloadId,id));
+            if (userDownloadLog == null) {
+                userDownloadLog = new UserDownloadLog();
+                userDownloadLog.setDownloadId(id);
+                userDownloadLog.setUserId(userId);
+                userDownloadLog.setDownloadTime(LocalDateTime.now());
+                userDownloadLogService.save(userDownloadLog);
+            } else {
+                userDownloadLogService.remove(Wrappers.<UserDownloadLog>lambdaQuery().eq(UserDownloadLog::getDownloadId,id));
+            }
         }
 
     }
