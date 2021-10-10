@@ -76,7 +76,7 @@ public class CourseController extends BaseController {
         courses.forEach(item -> {
             item.setTypeName(typeService.getById(item.getTypeId()).getTypeName());
         });
-        return BaseResult.success(courses);
+        return pageInfoBaseResult(courses);
     }
 }
 
