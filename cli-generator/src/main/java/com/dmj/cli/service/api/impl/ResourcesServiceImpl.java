@@ -3,18 +3,23 @@ package com.dmj.cli.service.api.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.constant.GlobalConstants;
+import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.Resources;
 import com.dmj.cli.domain.ResourcesTypeMiddle;
+import com.dmj.cli.domain.UserInfoAccount;
 import com.dmj.cli.domain.dto.sys.ResourcesDTO;
 import com.dmj.cli.domain.query.api.ResourcesQuery;
+import com.dmj.cli.domain.vo.api.DownloadVO;
 import com.dmj.cli.domain.vo.api.ResourcesVO;
 import com.dmj.cli.mapper.api.ResourcesMapper;
 import com.dmj.cli.mapper.api.ResourcesTypeMiddleMapper;
 import com.dmj.cli.service.api.ResourcesService;
+import com.dmj.cli.service.api.UserInfoAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +44,9 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Autowired
     private ResourcesTypeMiddleMapper resourcesTypeMiddleMapper;
+
+    @Autowired
+    private UserInfoAccountService userInfoAccountService;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -90,6 +98,27 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             resourcesTypeMiddleMapper.delete(new LambdaQueryWrapper<ResourcesTypeMiddle>().eq(ResourcesTypeMiddle::getResourcesId,id));
         });
         return BaseResult.success();
+    }
+
+    @Override
+    public BaseResult<DownloadVO> download(Long id, Long userId) {
+        Assert.notNull(id,"resources id is null");
+        Assert.notNull(userId,"userId is null");
+        Resources resources = resourcesMapper.selectById(id);
+        UserInfoAccount userInfoAccount = userInfoAccountService.getOne(Wrappers.<UserInfoAccount>lambdaQuery()
+                .eq(UserInfoAccount::getAccountType,1)
+                .eq(UserInfoAccount::getUserId,userId));
+        if (userInfoAccount == null) {
+            return BaseResult.fail(ResultStatusCode.USER_ACCOUNT_NOT_EXISTS);
+        }
+        if (resources.getDownloadNum() > userInfoAccount.getAccountNum()) {
+            return BaseResult.fail(ResultStatusCode.USER_ACCOUNT_BALANCE_LACK);
+        }
+        DownloadVO downloadVO = new DownloadVO();
+        downloadVO.setResourcesUrl(resources.getResourcesUrl());
+        downloadVO.setAccountNum(userInfoAccount.getAccountNum());
+        downloadVO.setResourceNum(resources.getDownloadNum());
+        return BaseResult.success(downloadVO);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package com.dmj.cli.service.api;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.Resources;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.dmj.cli.domain.dto.sys.ResourcesDTO;
 import com.dmj.cli.domain.query.api.ResourcesQuery;
+import com.dmj.cli.domain.vo.api.DownloadVO;
 import com.dmj.cli.domain.vo.api.ResourcesVO;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface ResourcesService extends IService<Resources> {
     BaseResult update(ResourcesDTO resourcesDTO);
 
     BaseResult delete(List<Long> id);
+
+    BaseResult<DownloadVO> download(Long id, Long userId);
 
     List<ResourcesVO> listResources(ResourcesQuery query);
 

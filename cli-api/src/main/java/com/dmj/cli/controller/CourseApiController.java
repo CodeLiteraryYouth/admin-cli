@@ -62,7 +62,7 @@ public class CourseApiController extends BaseController {
     }
 
     @Login
-    @Collect(type = "video")
+    @Collect(type = "course")
     @ApiOperation("收藏")
     @GetMapping("collect")
     public BaseResult collect(@RequestParam Long resourcesId,@RequestParam Long userId) {

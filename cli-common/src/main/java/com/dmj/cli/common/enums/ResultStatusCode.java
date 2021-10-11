@@ -20,7 +20,10 @@ public enum ResultStatusCode {
     TOKEN_ERROR(10006,"获取token异常"),
     BIND_PHONE(10010, "请绑定手机号"),
 
-    ORDER_PAY_ERROR(20000,"该订单已失效，请重新生成订单");
+    ORDER_PAY_ERROR(20000,"该订单已失效，请重新生成订单"),
+
+    USER_ACCOUNT_NOT_EXISTS(30000,"用户账户不存在，请前去充值"),
+    USER_ACCOUNT_BALANCE_LACK(30001,"账户余额不足，请前去充值");
 
 
     private int code;

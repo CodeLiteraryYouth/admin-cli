@@ -11,7 +11,6 @@ import com.dmj.cli.domain.UserCollLog;
 import com.dmj.cli.domain.UserDownloadLog;
 import com.dmj.cli.service.api.UserCollLogService;
 import com.dmj.cli.service.api.UserDownloadLogService;
-import com.dmj.cli.service.api.UserVideoLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -43,21 +42,17 @@ public class ViewAspect {
     @Autowired
     private UserDownloadLogService userDownloadLogService;
 
-    @Autowired
-    private UserVideoLogService userVideoLogService;
 
     @Pointcut("@annotation(com.dmj.cli.annotation.view.Collect) " +
-            "|| @annotation(com.dmj.cli.annotation.view.Download) " +
             "|| @annotation(com.dmj.cli.annotation.view.View)" +
             "|| @annotation(com.dmj.cli.annotation.view.Favour)")
-    public void point() {
+    public void viewPoint() {
     }
 
 
-    @After("point()")
+    @After("viewPoint()")
     public void viewFilter(JoinPoint point) throws Throwable {
         Object params = point.getArgs()[0];
-
         Long userId=null;
         if (point.getArgs().length>1) {
             Object param=point.getArgs()[1];
@@ -74,7 +69,7 @@ public class ViewAspect {
     }
 
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-    private void handleFilter(Long id,Long userId,JoinPoint point) {
+    protected void handleFilter(Long id,Long userId,JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
 
@@ -98,7 +93,9 @@ public class ViewAspect {
         if (collect != null) {
             Double collData=redisUtils.score(GlobalConstants.COLLECT_NUM,id.toString());
             redisUtils.zsIncr(GlobalConstants.COLLECT_NUM,id.toString(),collData);
-            UserCollLog userCollLog=userCollLogService.getOne(Wrappers.<UserCollLog>lambdaQuery().eq(UserCollLog::getCollectId,id));
+            UserCollLog userCollLog=userCollLogService.getOne(Wrappers.<UserCollLog>lambdaQuery()
+                    .eq(UserCollLog::getCollectId,id)
+                    .eq(UserCollLog::getUserId,userId));
             if (userCollLog == null) {
                 userCollLog = new UserCollLog();
                 userCollLog.setUserId(userId);
@@ -107,13 +104,15 @@ public class ViewAspect {
                 userCollLog.setCollectType(collect.type());
                 userCollLogService.save(userCollLog);
             } else {
-                userCollLogService.remove(Wrappers.<UserCollLog>lambdaQuery().eq(UserCollLog::getCollectId,id));
+                userCollLogService.remove(Wrappers.<UserCollLog>lambdaQuery()
+                        .eq(UserCollLog::getCollectId,id)
+                        .eq(UserCollLog::getUserId,userId));
             }
         }
         if (download != null) {
-            Double downloadData=redisUtils.score(GlobalConstants.DOWNLOAD_NUM,id.toString());
-            redisUtils.zsIncr(GlobalConstants.DOWNLOAD_NUM,id.toString(),downloadData);
-            UserDownloadLog userDownloadLog = userDownloadLogService.getOne(Wrappers.<UserDownloadLog>lambdaQuery().eq(UserDownloadLog::getDownloadId,id));
+            UserDownloadLog userDownloadLog = userDownloadLogService.getOne(Wrappers.<UserDownloadLog>lambdaQuery()
+                    .eq(UserDownloadLog::getDownloadId,id)
+                    .eq(UserDownloadLog::getUserId,userId));
             if (userDownloadLog == null) {
                 userDownloadLog = new UserDownloadLog();
                 userDownloadLog.setDownloadId(id);
@@ -121,7 +120,9 @@ public class ViewAspect {
                 userDownloadLog.setDownloadTime(LocalDateTime.now());
                 userDownloadLogService.save(userDownloadLog);
             } else {
-                userDownloadLogService.remove(Wrappers.<UserDownloadLog>lambdaQuery().eq(UserDownloadLog::getDownloadId,id));
+                userDownloadLogService.remove(Wrappers.<UserDownloadLog>lambdaQuery()
+                        .eq(UserDownloadLog::getDownloadId,id)
+                        .eq(UserDownloadLog::getUserId,userId));
             }
         }
 

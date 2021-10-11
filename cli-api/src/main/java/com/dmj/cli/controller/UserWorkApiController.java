@@ -79,4 +79,5 @@ public class UserWorkApiController extends BaseController {
         data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
         data.setFavourNum(favourNUm == null ? 0L : favourNUm.longValue());
     }
+
 }

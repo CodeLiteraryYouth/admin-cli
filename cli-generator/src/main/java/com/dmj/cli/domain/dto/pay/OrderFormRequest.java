@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -25,18 +24,15 @@ public class OrderFormRequest implements Serializable {
     private Long userId;
 
     @NonNull
-    @ApiModelProperty(value = "1:资源 2:课程 3:视频 4:充值")
+    @ApiModelProperty(value = "1:素材 2:课程 3:视频 4:充值")
     private Integer skuType;
 
-    @NonNull
     @ApiModelProperty(value = "商品原单价(单位：分)")
     private BigDecimal price;
 
-    @NotNull
     @ApiModelProperty(value = "实际商品单价(单位：分)")
     private BigDecimal actualPrice;
 
-    @NotNull
     @ApiModelProperty(value = "购买商品实际数量")
     private Long num;
 

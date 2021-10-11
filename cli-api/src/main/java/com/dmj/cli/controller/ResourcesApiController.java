@@ -2,6 +2,7 @@ package com.dmj.cli.controller;
 
 import com.dmj.cli.annotation.login.Login;
 import com.dmj.cli.annotation.view.Collect;
+import com.dmj.cli.annotation.view.Download;
 import com.dmj.cli.annotation.view.View;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
@@ -57,18 +58,19 @@ public class ResourcesApiController extends BaseController {
     }
 
     @Login
-    @Collect
+    @Collect(type = "resources")
     @ApiOperation("收藏")
     @GetMapping("collect")
-    public BaseResult collect(@RequestParam Long resourcesId,@RequestParam Long userId) {
+    public BaseResult collect(@RequestParam Long id,@RequestParam Long userId) {
         return BaseResult.success();
     }
 
     @Login
+    @Download
     @ApiOperation("下载")
     @GetMapping("download")
-    public BaseResult download(@RequestParam Long resourcesId,@RequestParam Long userId) {
-        return BaseResult.success();
+    public BaseResult download(@RequestParam Long id,@RequestParam Long userId) {
+        return service.download(id,userId);
     }
 
 }
