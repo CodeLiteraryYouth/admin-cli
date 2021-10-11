@@ -29,7 +29,7 @@ public class ConfigController {
 
     @ApiOperation("查询配置充值类型")
     @GetMapping("members")
-    public BaseResult<Map<String, List<SysDict>>> listMembers(@ModelAttribute SysConfigQuery query) {
+    public BaseResult<List<SysDict>> listMembers(@ModelAttribute SysConfigQuery query) {
         return configService.listMembers(query);
     }
 }

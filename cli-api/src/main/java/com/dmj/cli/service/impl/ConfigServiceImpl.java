@@ -1,6 +1,7 @@
 package com.dmj.cli.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.SysDict;
 import com.dmj.cli.domain.query.api.SysConfigQuery;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -23,10 +25,9 @@ public class ConfigServiceImpl implements ConfigService {
     private SysDictService dictService;
 
     @Override
-    public BaseResult<Map<String,List<SysDict>>> listMembers(SysConfigQuery query) {
-        Assert.notNull(query.getType(),"type is null");
-        List<SysDict> sysDicts=dictService.list(new LambdaQueryWrapper<SysDict>().in(SysDict::getType, query.getType()));
-        Map<String,List<SysDict>> result=sysDicts.stream().collect(Collectors.groupingBy(SysDict::getType));
-        return BaseResult.success(result);
+    public BaseResult<List<SysDict>> listMembers(SysConfigQuery query) {
+        List<SysDict> sysDicts=dictService.list(Wrappers.<SysDict>lambdaQuery()
+                .eq(Objects.nonNull(query.getType()),SysDict::getType,query.getType()));
+        return BaseResult.success(sysDicts);
     }
 }

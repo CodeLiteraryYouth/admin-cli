@@ -17,5 +17,5 @@ public interface ConfigService {
      * @param query
      * @return
      */
-    BaseResult<Map<String,List<SysDict>>> listMembers(SysConfigQuery query);
+    BaseResult<List<SysDict>> listMembers(SysConfigQuery query);
 }
