@@ -56,7 +56,7 @@
     <select id="getResourcesById" resultMap="BaseResultMap">
         select
         r.id, r.title,r.text,r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,
-        r.create_time, r.creator, r.update_time, r.updater, r.delete_flag,rt.type_name,rt.type_code,rt.create_time,
+        r.create_time, r.creator, r.update_time, r.updater, r.cover_url, r.free,rt.type_name,rt.type_code,rt.create_time,
         rt.creator,rt.update_time,rt.updater,rt.delete_flag
         from resources r
         left join resources_type_middle t on r.id=t.resources_id

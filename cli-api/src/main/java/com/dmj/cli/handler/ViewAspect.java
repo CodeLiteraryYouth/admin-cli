@@ -45,6 +45,7 @@ public class ViewAspect {
 
     @Pointcut("@annotation(com.dmj.cli.annotation.view.Collect) " +
             "|| @annotation(com.dmj.cli.annotation.view.View)" +
+            "|| @annotation(com.dmj.cli.annotation.view.Download)"+
             "|| @annotation(com.dmj.cli.annotation.view.Favour)")
     public void viewPoint() {
     }

@@ -1,10 +1,14 @@
 package com.dmj.cli.controller.sys;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.ResourcesType;
 import com.dmj.cli.domain.query.BaseQuery;
 import com.dmj.cli.service.api.ResourcesTypeService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resources/type")
 @Api(tags = "资源类型管理")
-public class ResourcesTypeController {
+public class ResourcesTypeController extends BaseController {
 
     @Resource
     private ResourcesTypeService service;
@@ -58,9 +62,11 @@ public class ResourcesTypeController {
 
     @ApiOperation("查询所有标签")
     @GetMapping("/list")
-    public BaseResult<List<ResourcesType>> list(BaseQuery query) {
-        List<ResourcesType> resourcesTypes=service.list();
-        return BaseResult.success(resourcesTypes);
+    public BaseResult<PageInfo<List<ResourcesType>>> list(BaseQuery query) {
+        startPage();
+        List<ResourcesType> resourcesTypes=service.list(Wrappers.<ResourcesType>lambdaQuery()
+                .likeRight(StringUtils.isNotBlank(query.getSearchVal()),ResourcesType::getTypeName,query.getSearchVal()));
+        return pageInfoBaseResult(resourcesTypes);
     }
 }
 
