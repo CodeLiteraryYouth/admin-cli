@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -42,7 +44,7 @@ public class UserDownloadLog implements Serializable {
 
     @ApiModelProperty(value = "下载时间")
     @TableField("download_time")
-    private LocalDateTime downloadTime;
+    private Date downloadTime;
     
     
 }

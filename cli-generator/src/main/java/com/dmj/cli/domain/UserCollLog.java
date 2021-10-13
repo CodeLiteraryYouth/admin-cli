@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ public class UserCollLog implements Serializable {
 
     @ApiModelProperty(value = "收藏时间")
     @TableField("collect_time")
-    private LocalDateTime collectTime;
+    private Date collectTime;
     
     
 }

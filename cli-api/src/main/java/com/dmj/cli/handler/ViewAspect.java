@@ -1,5 +1,6 @@
 package com.dmj.cli.handler;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.annotation.view.Collect;
 import com.dmj.cli.annotation.view.Download;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 
 /**
  * @author zd
@@ -84,15 +84,18 @@ public class ViewAspect {
 
         if (favour != null) {
             Double viewData=redisUtils.score(GlobalConstants.FAVOUR_NUM,id.toString());
+            viewData = viewData == null ? 0 : viewData;
             redisUtils.zsIncr(GlobalConstants.FAVOUR_NUM,id.toString(),viewData);
         }
 
         if (view != null) {
             Double viewData=redisUtils.score(GlobalConstants.VIEW_NUM,id.toString());
+            viewData = viewData == null ? 0 : viewData;
             redisUtils.zsIncr(GlobalConstants.VIEW_NUM,id.toString(),viewData);
         }
         if (collect != null) {
             Double collData=redisUtils.score(GlobalConstants.COLLECT_NUM,id.toString());
+            collData = collData == null ? 0 : collData;
             redisUtils.zsIncr(GlobalConstants.COLLECT_NUM,id.toString(),collData);
             UserCollLog userCollLog=userCollLogService.getOne(Wrappers.<UserCollLog>lambdaQuery()
                     .eq(UserCollLog::getCollectId,id)
@@ -101,7 +104,7 @@ public class ViewAspect {
                 userCollLog = new UserCollLog();
                 userCollLog.setUserId(userId);
                 userCollLog.setCollectId(id);
-                userCollLog.setCollectTime(LocalDateTime.now());
+                userCollLog.setCollectTime(DateUtil.date());
                 userCollLog.setCollectType(collect.type());
                 userCollLogService.save(userCollLog);
             } else {
@@ -118,7 +121,7 @@ public class ViewAspect {
                 userDownloadLog = new UserDownloadLog();
                 userDownloadLog.setDownloadId(id);
                 userDownloadLog.setUserId(userId);
-                userDownloadLog.setDownloadTime(LocalDateTime.now());
+                userDownloadLog.setDownloadTime(DateUtil.date());
                 userDownloadLogService.save(userDownloadLog);
             } else {
                 userDownloadLogService.remove(Wrappers.<UserDownloadLog>lambdaQuery()
