@@ -1,6 +1,7 @@
 package com.dmj.cli.service;
 
 import com.dmj.cli.common.constant.BaseResult;
+import com.dmj.cli.domain.UserRechargeInfo;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
@@ -42,5 +43,12 @@ public interface UserService {
      * @return
      */
      BaseResult<List<PayLogVO>> listPayLog(String sceneId,Long skuType);
+
+    /**
+     * 查询会员获取记录
+     * @param sceneId
+     * @return
+     */
+     List<UserRechargeInfo> listUserRecord(String sceneId);
 
 }

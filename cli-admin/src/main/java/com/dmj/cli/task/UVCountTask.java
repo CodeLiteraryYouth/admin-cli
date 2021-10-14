@@ -1,6 +1,7 @@
 package com.dmj.cli.task;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.UvCount;
 import com.dmj.cli.service.api.UvCountService;
@@ -27,9 +28,15 @@ public class UVCountTask {
     public void save() {
         String key= DateUtil.today();
         Long count=redisUtils.pfCount(key);
-        UvCount uvCount=UvCount.builder().build()
-                .setUvNum(count)
-                .setCreateTime(DateUtil.date());
-        uvCountService.save(uvCount);
+        UvCount uvCount = uvCountService.getOne(Wrappers.<UvCount>lambdaQuery().eq(UvCount::getCreateTime,key));
+        if (uvCount == null) {
+            uvCount = UvCount.builder().build()
+                    .setUvNum(count)
+                    .setCreateTime(DateUtil.date());
+            uvCountService.save(uvCount);
+        } else {
+            uvCount.setUvNum(count);
+            uvCountService.updateById(uvCount);
+        }
     }
 }

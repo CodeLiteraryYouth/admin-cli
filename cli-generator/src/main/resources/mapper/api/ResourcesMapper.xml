@@ -11,6 +11,7 @@
         <result column="resources_format" property="resourcesFormat" />
         <result column="resources_use" property="resourcesUse" />
         <result column="resources_url" property="resourcesUrl" />
+        <result column="resources_desc" property="resourcesDesc" />
         <result column="cover_url" property="coverUrl" />
         <result column="free" property="free" />
         <result column="create_time" property="createTime" />
@@ -32,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        r.id, r.title, r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,
+        r.id, r.title, r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,r.resources_desc,
         r.create_time, r.creator, r.update_time, r.updater, r.cover_url, r.free, rt.type_name,rt.type_code,rt.create_time,
         rt.creator,rt.update_time,rt.updater,rt.delete_flag
     </sql>
@@ -55,7 +56,7 @@
     </select>
     <select id="getResourcesById" resultMap="BaseResultMap">
         select
-        r.id, r.title,r.text,r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,
+        r.id, r.title,r.text,r.resources_no, r.resources_size, r.resources_format, r.resources_use, r.resources_url,r.resources_desc,
         r.create_time, r.creator, r.update_time, r.updater, r.cover_url, r.free,rt.type_name,rt.type_code,rt.create_time,
         rt.creator,rt.update_time,rt.updater,rt.delete_flag
         from resources r

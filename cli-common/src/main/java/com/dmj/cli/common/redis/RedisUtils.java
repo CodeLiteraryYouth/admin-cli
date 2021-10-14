@@ -666,6 +666,14 @@ public class RedisUtils {
     }
 
     /**
+     * 删除统计key值
+     * @param key
+     */
+    public void pfDelete(String key) {
+        redisTemplate.opsForHyperLogLog().delete(key);
+    }
+
+    /**
      * 多个key之间合并count
      * @param key
      * @param keys

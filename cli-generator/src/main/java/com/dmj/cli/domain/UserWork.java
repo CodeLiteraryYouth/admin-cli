@@ -40,6 +40,9 @@ public class UserWork extends BaseEntity implements Serializable {
     @TableField("job_id")
     private Long jobId;
 
+    @TableField(exist = false)
+    private String jobName;
+
     @ApiModelProperty(value = "作业标题")
     @TableField("work_title")
     private String workTitle;
@@ -51,6 +54,10 @@ public class UserWork extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "作业内容")
     @TableField("work_content")
     private String workContent;
+
+    @ApiModelProperty(value = "0:审批中 1:审批通过")
+    @TableField("status")
+    private Integer status;
 
     @ApiModelProperty(value = "浏览数")
     @TableField("view_num")

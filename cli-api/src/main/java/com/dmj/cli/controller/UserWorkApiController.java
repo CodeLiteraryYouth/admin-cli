@@ -11,6 +11,7 @@ import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.UserWork;
 import com.dmj.cli.domain.query.api.UserWorkQuery;
+import com.dmj.cli.service.api.PracticesJobService;
 import com.dmj.cli.service.api.UserWorkService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -32,6 +33,9 @@ public class UserWorkApiController extends BaseController {
 
     @Autowired
     private UserWorkService service;
+
+    @Autowired
+    private PracticesJobService practicesJobService;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -78,6 +82,9 @@ public class UserWorkApiController extends BaseController {
         Double favourNUm = redisUtils.score(GlobalConstants.FAVOUR_NUM, data.getId().toString());
         data.setViewNum(viewNum == null ? 0L : viewNum.longValue());
         data.setFavourNum(favourNUm == null ? 0L : favourNUm.longValue());
+        if (data != null) {
+            data.setJobName(practicesJobService.getById(data.getJobId()).getJobTitle());
+        }
     }
 
 }

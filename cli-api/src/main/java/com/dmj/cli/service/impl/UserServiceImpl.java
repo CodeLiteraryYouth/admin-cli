@@ -4,13 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.beust.jcommander.internal.Lists;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.common.enums.ResultStatusCode;
 import com.dmj.cli.common.redis.RedisUtils;
-import com.dmj.cli.domain.Course;
-import com.dmj.cli.domain.Resources;
-import com.dmj.cli.domain.UserInfo;
-import com.dmj.cli.domain.UserInfoAccount;
+import com.dmj.cli.domain.*;
 import com.dmj.cli.domain.vo.api.CollectInfoVO;
 import com.dmj.cli.domain.vo.api.PayLogVO;
 import com.dmj.cli.domain.vo.api.UserInfoVO;
@@ -22,6 +20,7 @@ import com.dmj.cli.service.UserService;
 import com.dmj.cli.service.api.CourseService;
 import com.dmj.cli.service.api.ResourcesService;
 import com.dmj.cli.service.api.UserInfoAccountService;
+import com.dmj.cli.service.api.UserRechargeInfoService;
 import com.dmj.cli.util.str.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private TOrderDetailMapper detailMapper;
+
+    @Autowired
+    private UserRechargeInfoService userRechargeInfoService;
 
     @Override
     public BaseResult<UserInfoVO> getUserBySceneId(String sceneId) {
@@ -117,6 +119,19 @@ public class UserServiceImpl implements UserService {
             }
         });
         return BaseResult.success(payLogVOS);
+    }
+
+    @Override
+    public List<UserRechargeInfo> listUserRecord(String sceneId) {
+        Assert.notNull(sceneId,"sceneId is null");
+        UserInfoVO userInfoVO=getUserBySceneId(sceneId).getData();
+        if (userInfoVO == null) {
+            return Lists.newArrayList();
+        }  else {
+            List<UserRechargeInfo> userRechargeInfos = userRechargeInfoService.list(Wrappers.<UserRechargeInfo>lambdaQuery()
+                    .eq(UserRechargeInfo::getUserId,userInfoVO.getId()));
+            return userRechargeInfos;
+        }
     }
 
 }

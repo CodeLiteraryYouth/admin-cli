@@ -6,9 +6,10 @@ import com.dmj.cli.util.str.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import javax.validation.constraints.*;
 
 /**
  * 定时任务调度表 sys_job
@@ -42,6 +43,8 @@ public class SysJob extends BaseEntity implements Serializable {
 
     /** 任务状态（0正常 1暂停） */
     private String status;
+
+    private String remark;
 
     public Long getJobId()
     {
@@ -136,6 +139,14 @@ public class SysJob extends BaseEntity implements Serializable {
         this.status = status;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -151,6 +162,7 @@ public class SysJob extends BaseEntity implements Serializable {
             .append("createTime", getCreateTime())
             .append("updater", getUpdater())
             .append("updateTime", getUpdateTime())
+                .append("remark",getRemark())
             .toString();
     }
 }

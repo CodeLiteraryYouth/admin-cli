@@ -50,6 +50,10 @@ public class SysDict extends BaseEntity {
     @TableField("ext_value")
     private String extValue;
 
+    @ApiModelProperty(value = "扩展字段值1")
+    @TableField("ext_value1")
+    private String extValue1;
+
     @ApiModelProperty(value = "排序")
     @TableField("order_num")
     private Integer orderNum;

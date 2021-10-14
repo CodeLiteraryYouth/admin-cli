@@ -7,6 +7,7 @@ import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.UserWork;
 import com.dmj.cli.domain.query.api.UserWorkQuery;
+import com.dmj.cli.service.api.PracticesJobService;
 import com.dmj.cli.service.api.UserWorkService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -34,6 +35,9 @@ public class UserWorkController extends BaseController {
     @Autowired
     private UserWorkService service;
 
+    @Autowired
+    private PracticesJobService practicesJobService;
+
     @ApiOperation("上传学员作业")
     @PostMapping("/save")
     public BaseResult<UserWork> save(@RequestBody UserWork entity) {
@@ -42,12 +46,15 @@ public class UserWorkController extends BaseController {
         return BaseResult.success(entity);
     }
 
-    @ApiOperation("修改学员作业")
+    @ApiOperation("审批通过")
     @PostMapping("/update")
-    public BaseResult<UserWork> update(@RequestBody UserWork entity) {
-        Assert.notNull(entity.getId(),"id is null");
-        service.saveOrUpdate(entity);
-        return BaseResult.success(entity);
+    public BaseResult<UserWork> update(@RequestBody List<Long> ids) {
+        List<UserWork> userWorks = service.listByIds(ids);
+        userWorks.forEach(item -> {
+            item.setStatus(1);
+        });
+        service.updateBatchById(userWorks);
+        return BaseResult.success();
     }
 
     @ApiOperation("删除学员作业")
@@ -61,6 +68,7 @@ public class UserWorkController extends BaseController {
     @GetMapping("/info/{id}")
     public BaseResult<UserWork> select(@PathVariable Long id) {
         UserWork data = service.getById(id);
+        buildNum(data);
         return BaseResult.success(data);
     }
 
@@ -69,10 +77,17 @@ public class UserWorkController extends BaseController {
     public BaseResult<PageInfo<List<UserWork>>> page(@ModelAttribute UserWorkQuery query) {
         startPage();
         List<UserWork> userWorks=service.list(Wrappers.<UserWork>lambdaQuery()
-                .eq(UserWork::getJobId,query.getJobId())
+                .eq(Objects.nonNull(query.getJobId()),UserWork::getJobId,query.getJobId())
                 .eq(Objects.nonNull(query.getUserId()),UserWork::getUserId,query.getUserId())
                 .likeRight(StringUtils.isNotBlank(query.getSearchVal()),UserWork::getWorkTitle,query.getSearchVal()));
+        userWorks.forEach(this::buildNum);
         return pageInfoBaseResult(userWorks);
+    }
+
+    private void buildNum(UserWork data) {
+        if (data != null) {
+            data.setJobName(practicesJobService.getById(data.getJobId()).getJobTitle());
+        }
     }
 }
 
