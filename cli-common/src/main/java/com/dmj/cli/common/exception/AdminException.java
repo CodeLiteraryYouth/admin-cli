@@ -18,6 +18,10 @@ public class AdminException extends RuntimeException {
         this.msg=msg;
     }
 
+    public AdminException(String message,Throwable e) {
+        super(message,e);
+    }
+
     public AdminException(String msg) {
         this.msg=msg;
     }

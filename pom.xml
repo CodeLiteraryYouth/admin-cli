@@ -47,6 +47,7 @@
 		<hutool.version>5.5.8</hutool.version>
 		<oss.version>3.12.0</oss.version>
 		<velocity.version>2.1</velocity.version>
+		<commons.configuration.version>1.10</commons.configuration.version>
 	</properties>
 
 	<dependencies>
@@ -182,6 +183,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons.configuration.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
