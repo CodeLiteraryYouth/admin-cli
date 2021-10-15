@@ -5,7 +5,7 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.UserLoginLog;
-import com.dmj.cli.service.api.UserLoginLogService;
+import com.dmj.cli.service.sys.UserLoginLogService;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;

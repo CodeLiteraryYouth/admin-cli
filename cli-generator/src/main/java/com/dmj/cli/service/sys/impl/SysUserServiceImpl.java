@@ -10,7 +10,6 @@ import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysRole;
 import com.dmj.cli.domain.SysUser;
 import com.dmj.cli.domain.SysUserRole;
-import com.dmj.cli.domain.dto.sys.PasswordDTO;
 import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.query.sys.UserQuery;
 import com.dmj.cli.domain.vo.sys.SysUserVO;

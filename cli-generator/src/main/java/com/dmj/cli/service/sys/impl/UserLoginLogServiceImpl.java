@@ -1,8 +1,8 @@
-package com.dmj.cli.service.api.impl;
+package com.dmj.cli.service.sys.impl;
 
 import com.dmj.cli.domain.UserLoginLog;
-import com.dmj.cli.mapper.api.UserLoginLogMapper;
-import com.dmj.cli.service.api.UserLoginLogService;
+import com.dmj.cli.mapper.sys.UserLoginLogMapper;
+import com.dmj.cli.service.sys.UserLoginLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
