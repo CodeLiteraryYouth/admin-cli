@@ -50,11 +50,8 @@ public class SysPermissionController {
     }
 
     @GetMapping("/info/{id}")
-    public BaseResult<SysPermissionVO> info(@PathVariable Long id) {
-        PermissionQuery query=new PermissionQuery();
-        query.setId(id);
-        List<SysPermissionVO> sysPermissionVOS=service.pagePermission(query).getData();
-        return BaseResult.success(sysPermissionVOS.get(0));
+    public BaseResult<SysPermission> info(@PathVariable Long id) {
+        return BaseResult.success(service.getById(id));
     }
 
     @ApiOperation("查询当前用户菜单和权限列表")

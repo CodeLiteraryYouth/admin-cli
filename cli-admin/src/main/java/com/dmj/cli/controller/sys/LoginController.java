@@ -13,7 +13,7 @@ import com.dmj.cli.util.jwt.JwtUtils;
 import com.dmj.cli.util.str.StringUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +36,9 @@ public class LoginController {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/login")
     public BaseResult<SysUserDTO> login(LoginForm loginForm) {
@@ -45,15 +48,17 @@ public class LoginController {
         if (sysUserDTO == null) {
             return BaseResult.fail(ResultStatusCode.NOT_EXIST_USER_OR_ERROR_PWD);
         }
-        if (!sysUserDTO.getPassword().equals(new BCryptPasswordEncoder().encode(loginForm.getPassword()))) {
+        if (!loginForm.getCode().equals(redisUtils.hget(GlobalConstants.CAPTCHA,loginForm.getUuid()))) {
+            throw new CaptchaException("验证码异常");
+        }
+        String password = passwordEncoder.encode(loginForm.getPassword());
+        if (!sysUserDTO.getPassword().equals(password)) {
             return BaseResult.fail(ResultStatusCode.NOT_EXIST_USER_OR_ERROR_PWD);
         }
         if (sysUserDTO.getLocked()) {
             return BaseResult.fail(ResultStatusCode.USER_LOCKED);
         }
-        if (!loginForm.getCode().equals(redisUtils.hget(GlobalConstants.CAPTCHA,loginForm.getUuid()))) {
-            throw new CaptchaException("验证码异常");
-        }
+
         redisUtils.hdel(GlobalConstants.CAPTCHA,loginForm.getUuid());
         return BaseResult.success(sysUserDTO);
     }

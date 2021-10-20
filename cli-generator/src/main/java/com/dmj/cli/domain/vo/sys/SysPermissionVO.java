@@ -34,6 +34,10 @@ public class SysPermissionVO extends BaseEntity implements Serializable {
     @TableField("permission_url")
     private String permissionUrl;
 
+    @ApiModelProperty(value = "文件显示路径")
+    @TableField("component")
+    private String component;
+
     @ApiModelProperty(value = "权限标识")
     @TableField("permission_str")
     private String permissionStr;

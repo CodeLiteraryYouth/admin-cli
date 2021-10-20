@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
 
-    //@Bean
-    //public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
-    //    JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(authenticationManager());
-    //    return jwtAuthenticationFilter;
-    //};
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception{
+        JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(authenticationManager());
+        return jwtAuthenticationFilter;
+    };
 
 
 
@@ -81,12 +81,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.cors()
                 //登录配置
-                .formLogin()
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailureHandler)
+                //
+                //.successHandler(loginSuccessHandler)
+                //.failureHandler(loginFailureHandler)
                 //退出
                 .and()
                 .logout()
@@ -99,13 +98,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(URL_WHITES).permitAll()
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 //异常处理器
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 ;
+        http.csrf().disable();
     }
 
     /**

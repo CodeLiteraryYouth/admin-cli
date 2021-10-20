@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -43,6 +44,9 @@ public class SysUserController {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @ApiOperation("查询用户列表")
@@ -88,8 +92,8 @@ public class SysUserController {
         if (StringUtils.isEmpty(userName)) {
             return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
         }
-        String password=new BCryptPasswordEncoder().encode(passwordDTO.getPassword());
-        String newPassword=new BCryptPasswordEncoder().encode(passwordDTO.getNewPassword());
+        String password=passwordEncoder.encode(passwordDTO.getPassword());
+        String newPassword=passwordEncoder.encode(passwordDTO.getNewPassword());
         if (!password.equals(newPassword)) {
             return BaseResult.fail("password is error");
         }
@@ -108,6 +112,7 @@ public class SysUserController {
         service.removeByIds(ids);
         return BaseResult.success();
     }
+
 
 
 }

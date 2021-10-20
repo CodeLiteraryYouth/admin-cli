@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 @RequestMapping("/sys/config")
 @Api(tags = "系统配置信息表")
 public class SysConfigController extends BaseController {
+
     @Resource
     private SysConfigService service;
 

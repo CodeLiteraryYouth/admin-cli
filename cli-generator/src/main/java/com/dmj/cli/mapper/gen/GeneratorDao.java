@@ -17,6 +17,7 @@
 package com.dmj.cli.mapper.gen;
 
 import com.dmj.cli.domain.query.BaseQuery;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Map;
  * @author Mark sunlightcs@gmail.com
  * @since 2018-07-24
  */
+@Mapper
 public interface GeneratorDao {
     List<Map<String, Object>> queryList(BaseQuery query);
 

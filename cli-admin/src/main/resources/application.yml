@@ -54,3 +54,6 @@ file:
     accessKeyId: LTAI5tBkyucFH63HgwGkuTNY
     accessKeySecret: ulzEX8id6dVxXuPv0wSUn3bNIyRB5O
     bucketName: admincli
+#mysql、oracle、sqlserver
+cli:
+  database: mysql

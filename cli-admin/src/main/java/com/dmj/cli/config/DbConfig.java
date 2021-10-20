@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class DbConfig {
 
-    @Value("${cli.database: mysql}")
+    @Value("${cli.database}")
     private String database;
 
     @Autowired
