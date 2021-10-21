@@ -63,6 +63,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Assert.notNull(roleQuery.getPageNum(),"pageNo is null");
         PageHelper.startPage(roleQuery.getPageNum(),roleQuery.getPageSize());
         List<SysRoleVO> sysRoleVOS=sysRoleMapper.listRole(roleQuery);
+        sysRoleVOS.forEach(item -> item.setSysPermissions(sysPermissionMapper.listByRoleId(item.getId())));
         PageInfo<SysRoleVO> pageInfo=new PageInfo<>(sysRoleVOS);
         return BaseResult.success(pageInfo);
     }

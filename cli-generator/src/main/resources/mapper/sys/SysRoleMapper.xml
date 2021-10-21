@@ -43,16 +43,12 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         r.id, r.role_code,r.role_name, r.role_desc, r.create_time, r.creator,
-        r.update_time, r.updater, r.delete_flag,p.permission_name,p.permission_type,p.permission_url,
-        p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creator,p.create_time,p.updater,
-        p.update_time,p.delete_flag
+        r.update_time, r.updater, r.delete_flag
     </sql>
     <select id="listRole" resultMap="ResultMapVO">
         select
         <include refid="Base_Column_List"></include>
         from sys_role r
-        left join sys_role_permission rp on r.id=rp.role_id
-        left join sys_permission p on rp.permission_id=p.id
         where r.delete_flag=false
         <if test="id != null">
             and r.id=#{id}

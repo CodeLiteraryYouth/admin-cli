@@ -65,5 +65,13 @@
         select distinct rp.permission_id from sys_user_role ur left join
         sys_role_permission rp on ur.role_id=rp.role_id where ur.user_id=#{userId}
     </select>
+    <select id="listByRoleId" resultType="com.dmj.cli.domain.SysPermission">
+        select p.permission_name,p.permission_type,p.permission_url,
+               p.permission_str,p.parent_id,p.permission_order,p.is_view,p.creator,p.create_time,p.updater,
+               p.update_time,p.delete_flag
+        from sys_role_permission rp
+                 left join sys_permission p on rp.permission_id=p.id
+        where rp.role_id=#{roleId}
+    </select>
 
 </mapper>
