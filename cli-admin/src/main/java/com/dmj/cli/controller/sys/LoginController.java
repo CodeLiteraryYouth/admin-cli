@@ -52,7 +52,7 @@ public class LoginController {
             throw new CaptchaException("验证码异常");
         }
         String password = passwordEncoder.encode(loginForm.getPassword());
-        if (!sysUserDTO.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(loginForm.getPassword(),sysUserDTO.getPassword())) {
             return BaseResult.fail(ResultStatusCode.NOT_EXIST_USER_OR_ERROR_PWD);
         }
         if (sysUserDTO.getLocked()) {

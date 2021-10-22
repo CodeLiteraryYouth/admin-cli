@@ -83,9 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
                 //登录配置
-                //
-                //.successHandler(loginSuccessHandler)
-                //.failureHandler(loginFailureHandler)
+                .and()
+                .formLogin()
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
                 //退出
                 .and()
                 .logout()
