@@ -296,6 +296,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
+
+<!--		&lt;!&ndash;sharding-jdbc分库分表&ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.shardingsphere</groupId>-->
+<!--			<artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
+<!--			<version>4.1.1</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<!-- 阿里云maven仓库 -->
