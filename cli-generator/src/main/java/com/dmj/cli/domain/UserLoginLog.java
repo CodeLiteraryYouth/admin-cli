@@ -61,6 +61,6 @@ public class UserLoginLog {
     @ApiModelProperty(value = "登录邮箱地址")
     @TableField("email")
     private String email;
-    
+
     
 }

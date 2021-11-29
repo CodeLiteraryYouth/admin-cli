@@ -38,4 +38,6 @@ public class BaseQuery implements Serializable {
     @ApiModelProperty(value = "搜索字段")
     private String searchVal;
 
+    private String tableName;
+
 }

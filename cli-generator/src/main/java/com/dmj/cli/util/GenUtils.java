@@ -34,15 +34,15 @@ public class GenUtils {
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
-        templates.add("template/Entity.java.vm");
-        templates.add("template/Dao.xml.vm");
+        templates.add("template/entity.java.vm");
+        templates.add("template/mapper.xml.vm");
 
         templates.add("template/menu.sql.vm");
 
-        templates.add("template/Service.java.vm");
-        templates.add("template/ServiceImpl.java.vm");
-        templates.add("template/Controller.java.vm");
-        templates.add("template/Dao.java.vm");
+        templates.add("template/service.java.vm");
+        templates.add("template/serviceImpl.java.vm");
+        templates.add("template/controller.java.vm");
+        templates.add("template/mapper.java.vm");
 
         templates.add("template/index.vue.vm");
         templates.add("template/add-or-update.vue.vm");
@@ -117,7 +117,7 @@ public class GenUtils {
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
         String mainPath = config.getString("mainPath");
-        mainPath = StringUtils.isBlank(mainPath) ? "io.renren" : mainPath;
+        mainPath = StringUtils.isBlank(mainPath) ? "com.dmj" : mainPath;
         //封装模板数据
         Map<String, Object> map = new HashMap<>();
         map.put("tableName", tableEntity.getTableName());
