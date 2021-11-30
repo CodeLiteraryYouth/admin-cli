@@ -56,6 +56,7 @@ public class JwtUtils {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

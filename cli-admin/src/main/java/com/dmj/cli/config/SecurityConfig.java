@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 保证post之前的注解可以使用
@@ -43,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+    @Autowired
+    private CaptchaFilter captchaFilter;
 
     @Autowired
     private JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -99,12 +102,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(URL_WHITES).permitAll()
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 //异常处理器
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                //配置自定义过滤器
+                .and()
+                .addFilter(jwtAuthenticationFilter())
+                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
                 ;
         http.csrf().disable();
     }
