@@ -19,6 +19,8 @@ public enum ResultStatusCode {
     USER_LOCKED(10005,"用户已锁定，请联系管理员"),
     TOKEN_ERROR(10006,"获取token异常"),
     BIND_PHONE(10010, "请绑定手机号"),
+    OLD_PASSWORD_ERROR(10011,"原密码输入错误，请重新输入"),
+    NEW_PASSWORD_CONFIRM_ERROR(10012,"新密码与确认密码不相等，请重新输入"),
 
     ORDER_PAY_ERROR(20000,"该订单已失效，请重新生成订单"),
 

@@ -1,10 +1,10 @@
 package com.dmj.cli.service.sys.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dmj.cli.common.constant.AuthConstants;
 import com.dmj.cli.common.constant.BaseResult;
-import com.dmj.cli.common.constant.GlobalConstants;
 import com.dmj.cli.common.redis.RedisUtils;
 import com.dmj.cli.domain.SysPermission;
 import com.dmj.cli.domain.SysRole;
@@ -123,8 +123,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             for (String roleCode: sysUserDTO.getRoles()) {
                 SysUserRole sysUserRole=new SysUserRole();
                 sysUserRole.setUserId(sysUser.getId());
-                LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<SysRole>();
-                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode, GlobalConstants.ROLE_PREFIX+roleCode));
+                SysRole sysRole=sysRoleMapper.selectOne(Wrappers.<SysRole>lambdaQuery().eq(SysRole::getRoleCode, roleCode));
                 if (Objects.nonNull(sysRole)) {
                     sysUserRole.setRoleId(sysRole.getId());
                 }
@@ -147,8 +146,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             for (String roleCode: sysUserDTO.getRoles()) {
                 SysUserRole sysUserRole=new SysUserRole();
                 sysUserRole.setUserId(sysUser.getId());
-                LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<SysRole>();
-                SysRole sysRole=sysRoleMapper.selectOne(queryWrapper.eq(SysRole::getRoleCode,GlobalConstants.ROLE_PREFIX+roleCode));
+                SysRole sysRole=sysRoleMapper.selectOne(Wrappers.<SysRole>lambdaQuery().eq(SysRole::getRoleCode,roleCode));
                 if (Objects.nonNull(sysRole)) {
                     sysUserRole.setRoleId(sysRole.getId());
                 }

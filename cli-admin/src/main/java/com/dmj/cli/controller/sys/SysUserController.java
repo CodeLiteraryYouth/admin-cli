@@ -16,6 +16,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserCache;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
@@ -47,6 +50,11 @@ public class SysUserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    private UserCache userCache = new NullUserCache();
 
 
     @ApiOperation("查询用户列表")
@@ -92,18 +100,22 @@ public class SysUserController {
         if (StringUtils.isEmpty(userName)) {
             return BaseResult.fail(ResultStatusCode.LOGIN_ERROR);
         }
-        String password=passwordEncoder.encode(passwordDTO.getPassword());
-        String newPassword=passwordEncoder.encode(passwordDTO.getNewPassword());
-        if (!password.equals(newPassword)) {
-            return BaseResult.fail("password is error");
-        }
         SysUserDTO sysUserDTO=service.getUserByName(userName);
+        if (!passwordEncoder.matches(passwordDTO.getPassword(),sysUserDTO.getPassword())) {
+            return BaseResult.fail(ResultStatusCode.OLD_PASSWORD_ERROR);
+        }
+        String newPassword=passwordEncoder.encode(passwordDTO.getNewPassword());
+        if (!passwordEncoder.matches(passwordDTO.getConfirmPassword(),newPassword)) {
+            return BaseResult.fail(ResultStatusCode.NEW_PASSWORD_CONFIRM_ERROR);
+        }
         SysUser sysUser=new SysUser();
         BeanUtil.copyProperties(sysUserDTO,sysUser);
         sysUser.setPassword(newPassword);
         service.updateById(sysUser);
+        service.refreshUserAuthorities(userName);
         return BaseResult.success();
     }
+
 
 
     @ApiOperation("删除用户(逻辑删除)")
