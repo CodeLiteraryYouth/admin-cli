@@ -10,7 +10,6 @@ import com.dmj.cli.domain.dto.sys.SysUserDTO;
 import com.dmj.cli.domain.query.sys.PermissionQuery;
 import com.dmj.cli.domain.vo.sys.SysPermissionVO;
 import com.dmj.cli.mapper.sys.SysPermissionMapper;
-import com.dmj.cli.mapper.sys.SysUserMapper;
 import com.dmj.cli.service.sys.SysPermissionService;
 import com.dmj.cli.service.sys.SysUserService;
 import com.dmj.cli.util.DataTransferUtils;
@@ -42,16 +41,25 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private SysPermissionMapper sysPermissionMapper;
 
     @Autowired
-    private SysUserMapper sysUserMapper;
-
-    @Autowired
     private SysUserService sysUserService;
 
     @Override
     public BaseResult<List<SysPermissionVO>> pagePermission(PermissionQuery query) {
         List<SysPermissionVO> sysPermissionVOS=sysPermissionMapper.listPermission(query);
+        sysPermissionVOS.forEach(item -> item.setParentName(
+                item.getParentId() == 0 ? "" : sysPermissionMapper.selectById(item.getParentId()).getPermissionName()
+        ));
         List<SysPermissionVO> result=DataTransferUtils.list2Tree(sysPermissionVOS,"id","parentId","children");
         return BaseResult.success(result);
+    }
+
+    @Override
+    public BaseResult<SysPermissionVO> getPermissionById(Long id) {
+        SysPermission sysPermission = sysPermissionMapper.selectById(id);
+        SysPermissionVO sysPermissionVO = new SysPermissionVO();
+        BeanUtil.copyProperties(sysPermission,sysPermissionVO);
+        sysPermissionVO.setParentName(sysPermissionVO.getParentId() == 0 ? "" : sysPermissionMapper.selectById(sysPermissionVO.getParentId()).getPermissionName());
+        return BaseResult.success(sysPermissionVO);
     }
 
     @Override
@@ -99,10 +107,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     private void refreshUserAuthorities(Long permissionId) {
         List<Long> userIds=sysPermissionMapper.listUsersByPermissionId(permissionId);
-        List<SysUser> sysUsers=sysUserService.listByIds(userIds);
-        if (CollectionUtil.isNotEmpty(sysUsers)) {
-            List<String> userNames=sysUsers.stream().map(SysUser::getUserName).collect(Collectors.toList());
-            sysUserService.refreshUserAuthorities(userNames.stream().toArray(String[]::new));
+        if (CollectionUtil.isNotEmpty(userIds)) {
+            List<SysUser> sysUsers = sysUserService.listByIds(userIds);
+            if (CollectionUtil.isNotEmpty(sysUsers)) {
+                List<String> userNames = sysUsers.stream().map(SysUser::getUserName).collect(Collectors.toList());
+                sysUserService.refreshUserAuthorities(userNames.stream().toArray(String[]::new));
+            }
         }
     }
 

@@ -46,6 +46,8 @@ public class SysPermissionVO extends BaseEntity implements Serializable {
     @TableField("parent_id")
     private Long parentId;
 
+    private String parentName;
+
     @ApiModelProperty(value = "权限标识排序")
     @TableField("permission_order")
     private Integer permissionOrder;

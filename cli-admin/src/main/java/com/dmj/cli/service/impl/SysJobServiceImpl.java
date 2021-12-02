@@ -135,8 +135,7 @@ public class SysJobServiceImpl implements ISysJobService {
     @Transactional
     public void deleteJobByIds(String ids) throws SchedulerException {
         Long[] jobIds = Convert.toLongArray(ids);
-        for (Long jobId : jobIds)
-        {
+        for (Long jobId : jobIds) {
             SysJob job = jobMapper.selectJobById(jobId);
             deleteJob(job);
         }
@@ -240,4 +239,5 @@ public class SysJobServiceImpl implements ISysJobService {
     public boolean checkCronExpressionIsValid(String cronExpression) {
         return CronUtils.isValid(cronExpression);
     }
+
 }

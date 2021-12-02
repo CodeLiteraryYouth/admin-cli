@@ -50,8 +50,8 @@ public class SysPermissionController {
     }
 
     @GetMapping("/info/{id}")
-    public BaseResult<SysPermission> info(@PathVariable Long id) {
-        return BaseResult.success(service.getById(id));
+    public BaseResult<SysPermissionVO> info(@PathVariable Long id) {
+        return service.getPermissionById(id);
     }
 
     @ApiOperation("查询当前用户菜单和权限列表")
@@ -67,7 +67,7 @@ public class SysPermissionController {
         return BaseResult.success(entity);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("更新权限")
     public BaseResult<SysPermission> update(@RequestBody SysPermission entity) {
         return service.updatePermission(entity);

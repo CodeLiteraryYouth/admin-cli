@@ -21,6 +21,8 @@ public interface SysPermissionService extends IService<SysPermission> {
 
     BaseResult<List<SysPermissionVO>> pagePermission(PermissionQuery query);
 
+    BaseResult<SysPermissionVO> getPermissionById(Long id);
+
     BaseResult<Map<String,Object>> listUserPermissions(String userName);
 
     BaseResult updatePermission(SysPermission sysPermission);

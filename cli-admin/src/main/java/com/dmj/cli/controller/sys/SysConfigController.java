@@ -1,15 +1,17 @@
 package com.dmj.cli.controller.sys;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dmj.cli.common.constant.BaseResult;
 import com.dmj.cli.domain.BaseController;
 import com.dmj.cli.domain.SysConfig;
+import com.dmj.cli.domain.query.BaseQuery;
 import com.dmj.cli.service.sys.SysConfigService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -33,29 +35,30 @@ public class SysConfigController extends BaseController {
         return BaseResult.success(entity);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public BaseResult<SysConfig> update(@RequestBody SysConfig entity) {
         service.saveOrUpdate(entity);
         return BaseResult.success(entity);
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    public BaseResult delete(@PathVariable String id) {
+    @DeleteMapping("/delete")
+    public BaseResult delete(@RequestBody String id) {
         service.removeById(id);
         return BaseResult.success();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public BaseResult<SysConfig> select(@PathVariable String id) {
         SysConfig data = service.getById(id);
         return BaseResult.success(data);
     }
 
-    @PostMapping("/list")
-    public BaseResult<Page<SysConfig>> page(@RequestBody Page<SysConfig> page) {
-        page = service.page(page);
-        return BaseResult.success(page);
+    @GetMapping("/list")
+    public BaseResult<PageInfo<List<SysConfig>>> page(@ModelAttribute BaseQuery query) {
+        startPage();
+        List<SysConfig> list= service.list();
+        return pageInfoBaseResult(list);
     }
 }
 

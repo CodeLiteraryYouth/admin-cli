@@ -73,7 +73,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         RoleQuery query=new RoleQuery();
         query.setId(id);
         List<SysRoleVO> sysRoleVOS=sysRoleMapper.listRole(query);
-        return BaseResult.success(sysRoleVOS.get(0));
+        if (CollectionUtil.isNotEmpty(sysRoleVOS)) {
+            SysRoleVO sysRoleVO = sysRoleVOS.get(0);
+            sysRoleVO.setSysPermissions(sysPermissionMapper.listByRoleId(sysRoleVO.getId()));
+            return BaseResult.success(sysRoleVO);
+        }
+        return BaseResult.success();
     }
 
     private void refreshUserAuthorities(List<Long> roleIds) {
@@ -114,7 +119,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Assert.notNull(sysRoleDTO.getId(),"id is null");
         SysRole sysRole=new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
-        sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX+sysRoleDTO.getRoleCode());
+        if (!sysRole.getRoleCode().contains(GlobalConstants.ROLE_PREFIX)) {
+            sysRole.setRoleCode(GlobalConstants.ROLE_PREFIX + sysRoleDTO.getRoleCode());
+        }
         sysRoleMapper.updateById(sysRole);
         if (Objects.nonNull(sysRoleDTO.getPermissionIds()) && !sysRoleDTO.getPermissionIds().isEmpty()) {
             sysRolePermissionMapper.delete(new LambdaQueryWrapper<SysRolePermission>().eq(SysRolePermission::getRoleId,sysRole.getId()));
