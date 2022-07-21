@@ -24,13 +24,9 @@ import java.util.zip.ZipOutputStream;
 /**
  * 代码生成器   工具类
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年12月19日 下午11:40:24
+ * @author zd
  */
 public class GenUtils {
-
-    private static String currentTableName;
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
@@ -46,12 +42,6 @@ public class GenUtils {
 
         templates.add("template/index.vue.vm");
         templates.add("template/add-or-update.vue.vm");
-        return templates;
-    }
-
-    public static List<String> getMongoChildTemplates() {
-        List<String> templates = new ArrayList<String>();
-        templates.add("template/MongoChildrenEntity.java.vm");
         return templates;
     }
 
